@@ -8,22 +8,24 @@ struct Tensors(Copyable):
     var _create_tensor: def(
         device: Device,
         p_create_info: Ptr[TensorCreateInfoARM, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_tensor: Ptr[TensorARM, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _destroy_tensor: def(
-        device: Device, tensor: TensorARM, p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin]
+        device: Device,
+        tensor: TensorARM,
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
     ) thin abi("C")
     var _create_tensor_view: def(
         device: Device,
         p_create_info: Ptr[TensorViewCreateInfoARM, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_view: Ptr[TensorViewARM, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _destroy_tensor_view: def(
         device: Device,
         tensor_view: TensorViewARM,
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
     ) thin abi("C")
     var _get_tensor_memory_requirements: def(
         device: Device,
@@ -102,7 +104,7 @@ struct Tensors(Copyable):
         self,
         device: Device,
         create_info: TensorCreateInfoARM,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut tensor: TensorARM,
     ) -> Result:
         """See official vulkan docs for details.
@@ -112,7 +114,7 @@ struct Tensors(Copyable):
         return self._create_tensor(
             device,
             Ptr(to=create_info).bitcast[TensorCreateInfoARM]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=tensor).bitcast[TensorARM]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -120,21 +122,23 @@ struct Tensors(Copyable):
         self,
         device: Device,
         tensor: TensorARM,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyTensorARM.html
         """
         return self._destroy_tensor(
-            device, tensor, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[]
+            device,
+            tensor,
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
     def create_tensor_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: TensorViewCreateInfoARM,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut view: TensorViewARM,
     ) -> Result:
         """See official vulkan docs for details.
@@ -144,7 +148,7 @@ struct Tensors(Copyable):
         return self._create_tensor_view(
             device,
             Ptr(to=create_info).bitcast[TensorViewCreateInfoARM]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=view).bitcast[TensorViewARM]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -152,7 +156,7 @@ struct Tensors(Copyable):
         self,
         device: Device,
         tensor_view: TensorViewARM,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -161,7 +165,7 @@ struct Tensors(Copyable):
         return self._destroy_tensor_view(
             device,
             tensor_view,
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
     def get_tensor_memory_requirements(
@@ -281,20 +285,20 @@ struct DataGraph(Copyable):
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
         p_create_infos: Ptr[DataGraphPipelineCreateInfoARM, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_pipelines: Ptr[Pipeline, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _create_data_graph_pipeline_session: def(
         device: Device,
         p_create_info: Ptr[DataGraphPipelineSessionCreateInfoARM, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_session: Ptr[DataGraphPipelineSessionARM, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _get_data_graph_pipeline_session_bind_point_requirements: def(
         device: Device,
         p_info: Ptr[DataGraphPipelineSessionBindPointRequirementsInfoARM, ImmutUntrackedOrigin],
         p_bind_point_requirement_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_bind_point_requirements: Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutUntrackedOrigin],
+        p_bind_point_requirements: Optional[Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _get_data_graph_pipeline_session_memory_requirements: def(
         device: Device,
@@ -309,18 +313,18 @@ struct DataGraph(Copyable):
     var _destroy_data_graph_pipeline_session: def(
         device: Device,
         session: DataGraphPipelineSessionARM,
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
     ) thin abi("C")
     var _cmd_dispatch_data_graph: def(
         command_buffer: CommandBuffer,
         session: DataGraphPipelineSessionARM,
-        p_info: Ptr[DataGraphPipelineDispatchInfoARM, ImmutUntrackedOrigin],
+        p_info: Optional[Ptr[DataGraphPipelineDispatchInfoARM, ImmutUntrackedOrigin]],
     ) thin abi("C")
     var _get_data_graph_pipeline_available_properties: def(
         device: Device,
         p_pipeline_info: Ptr[DataGraphPipelineInfoARM, ImmutUntrackedOrigin],
         p_properties_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_properties: Ptr[DataGraphPipelinePropertyARM, MutUntrackedOrigin],
+        p_properties: Optional[Ptr[DataGraphPipelinePropertyARM, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _get_data_graph_pipeline_properties: def(
         device: Device,
@@ -332,7 +336,7 @@ struct DataGraph(Copyable):
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
         p_queue_family_data_graph_property_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_queue_family_data_graph_properties: Ptr[QueueFamilyDataGraphPropertiesARM, MutUntrackedOrigin],
+        p_queue_family_data_graph_properties: Optional[Ptr[QueueFamilyDataGraphPropertiesARM, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _get_physical_device_queue_family_data_graph_processing_engine_properties: def(
         physical_device: PhysicalDevice,
@@ -390,7 +394,7 @@ struct DataGraph(Copyable):
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
         p_create_infos: Ptr[DataGraphPipelineCreateInfoARM, p_create_infos_origin],
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         p_pipelines: Ptr[Pipeline, p_pipelines_origin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -403,7 +407,7 @@ struct DataGraph(Copyable):
             pipeline_cache,
             create_info_count,
             Ptr(to=p_create_infos).bitcast[Ptr[DataGraphPipelineCreateInfoARM, ImmutUntrackedOrigin]]()[],
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutUntrackedOrigin]]()[],
         )
 
@@ -411,7 +415,7 @@ struct DataGraph(Copyable):
         self,
         device: Device,
         create_info: DataGraphPipelineSessionCreateInfoARM,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut session: DataGraphPipelineSessionARM,
     ) -> Result:
         """See official vulkan docs for details.
@@ -421,7 +425,7 @@ struct DataGraph(Copyable):
         return self._create_data_graph_pipeline_session(
             device,
             Ptr(to=create_info).bitcast[DataGraphPipelineSessionCreateInfoARM]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=session).bitcast[DataGraphPipelineSessionARM]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -432,7 +436,7 @@ struct DataGraph(Copyable):
         device: Device,
         info: DataGraphPipelineSessionBindPointRequirementsInfoARM,
         mut bind_point_requirement_count: UInt32,
-        p_bind_point_requirements: Ptr[DataGraphPipelineSessionBindPointRequirementARM, p_bind_point_requirements_origin],
+        p_bind_point_requirements: Optional[Ptr[DataGraphPipelineSessionBindPointRequirementARM, p_bind_point_requirements_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -442,7 +446,7 @@ struct DataGraph(Copyable):
             device,
             Ptr(to=info).bitcast[DataGraphPipelineSessionBindPointRequirementsInfoARM]().unsafe_origin_cast[ImmutUntrackedOrigin](),
             Ptr(to=bind_point_requirement_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_bind_point_requirements).bitcast[Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutUntrackedOrigin]]()[],
+            Ptr(to=p_bind_point_requirements).bitcast[Optional[Ptr[DataGraphPipelineSessionBindPointRequirementARM, MutUntrackedOrigin]]]()[],
         )
 
     def get_data_graph_pipeline_session_bind_point_requirements[
@@ -513,21 +517,23 @@ struct DataGraph(Copyable):
         self,
         device: Device,
         session: DataGraphPipelineSessionARM,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
     ):
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkDestroyDataGraphPipelineSessionARM.html
         """
         return self._destroy_data_graph_pipeline_session(
-            device, session, Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[]
+            device,
+            session,
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
     def cmd_dispatch_data_graph[p_info_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         session: DataGraphPipelineSessionARM,
-        p_info: Ptr[DataGraphPipelineDispatchInfoARM, p_info_origin],
+        p_info: Optional[Ptr[DataGraphPipelineDispatchInfoARM, p_info_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -536,7 +542,7 @@ struct DataGraph(Copyable):
         return self._cmd_dispatch_data_graph(
             command_buffer,
             session,
-            Ptr(to=p_info).bitcast[Ptr[DataGraphPipelineDispatchInfoARM, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_info).bitcast[Optional[Ptr[DataGraphPipelineDispatchInfoARM, ImmutUntrackedOrigin]]]()[],
         )
 
     def get_data_graph_pipeline_available_properties[
@@ -546,7 +552,7 @@ struct DataGraph(Copyable):
         device: Device,
         pipeline_info: DataGraphPipelineInfoARM,
         mut properties_count: UInt32,
-        p_properties: Ptr[DataGraphPipelinePropertyARM, p_properties_origin],
+        p_properties: Optional[Ptr[DataGraphPipelinePropertyARM, p_properties_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -556,7 +562,7 @@ struct DataGraph(Copyable):
             device,
             Ptr(to=pipeline_info).bitcast[DataGraphPipelineInfoARM]().unsafe_origin_cast[ImmutUntrackedOrigin](),
             Ptr(to=properties_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_properties).bitcast[Ptr[DataGraphPipelinePropertyARM, MutUntrackedOrigin]]()[],
+            Ptr(to=p_properties).bitcast[Optional[Ptr[DataGraphPipelinePropertyARM, MutUntrackedOrigin]]]()[],
         )
 
     def get_data_graph_pipeline_available_properties[
@@ -614,7 +620,7 @@ struct DataGraph(Copyable):
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
         mut queue_family_data_graph_property_count: UInt32,
-        p_queue_family_data_graph_properties: Ptr[QueueFamilyDataGraphPropertiesARM, p_queue_family_data_graph_properties_origin],
+        p_queue_family_data_graph_properties: Optional[Ptr[QueueFamilyDataGraphPropertiesARM, p_queue_family_data_graph_properties_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -624,7 +630,7 @@ struct DataGraph(Copyable):
             physical_device,
             queue_family_index,
             Ptr(to=queue_family_data_graph_property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_queue_family_data_graph_properties).bitcast[Ptr[QueueFamilyDataGraphPropertiesARM, MutUntrackedOrigin]]()[],
+            Ptr(to=p_queue_family_data_graph_properties).bitcast[Optional[Ptr[QueueFamilyDataGraphPropertiesARM, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_queue_family_data_graph_properties[
@@ -680,8 +686,8 @@ struct PerformanceCountersByRegion(Copyable):
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
         p_counter_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_counters: Ptr[PerformanceCounterARM, MutUntrackedOrigin],
-        p_counter_descriptions: Ptr[PerformanceCounterDescriptionARM, MutUntrackedOrigin],
+        p_counters: Optional[Ptr[PerformanceCounterARM, MutUntrackedOrigin]],
+        p_counter_descriptions: Optional[Ptr[PerformanceCounterDescriptionARM, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -701,8 +707,8 @@ struct PerformanceCountersByRegion(Copyable):
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
         mut counter_count: UInt32,
-        p_counters: Ptr[PerformanceCounterARM, p_counters_origin],
-        p_counter_descriptions: Ptr[PerformanceCounterDescriptionARM, p_counter_descriptions_origin],
+        p_counters: Optional[Ptr[PerformanceCounterARM, p_counters_origin]],
+        p_counter_descriptions: Optional[Ptr[PerformanceCounterDescriptionARM, p_counter_descriptions_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -712,6 +718,6 @@ struct PerformanceCountersByRegion(Copyable):
             physical_device,
             queue_family_index,
             Ptr(to=counter_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_counters).bitcast[Ptr[PerformanceCounterARM, MutUntrackedOrigin]]()[],
-            Ptr(to=p_counter_descriptions).bitcast[Ptr[PerformanceCounterDescriptionARM, MutUntrackedOrigin]]()[],
+            Ptr(to=p_counters).bitcast[Optional[Ptr[PerformanceCounterARM, MutUntrackedOrigin]]]()[],
+            Ptr(to=p_counter_descriptions).bitcast[Optional[Ptr[PerformanceCounterDescriptionARM, MutUntrackedOrigin]]]()[],
         )

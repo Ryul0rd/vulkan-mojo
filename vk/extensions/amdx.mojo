@@ -10,7 +10,7 @@ struct ShaderEnqueue(Copyable):
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
         p_create_infos: Ptr[ExecutionGraphPipelineCreateInfoAMDX, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_pipelines: Ptr[Pipeline, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _get_execution_graph_pipeline_scratch_size: def(
@@ -86,7 +86,7 @@ struct ShaderEnqueue(Copyable):
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
         p_create_infos: Ptr[ExecutionGraphPipelineCreateInfoAMDX, p_create_infos_origin],
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         p_pipelines: Ptr[Pipeline, p_pipelines_origin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -98,7 +98,7 @@ struct ShaderEnqueue(Copyable):
             pipeline_cache,
             create_info_count,
             Ptr(to=p_create_infos).bitcast[Ptr[ExecutionGraphPipelineCreateInfoAMDX, ImmutUntrackedOrigin]]()[],
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutUntrackedOrigin]]()[],
         )
 

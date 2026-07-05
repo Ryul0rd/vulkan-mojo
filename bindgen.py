@@ -636,9 +636,13 @@ class MojoBaseType:
 class MojoPointerType:
     pointee_type: MojoType
     origin: MojoOriginLiteral | MojoParametricOrigin
+    is_nullable: bool = False
 
     def __str__(self) -> str:
-        return f"Ptr[{self.pointee_type}, {self.origin}]"
+        base_pointer_string = f"Ptr[{self.pointee_type}, {self.origin}]"
+        if self.is_nullable:
+            return f"Optional[{base_pointer_string}]"
+        return base_pointer_string
 
 
 @dataclass
@@ -845,7 +849,8 @@ def convert_origins_to_external(mojo_type: MojoType) -> MojoType:
     if isinstance(mojo_type, MojoPointerType):
         return MojoPointerType(
             pointee_type=convert_origins_to_external(mojo_type.pointee_type),
-            origin=mojo_type.origin
+            origin=mojo_type.origin,
+            is_nullable=mojo_type.is_nullable,
         )
     elif isinstance(mojo_type, MojoBaseType) and mojo_type.name == "CStringSlice":
         new_params: List[MojoOriginLiteral | MojoParametricOrigin | str] = []
@@ -855,7 +860,7 @@ def convert_origins_to_external(mojo_type: MojoType) -> MojoType:
     elif isinstance(mojo_type, MojoArrayType):
         return MojoArrayType(
             element_type=convert_origins_to_external(mojo_type.element_type),
-            length=mojo_type.length
+            length=mojo_type.length,
         )
     return mojo_type
 
@@ -873,6 +878,8 @@ def parse_members(members: List[RegistryStructMember]) -> Tuple[List[PhysicalFie
             text = text.removesuffix(member.comment)
         decl = parse_declarator(text)
         decl.type = convert_origins_to_external(decl.type)
+        if isinstance(decl.type, MojoPointerType) and member.optional and member.optional[0]:
+            decl.type.is_nullable = True
         field_name = pascal_to_snake(decl.name)
         is_version_field = (field_name == "version" or field_name.endswith("_version"))
         if is_version_field and isinstance(decl.type, MojoBaseType) and decl.type.name == "UInt32":
@@ -927,12 +934,12 @@ def as_parametric_type(name: str, mojo_type: MojoType, parameters: List[MojoPara
         new_pointee = as_parametric_type(name, mojo_type.pointee_type, parameters)
         return MojoPointerType(
             pointee_type=new_pointee,
-            origin=MojoParametricOrigin(param_name)
+            origin=MojoParametricOrigin(param_name),
+            is_nullable=mojo_type.is_nullable,
         )
 
     elif isinstance(mojo_type, MojoBaseType) and mojo_type.name == "CStringSlice":
         param_name = get_unique_name(f"{name}_origin")
-        # CStringSlice has 1 param
         is_mutable = mojo_type.parameters[0] == "MutUntrackedOrigin"
         parameters.append(MojoParameter(
             name=param_name,
@@ -2262,6 +2269,8 @@ def command_to_mojo_fn_type(registry_command: RegistryCommand) -> MojoFnType:
     arguments: List[MojoArgument] = []
     for param in registry_command.params:
         decl = parse_declarator(param.text)
+        if isinstance(decl.type, MojoPointerType) and param.optional:
+            decl.type.is_nullable = True
         arg_name = pascal_to_snake(param.name)
         if any(arg.name == arg_name for arg in arguments):
             continue
@@ -2285,7 +2294,8 @@ def registry_command_to_mojo_methods(
         decl = parse_declarator(param.text)
         arg_name = pascal_to_snake(decl.name)
         original_arg_type = decl.type
-
+        if isinstance(original_arg_type, MojoPointerType) and param.optional:
+            original_arg_type.is_nullable = True
         is_void_ptr = (
             isinstance(original_arg_type, MojoPointerType)
             and isinstance(original_arg_type.pointee_type, MojoBaseType)
@@ -2305,7 +2315,7 @@ def registry_command_to_mojo_methods(
                 continue
             if isinstance(original_arg_type, MojoPointerType):
                 new_origin: MojoOriginLiteral = "MutUntrackedOrigin" if original_arg_type.origin == "MutUntrackedOrigin" else "ImmutUntrackedOrigin"
-                arg_type = MojoPointerType(original_arg_type.pointee_type, new_origin)
+                arg_type = MojoPointerType(original_arg_type.pointee_type, new_origin, is_nullable=original_arg_type.is_nullable)
             else:
                 arg_type = original_arg_type
             

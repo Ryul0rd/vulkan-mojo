@@ -14,7 +14,7 @@ struct DisplayTiming(Copyable):
         device: Device,
         swapchain: SwapchainKHR,
         p_presentation_timing_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_presentation_timings: Ptr[PastPresentationTimingGOOGLE, MutUntrackedOrigin],
+        p_presentation_timings: Optional[Ptr[PastPresentationTimingGOOGLE, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -50,7 +50,7 @@ struct DisplayTiming(Copyable):
         device: Device,
         swapchain: SwapchainKHR,
         mut presentation_timing_count: UInt32,
-        p_presentation_timings: Ptr[PastPresentationTimingGOOGLE, p_presentation_timings_origin],
+        p_presentation_timings: Optional[Ptr[PastPresentationTimingGOOGLE, p_presentation_timings_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -60,7 +60,7 @@ struct DisplayTiming(Copyable):
             device,
             swapchain,
             Ptr(to=presentation_timing_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_presentation_timings).bitcast[Ptr[PastPresentationTimingGOOGLE, MutUntrackedOrigin]]()[],
+            Ptr(to=p_presentation_timings).bitcast[Optional[Ptr[PastPresentationTimingGOOGLE, MutUntrackedOrigin]]]()[],
         )
 
     def get_past_presentation_timing[p_presentation_timings_origin: MutOrigin = MutUntrackedOrigin](

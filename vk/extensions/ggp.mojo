@@ -8,7 +8,7 @@ struct StreamDescriptorSurface(Copyable):
     var _create_stream_descriptor_surface: def(
         instance: Instance,
         p_create_info: Ptr[StreamDescriptorSurfaceCreateInfoGGP, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_surface: Ptr[SurfaceKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
@@ -25,7 +25,7 @@ struct StreamDescriptorSurface(Copyable):
         self,
         instance: Instance,
         create_info: StreamDescriptorSurfaceCreateInfoGGP,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -35,6 +35,6 @@ struct StreamDescriptorSurface(Copyable):
         return self._create_stream_descriptor_surface(
             instance,
             Ptr(to=create_info).bitcast[StreamDescriptorSurfaceCreateInfoGGP]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=surface).bitcast[SurfaceKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )

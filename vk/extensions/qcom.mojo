@@ -76,7 +76,7 @@ struct TileProperties(Copyable):
         device: Device,
         framebuffer: Framebuffer,
         p_properties_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_properties: Ptr[TilePropertiesQCOM, MutUntrackedOrigin],
+        p_properties: Optional[Ptr[TilePropertiesQCOM, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _get_dynamic_rendering_tile_properties: def(
         device: Device,
@@ -101,7 +101,7 @@ struct TileProperties(Copyable):
         device: Device,
         framebuffer: Framebuffer,
         mut properties_count: UInt32,
-        p_properties: Ptr[TilePropertiesQCOM, p_properties_origin],
+        p_properties: Optional[Ptr[TilePropertiesQCOM, p_properties_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -111,7 +111,7 @@ struct TileProperties(Copyable):
             device,
             framebuffer,
             Ptr(to=properties_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_properties).bitcast[Ptr[TilePropertiesQCOM, MutUntrackedOrigin]]()[],
+            Ptr(to=p_properties).bitcast[Optional[Ptr[TilePropertiesQCOM, MutUntrackedOrigin]]]()[],
         )
 
     def get_framebuffer_tile_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
@@ -160,7 +160,7 @@ struct TileMemoryHeap(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_bind_tile_memory: def(
         command_buffer: CommandBuffer,
-        p_tile_memory_bind_info: Ptr[TileMemoryBindInfoQCOM, ImmutUntrackedOrigin],
+        p_tile_memory_bind_info: Optional[Ptr[TileMemoryBindInfoQCOM, ImmutUntrackedOrigin]],
     ) thin abi("C")
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -175,7 +175,7 @@ struct TileMemoryHeap(Copyable):
     def cmd_bind_tile_memory[p_tile_memory_bind_info_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
-        p_tile_memory_bind_info: Ptr[TileMemoryBindInfoQCOM, p_tile_memory_bind_info_origin],
+        p_tile_memory_bind_info: Optional[Ptr[TileMemoryBindInfoQCOM, p_tile_memory_bind_info_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -183,5 +183,5 @@ struct TileMemoryHeap(Copyable):
         """
         return self._cmd_bind_tile_memory(
             command_buffer,
-            Ptr(to=p_tile_memory_bind_info).bitcast[Ptr[TileMemoryBindInfoQCOM, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_tile_memory_bind_info).bitcast[Optional[Ptr[TileMemoryBindInfoQCOM, ImmutUntrackedOrigin]]]()[],
         )

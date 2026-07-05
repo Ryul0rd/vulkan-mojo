@@ -8,7 +8,7 @@ struct ImagepipeSurface(Copyable):
     var _create_image_pipe_surface: def(
         instance: Instance,
         p_create_info: Ptr[ImagePipeSurfaceCreateInfoFUCHSIA, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_surface: Ptr[SurfaceKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
@@ -25,7 +25,7 @@ struct ImagepipeSurface(Copyable):
         self,
         instance: Instance,
         create_info: ImagePipeSurfaceCreateInfoFUCHSIA,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -35,7 +35,7 @@ struct ImagepipeSurface(Copyable):
         return self._create_image_pipe_surface(
             instance,
             Ptr(to=create_info).bitcast[ImagePipeSurfaceCreateInfoFUCHSIA]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=surface).bitcast[SurfaceKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -161,7 +161,7 @@ struct BufferCollection(Copyable):
     var _create_buffer_collection: def(
         device: Device,
         p_create_info: Ptr[BufferCollectionCreateInfoFUCHSIA, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_collection: Ptr[BufferCollectionFUCHSIA, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _set_buffer_collection_image_constraints: def(
@@ -177,7 +177,7 @@ struct BufferCollection(Copyable):
     var _destroy_buffer_collection: def(
         device: Device,
         collection: BufferCollectionFUCHSIA,
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
     ) thin abi("C")
     var _get_buffer_collection_properties: def(
         device: Device,
@@ -210,7 +210,7 @@ struct BufferCollection(Copyable):
         self,
         device: Device,
         create_info: BufferCollectionCreateInfoFUCHSIA,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut collection: BufferCollectionFUCHSIA,
     ) -> Result:
         """See official vulkan docs for details.
@@ -220,7 +220,7 @@ struct BufferCollection(Copyable):
         return self._create_buffer_collection(
             device,
             Ptr(to=create_info).bitcast[BufferCollectionCreateInfoFUCHSIA]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=collection).bitcast[BufferCollectionFUCHSIA]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -260,7 +260,7 @@ struct BufferCollection(Copyable):
         self,
         device: Device,
         collection: BufferCollectionFUCHSIA,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -269,7 +269,7 @@ struct BufferCollection(Copyable):
         return self._destroy_buffer_collection(
             device,
             collection,
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
     def get_buffer_collection_properties(

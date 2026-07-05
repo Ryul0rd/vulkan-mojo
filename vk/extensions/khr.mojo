@@ -8,7 +8,7 @@ struct Surface(Copyable):
     var _destroy_surface: def(
         instance: Instance,
         surface: SurfaceKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
     ) thin abi("C")
     var _get_physical_device_surface_support: def(
         physical_device: PhysicalDevice,
@@ -25,13 +25,13 @@ struct Surface(Copyable):
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
         p_surface_format_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_surface_formats: Ptr[SurfaceFormatKHR, MutUntrackedOrigin],
+        p_surface_formats: Optional[Ptr[SurfaceFormatKHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _get_physical_device_surface_present_modes: def(
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
         p_present_mode_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_present_modes: Ptr[PresentModeKHR, MutUntrackedOrigin],
+        p_present_modes: Optional[Ptr[PresentModeKHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
@@ -59,7 +59,7 @@ struct Surface(Copyable):
         self,
         instance: Instance,
         surface: SurfaceKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -68,7 +68,7 @@ struct Surface(Copyable):
         return self._destroy_surface(
             instance,
             surface,
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_surface_support(
@@ -112,7 +112,7 @@ struct Surface(Copyable):
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
         mut surface_format_count: UInt32,
-        p_surface_formats: Ptr[SurfaceFormatKHR, p_surface_formats_origin],
+        p_surface_formats: Optional[Ptr[SurfaceFormatKHR, p_surface_formats_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -122,7 +122,7 @@ struct Surface(Copyable):
             physical_device,
             surface,
             Ptr(to=surface_format_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_surface_formats).bitcast[Ptr[SurfaceFormatKHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_surface_formats).bitcast[Optional[Ptr[SurfaceFormatKHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_surface_formats[
@@ -162,7 +162,7 @@ struct Surface(Copyable):
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
         mut present_mode_count: UInt32,
-        p_present_modes: Ptr[PresentModeKHR, p_present_modes_origin],
+        p_present_modes: Optional[Ptr[PresentModeKHR, p_present_modes_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -172,7 +172,7 @@ struct Surface(Copyable):
             physical_device,
             surface,
             Ptr(to=present_mode_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_present_modes).bitcast[Ptr[PresentModeKHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_present_modes).bitcast[Optional[Ptr[PresentModeKHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_surface_present_modes[
@@ -211,19 +211,19 @@ struct Swapchain(Copyable):
     var _create_swapchain: def(
         device: Device,
         p_create_info: Ptr[SwapchainCreateInfoKHR, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_swapchain: Ptr[SwapchainKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _destroy_swapchain: def(
         device: Device,
         swapchain: SwapchainKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
     ) thin abi("C")
     var _get_swapchain_images: def(
         device: Device,
         swapchain: SwapchainKHR,
         p_swapchain_image_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_swapchain_images: Ptr[Image, MutUntrackedOrigin],
+        p_swapchain_images: Optional[Ptr[Image, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _acquire_next_image: def(
         device: Device,
@@ -249,7 +249,7 @@ struct Swapchain(Copyable):
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
         p_rect_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_rects: Ptr[Rect2D, MutUntrackedOrigin],
+        p_rects: Optional[Ptr[Rect2D, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _acquire_next_image_2: def(
         device: Device,
@@ -294,7 +294,7 @@ struct Swapchain(Copyable):
         self,
         device: Device,
         create_info: SwapchainCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut swapchain: SwapchainKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -304,7 +304,7 @@ struct Swapchain(Copyable):
         return self._create_swapchain(
             device,
             Ptr(to=create_info).bitcast[SwapchainCreateInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=swapchain).bitcast[SwapchainKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -312,7 +312,7 @@ struct Swapchain(Copyable):
         self,
         device: Device,
         swapchain: SwapchainKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -321,7 +321,7 @@ struct Swapchain(Copyable):
         return self._destroy_swapchain(
             device,
             swapchain,
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
     def get_swapchain_images[p_swapchain_images_origin: MutOrigin = MutUntrackedOrigin](
@@ -329,7 +329,7 @@ struct Swapchain(Copyable):
         device: Device,
         swapchain: SwapchainKHR,
         mut swapchain_image_count: UInt32,
-        p_swapchain_images: Ptr[Image, p_swapchain_images_origin],
+        p_swapchain_images: Optional[Ptr[Image, p_swapchain_images_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -339,7 +339,7 @@ struct Swapchain(Copyable):
             device,
             swapchain,
             Ptr(to=swapchain_image_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_swapchain_images).bitcast[Ptr[Image, MutUntrackedOrigin]]()[],
+            Ptr(to=p_swapchain_images).bitcast[Optional[Ptr[Image, MutUntrackedOrigin]]]()[],
         )
 
     def get_swapchain_images[p_swapchain_images_origin: MutOrigin = MutUntrackedOrigin](
@@ -433,7 +433,7 @@ struct Swapchain(Copyable):
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
         mut rect_count: UInt32,
-        p_rects: Ptr[Rect2D, p_rects_origin],
+        p_rects: Optional[Ptr[Rect2D, p_rects_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -443,7 +443,7 @@ struct Swapchain(Copyable):
             physical_device,
             surface,
             Ptr(to=rect_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_rects).bitcast[Ptr[Rect2D, MutUntrackedOrigin]]()[],
+            Ptr(to=p_rects).bitcast[Optional[Ptr[Rect2D, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_present_rectangles[p_rects_origin: MutOrigin = MutUntrackedOrigin](
@@ -493,30 +493,30 @@ struct Display(Copyable):
     var _get_physical_device_display_properties: def(
         physical_device: PhysicalDevice,
         p_property_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_properties: Ptr[DisplayPropertiesKHR, MutUntrackedOrigin],
+        p_properties: Optional[Ptr[DisplayPropertiesKHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _get_physical_device_display_plane_properties: def(
         physical_device: PhysicalDevice,
         p_property_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_properties: Ptr[DisplayPlanePropertiesKHR, MutUntrackedOrigin],
+        p_properties: Optional[Ptr[DisplayPlanePropertiesKHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _get_display_plane_supported_displays: def(
         physical_device: PhysicalDevice,
         plane_index: UInt32,
         p_display_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_displays: Ptr[DisplayKHR, MutUntrackedOrigin],
+        p_displays: Optional[Ptr[DisplayKHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _get_display_mode_properties: def(
         physical_device: PhysicalDevice,
         display: DisplayKHR,
         p_property_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_properties: Ptr[DisplayModePropertiesKHR, MutUntrackedOrigin],
+        p_properties: Optional[Ptr[DisplayModePropertiesKHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _create_display_mode: def(
         physical_device: PhysicalDevice,
         display: DisplayKHR,
         p_create_info: Ptr[DisplayModeCreateInfoKHR, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_mode: Ptr[DisplayModeKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _get_display_plane_capabilities: def(
@@ -528,7 +528,7 @@ struct Display(Copyable):
     var _create_display_plane_surface: def(
         instance: Instance,
         p_create_info: Ptr[DisplaySurfaceCreateInfoKHR, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_surface: Ptr[SurfaceKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
@@ -563,7 +563,7 @@ struct Display(Copyable):
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[DisplayPropertiesKHR, p_properties_origin],
+        p_properties: Optional[Ptr[DisplayPropertiesKHR, p_properties_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -572,7 +572,7 @@ struct Display(Copyable):
         return self._get_physical_device_display_properties(
             physical_device,
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_properties).bitcast[Ptr[DisplayPropertiesKHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_properties).bitcast[Optional[Ptr[DisplayPropertiesKHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_display_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
@@ -607,7 +607,7 @@ struct Display(Copyable):
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[DisplayPlanePropertiesKHR, p_properties_origin],
+        p_properties: Optional[Ptr[DisplayPlanePropertiesKHR, p_properties_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -616,7 +616,7 @@ struct Display(Copyable):
         return self._get_physical_device_display_plane_properties(
             physical_device,
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_properties).bitcast[Ptr[DisplayPlanePropertiesKHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_properties).bitcast[Optional[Ptr[DisplayPlanePropertiesKHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_display_plane_properties[
@@ -652,7 +652,7 @@ struct Display(Copyable):
         physical_device: PhysicalDevice,
         plane_index: UInt32,
         mut display_count: UInt32,
-        p_displays: Ptr[DisplayKHR, p_displays_origin],
+        p_displays: Optional[Ptr[DisplayKHR, p_displays_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -662,7 +662,7 @@ struct Display(Copyable):
             physical_device,
             plane_index,
             Ptr(to=display_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_displays).bitcast[Ptr[DisplayKHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_displays).bitcast[Optional[Ptr[DisplayKHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_display_plane_supported_displays[p_displays_origin: MutOrigin = MutUntrackedOrigin](
@@ -698,7 +698,7 @@ struct Display(Copyable):
         physical_device: PhysicalDevice,
         display: DisplayKHR,
         mut property_count: UInt32,
-        p_properties: Ptr[DisplayModePropertiesKHR, p_properties_origin],
+        p_properties: Optional[Ptr[DisplayModePropertiesKHR, p_properties_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -708,7 +708,7 @@ struct Display(Copyable):
             physical_device,
             display,
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_properties).bitcast[Ptr[DisplayModePropertiesKHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_properties).bitcast[Optional[Ptr[DisplayModePropertiesKHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_display_mode_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
@@ -744,7 +744,7 @@ struct Display(Copyable):
         physical_device: PhysicalDevice,
         display: DisplayKHR,
         create_info: DisplayModeCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut mode: DisplayModeKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -755,7 +755,7 @@ struct Display(Copyable):
             physical_device,
             display,
             Ptr(to=create_info).bitcast[DisplayModeCreateInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=mode).bitcast[DisplayModeKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -781,7 +781,7 @@ struct Display(Copyable):
         self,
         instance: Instance,
         create_info: DisplaySurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -791,7 +791,7 @@ struct Display(Copyable):
         return self._create_display_plane_surface(
             instance,
             Ptr(to=create_info).bitcast[DisplaySurfaceCreateInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=surface).bitcast[SurfaceKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -802,7 +802,7 @@ struct DisplaySwapchain(Copyable):
         device: Device,
         swapchain_count: UInt32,
         p_create_infos: Ptr[SwapchainCreateInfoKHR, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_swapchains: Ptr[SwapchainKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
@@ -824,7 +824,7 @@ struct DisplaySwapchain(Copyable):
         device: Device,
         swapchain_count: UInt32,
         p_create_infos: Ptr[SwapchainCreateInfoKHR, p_create_infos_origin],
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         p_swapchains: Ptr[SwapchainKHR, p_swapchains_origin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -835,7 +835,7 @@ struct DisplaySwapchain(Copyable):
             device,
             swapchain_count,
             Ptr(to=p_create_infos).bitcast[Ptr[SwapchainCreateInfoKHR, ImmutUntrackedOrigin]]()[],
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=p_swapchains).bitcast[Ptr[SwapchainKHR, MutUntrackedOrigin]]()[],
         )
 
@@ -845,7 +845,7 @@ struct XlibSurface(Copyable):
     var _create_xlib_surface: def(
         instance: Instance,
         p_create_info: Ptr[XlibSurfaceCreateInfoKHR, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_surface: Ptr[SurfaceKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _get_physical_device_xlib_presentation_support: def(
@@ -871,7 +871,7 @@ struct XlibSurface(Copyable):
         self,
         instance: Instance,
         create_info: XlibSurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -881,7 +881,7 @@ struct XlibSurface(Copyable):
         return self._create_xlib_surface(
             instance,
             Ptr(to=create_info).bitcast[XlibSurfaceCreateInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=surface).bitcast[SurfaceKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -909,7 +909,7 @@ struct XcbSurface(Copyable):
     var _create_xcb_surface: def(
         instance: Instance,
         p_create_info: Ptr[XcbSurfaceCreateInfoKHR, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_surface: Ptr[SurfaceKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _get_physical_device_xcb_presentation_support: def(
@@ -935,7 +935,7 @@ struct XcbSurface(Copyable):
         self,
         instance: Instance,
         create_info: XcbSurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -945,7 +945,7 @@ struct XcbSurface(Copyable):
         return self._create_xcb_surface(
             instance,
             Ptr(to=create_info).bitcast[XcbSurfaceCreateInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=surface).bitcast[SurfaceKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -973,7 +973,7 @@ struct WaylandSurface(Copyable):
     var _create_wayland_surface: def(
         instance: Instance,
         p_create_info: Ptr[WaylandSurfaceCreateInfoKHR, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_surface: Ptr[SurfaceKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _get_physical_device_wayland_presentation_support: def(
@@ -998,7 +998,7 @@ struct WaylandSurface(Copyable):
         self,
         instance: Instance,
         create_info: WaylandSurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -1008,7 +1008,7 @@ struct WaylandSurface(Copyable):
         return self._create_wayland_surface(
             instance,
             Ptr(to=create_info).bitcast[WaylandSurfaceCreateInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=surface).bitcast[SurfaceKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -1031,7 +1031,7 @@ struct AndroidSurface(Copyable):
     var _create_android_surface: def(
         instance: Instance,
         p_create_info: Ptr[AndroidSurfaceCreateInfoKHR, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_surface: Ptr[SurfaceKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
@@ -1048,7 +1048,7 @@ struct AndroidSurface(Copyable):
         self,
         instance: Instance,
         create_info: AndroidSurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -1058,7 +1058,7 @@ struct AndroidSurface(Copyable):
         return self._create_android_surface(
             instance,
             Ptr(to=create_info).bitcast[AndroidSurfaceCreateInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=surface).bitcast[SurfaceKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -1068,7 +1068,7 @@ struct Win32Surface(Copyable):
     var _create_win_32_surface: def(
         instance: Instance,
         p_create_info: Ptr[Win32SurfaceCreateInfoKHR, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_surface: Ptr[SurfaceKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _get_physical_device_win_32_presentation_support: def(
@@ -1091,7 +1091,7 @@ struct Win32Surface(Copyable):
         self,
         instance: Instance,
         create_info: Win32SurfaceCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -1101,7 +1101,7 @@ struct Win32Surface(Copyable):
         return self._create_win_32_surface(
             instance,
             Ptr(to=create_info).bitcast[Win32SurfaceCreateInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=surface).bitcast[SurfaceKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -1126,24 +1126,24 @@ struct VideoQueue(Copyable):
         physical_device: PhysicalDevice,
         p_video_format_info: Ptr[PhysicalDeviceVideoFormatInfoKHR, ImmutUntrackedOrigin],
         p_video_format_property_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_video_format_properties: Ptr[VideoFormatPropertiesKHR, MutUntrackedOrigin],
+        p_video_format_properties: Optional[Ptr[VideoFormatPropertiesKHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _create_video_session: def(
         device: Device,
         p_create_info: Ptr[VideoSessionCreateInfoKHR, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_video_session: Ptr[VideoSessionKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _destroy_video_session: def(
         device: Device,
         video_session: VideoSessionKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
     ) thin abi("C")
     var _get_video_session_memory_requirements: def(
         device: Device,
         video_session: VideoSessionKHR,
         p_memory_requirements_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_memory_requirements: Ptr[VideoSessionMemoryRequirementsKHR, MutUntrackedOrigin],
+        p_memory_requirements: Optional[Ptr[VideoSessionMemoryRequirementsKHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _bind_video_session_memory: def(
         device: Device,
@@ -1154,7 +1154,7 @@ struct VideoQueue(Copyable):
     var _create_video_session_parameters: def(
         device: Device,
         p_create_info: Ptr[VideoSessionParametersCreateInfoKHR, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_video_session_parameters: Ptr[VideoSessionParametersKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _update_video_session_parameters: def(
@@ -1165,7 +1165,7 @@ struct VideoQueue(Copyable):
     var _destroy_video_session_parameters: def(
         device: Device,
         video_session_parameters: VideoSessionParametersKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
     ) thin abi("C")
     var _cmd_begin_video_coding: def(
         command_buffer: CommandBuffer, p_begin_info: Ptr[VideoBeginCodingInfoKHR, ImmutUntrackedOrigin]
@@ -1244,7 +1244,7 @@ struct VideoQueue(Copyable):
         physical_device: PhysicalDevice,
         video_format_info: PhysicalDeviceVideoFormatInfoKHR,
         mut video_format_property_count: UInt32,
-        p_video_format_properties: Ptr[VideoFormatPropertiesKHR, p_video_format_properties_origin],
+        p_video_format_properties: Optional[Ptr[VideoFormatPropertiesKHR, p_video_format_properties_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1254,7 +1254,7 @@ struct VideoQueue(Copyable):
             physical_device,
             Ptr(to=video_format_info).bitcast[PhysicalDeviceVideoFormatInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
             Ptr(to=video_format_property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_video_format_properties).bitcast[Ptr[VideoFormatPropertiesKHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_video_format_properties).bitcast[Optional[Ptr[VideoFormatPropertiesKHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_video_format_properties[
@@ -1291,7 +1291,7 @@ struct VideoQueue(Copyable):
         self,
         device: Device,
         create_info: VideoSessionCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut video_session: VideoSessionKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -1301,7 +1301,7 @@ struct VideoQueue(Copyable):
         return self._create_video_session(
             device,
             Ptr(to=create_info).bitcast[VideoSessionCreateInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=video_session).bitcast[VideoSessionKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -1309,7 +1309,7 @@ struct VideoQueue(Copyable):
         self,
         device: Device,
         video_session: VideoSessionKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -1318,7 +1318,7 @@ struct VideoQueue(Copyable):
         return self._destroy_video_session(
             device,
             video_session,
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
     def get_video_session_memory_requirements[
@@ -1328,7 +1328,7 @@ struct VideoQueue(Copyable):
         device: Device,
         video_session: VideoSessionKHR,
         mut memory_requirements_count: UInt32,
-        p_memory_requirements: Ptr[VideoSessionMemoryRequirementsKHR, p_memory_requirements_origin],
+        p_memory_requirements: Optional[Ptr[VideoSessionMemoryRequirementsKHR, p_memory_requirements_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1338,7 +1338,7 @@ struct VideoQueue(Copyable):
             device,
             video_session,
             Ptr(to=memory_requirements_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_memory_requirements).bitcast[Ptr[VideoSessionMemoryRequirementsKHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_memory_requirements).bitcast[Optional[Ptr[VideoSessionMemoryRequirementsKHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_video_session_memory_requirements[
@@ -1395,7 +1395,7 @@ struct VideoQueue(Copyable):
         self,
         device: Device,
         create_info: VideoSessionParametersCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut video_session_parameters: VideoSessionParametersKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -1405,7 +1405,7 @@ struct VideoQueue(Copyable):
         return self._create_video_session_parameters(
             device,
             Ptr(to=create_info).bitcast[VideoSessionParametersCreateInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=video_session_parameters).bitcast[VideoSessionParametersKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -1429,7 +1429,7 @@ struct VideoQueue(Copyable):
         self,
         device: Device,
         video_session_parameters: VideoSessionParametersKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -1438,7 +1438,7 @@ struct VideoQueue(Copyable):
         return self._destroy_video_session_parameters(
             device,
             video_session_parameters,
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
     def cmd_begin_video_coding(
@@ -1563,7 +1563,7 @@ struct GetPhysicalDeviceProperties2(Copyable):
     var _get_physical_device_queue_family_properties_2: def(
         physical_device: PhysicalDevice,
         p_queue_family_property_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_queue_family_properties: Ptr[QueueFamilyProperties2, MutUntrackedOrigin],
+        p_queue_family_properties: Optional[Ptr[QueueFamilyProperties2, MutUntrackedOrigin]],
     ) thin abi("C")
     var _get_physical_device_memory_properties_2: def(
         physical_device: PhysicalDevice,
@@ -1573,7 +1573,7 @@ struct GetPhysicalDeviceProperties2(Copyable):
         physical_device: PhysicalDevice,
         p_format_info: Ptr[PhysicalDeviceSparseImageFormatInfo2, ImmutUntrackedOrigin],
         p_property_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_properties: Ptr[SparseImageFormatProperties2, MutUntrackedOrigin],
+        p_properties: Optional[Ptr[SparseImageFormatProperties2, MutUntrackedOrigin]],
     ) thin abi("C")
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
@@ -1665,7 +1665,7 @@ struct GetPhysicalDeviceProperties2(Copyable):
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
-        p_queue_family_properties: Ptr[QueueFamilyProperties2, p_queue_family_properties_origin],
+        p_queue_family_properties: Optional[Ptr[QueueFamilyProperties2, p_queue_family_properties_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -1674,7 +1674,7 @@ struct GetPhysicalDeviceProperties2(Copyable):
         return self._get_physical_device_queue_family_properties_2(
             physical_device,
             Ptr(to=queue_family_property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_queue_family_properties).bitcast[Ptr[QueueFamilyProperties2, MutUntrackedOrigin]]()[],
+            Ptr(to=p_queue_family_properties).bitcast[Optional[Ptr[QueueFamilyProperties2, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_queue_family_properties_2[
@@ -1723,7 +1723,7 @@ struct GetPhysicalDeviceProperties2(Copyable):
         physical_device: PhysicalDevice,
         format_info: PhysicalDeviceSparseImageFormatInfo2,
         mut property_count: UInt32,
-        p_properties: Ptr[SparseImageFormatProperties2, p_properties_origin],
+        p_properties: Optional[Ptr[SparseImageFormatProperties2, p_properties_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -1733,7 +1733,7 @@ struct GetPhysicalDeviceProperties2(Copyable):
             physical_device,
             Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_properties).bitcast[Ptr[SparseImageFormatProperties2, MutUntrackedOrigin]]()[],
+            Ptr(to=p_properties).bitcast[Optional[Ptr[SparseImageFormatProperties2, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_sparse_image_format_properties_2[
@@ -1796,7 +1796,7 @@ struct DeviceGroup(Copyable):
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
         p_rect_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_rects: Ptr[Rect2D, MutUntrackedOrigin],
+        p_rects: Optional[Ptr[Rect2D, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _acquire_next_image_2: def(
         device: Device,
@@ -1914,7 +1914,7 @@ struct DeviceGroup(Copyable):
         physical_device: PhysicalDevice,
         surface: SurfaceKHR,
         mut rect_count: UInt32,
-        p_rects: Ptr[Rect2D, p_rects_origin],
+        p_rects: Optional[Ptr[Rect2D, p_rects_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -1924,7 +1924,7 @@ struct DeviceGroup(Copyable):
             physical_device,
             surface,
             Ptr(to=rect_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_rects).bitcast[Ptr[Rect2D, MutUntrackedOrigin]]()[],
+            Ptr(to=p_rects).bitcast[Optional[Ptr[Rect2D, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_present_rectangles[p_rects_origin: MutOrigin = MutUntrackedOrigin](
@@ -1999,7 +1999,7 @@ struct DeviceGroupCreation(Copyable):
     var _enumerate_physical_device_groups: def(
         instance: Instance,
         p_physical_device_group_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, MutUntrackedOrigin],
+        p_physical_device_group_properties: Optional[Ptr[PhysicalDeviceGroupProperties, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
@@ -2017,7 +2017,7 @@ struct DeviceGroupCreation(Copyable):
         self,
         instance: Instance,
         mut physical_device_group_count: UInt32,
-        p_physical_device_group_properties: Ptr[PhysicalDeviceGroupProperties, p_physical_device_group_properties_origin],
+        p_physical_device_group_properties: Optional[Ptr[PhysicalDeviceGroupProperties, p_physical_device_group_properties_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -2026,7 +2026,7 @@ struct DeviceGroupCreation(Copyable):
         return self._enumerate_physical_device_groups(
             instance,
             Ptr(to=physical_device_group_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_physical_device_group_properties).bitcast[Ptr[PhysicalDeviceGroupProperties, MutUntrackedOrigin]]()[],
+            Ptr(to=p_physical_device_group_properties).bitcast[Optional[Ptr[PhysicalDeviceGroupProperties, MutUntrackedOrigin]]]()[],
         )
 
     def enumerate_physical_device_groups[
@@ -2425,13 +2425,13 @@ struct DescriptorUpdateTemplate(Copyable):
     var _create_descriptor_update_template: def(
         device: Device,
         p_create_info: Ptr[DescriptorUpdateTemplateCreateInfo, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_descriptor_update_template: Ptr[DescriptorUpdateTemplate, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _destroy_descriptor_update_template: def(
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
     ) thin abi("C")
     var _update_descriptor_set_with_template: def(
         device: Device,
@@ -2469,7 +2469,7 @@ struct DescriptorUpdateTemplate(Copyable):
         self,
         device: Device,
         create_info: DescriptorUpdateTemplateCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut descriptor_update_template: DescriptorUpdateTemplate,
     ) -> Result:
         """See official vulkan docs for details.
@@ -2479,7 +2479,7 @@ struct DescriptorUpdateTemplate(Copyable):
         return self._create_descriptor_update_template(
             device,
             Ptr(to=create_info).bitcast[DescriptorUpdateTemplateCreateInfo]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -2487,7 +2487,7 @@ struct DescriptorUpdateTemplate(Copyable):
         self,
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -2496,7 +2496,7 @@ struct DescriptorUpdateTemplate(Copyable):
         return self._destroy_descriptor_update_template(
             device,
             descriptor_update_template,
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
     def update_descriptor_set_with_template[p_data_origin: ImmutOrigin = ImmutUntrackedOrigin](
@@ -2543,7 +2543,7 @@ struct CreateRenderpass2(Copyable):
     var _create_render_pass_2: def(
         device: Device,
         p_create_info: Ptr[RenderPassCreateInfo2, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_render_pass: Ptr[RenderPass, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _cmd_begin_render_pass_2: def(
@@ -2582,7 +2582,7 @@ struct CreateRenderpass2(Copyable):
         self,
         device: Device,
         create_info: RenderPassCreateInfo2,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut render_pass: RenderPass,
     ) -> Result:
         """See official vulkan docs for details.
@@ -2592,7 +2592,7 @@ struct CreateRenderpass2(Copyable):
         return self._create_render_pass_2(
             device,
             Ptr(to=create_info).bitcast[RenderPassCreateInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=render_pass).bitcast[RenderPass]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -2801,8 +2801,8 @@ struct PerformanceQuery(Copyable):
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
         p_counter_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_counters: Ptr[PerformanceCounterKHR, MutUntrackedOrigin],
-        p_counter_descriptions: Ptr[PerformanceCounterDescriptionKHR, MutUntrackedOrigin],
+        p_counters: Optional[Ptr[PerformanceCounterKHR, MutUntrackedOrigin]],
+        p_counter_descriptions: Optional[Ptr[PerformanceCounterDescriptionKHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _get_physical_device_queue_family_performance_query_passes: def(
         physical_device: PhysicalDevice,
@@ -2840,8 +2840,8 @@ struct PerformanceQuery(Copyable):
         physical_device: PhysicalDevice,
         queue_family_index: UInt32,
         mut counter_count: UInt32,
-        p_counters: Ptr[PerformanceCounterKHR, p_counters_origin],
-        p_counter_descriptions: Ptr[PerformanceCounterDescriptionKHR, p_counter_descriptions_origin],
+        p_counters: Optional[Ptr[PerformanceCounterKHR, p_counters_origin]],
+        p_counter_descriptions: Optional[Ptr[PerformanceCounterDescriptionKHR, p_counter_descriptions_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -2851,8 +2851,8 @@ struct PerformanceQuery(Copyable):
             physical_device,
             queue_family_index,
             Ptr(to=counter_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_counters).bitcast[Ptr[PerformanceCounterKHR, MutUntrackedOrigin]]()[],
-            Ptr(to=p_counter_descriptions).bitcast[Ptr[PerformanceCounterDescriptionKHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_counters).bitcast[Optional[Ptr[PerformanceCounterKHR, MutUntrackedOrigin]]]()[],
+            Ptr(to=p_counter_descriptions).bitcast[Optional[Ptr[PerformanceCounterDescriptionKHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_queue_family_performance_query_passes(
@@ -2900,7 +2900,7 @@ struct GetSurfaceCapabilities2(Copyable):
         physical_device: PhysicalDevice,
         p_surface_info: Ptr[PhysicalDeviceSurfaceInfo2KHR, ImmutUntrackedOrigin],
         p_surface_format_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_surface_formats: Ptr[SurfaceFormat2KHR, MutUntrackedOrigin],
+        p_surface_formats: Optional[Ptr[SurfaceFormat2KHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
@@ -2938,7 +2938,7 @@ struct GetSurfaceCapabilities2(Copyable):
         physical_device: PhysicalDevice,
         surface_info: PhysicalDeviceSurfaceInfo2KHR,
         mut surface_format_count: UInt32,
-        p_surface_formats: Ptr[SurfaceFormat2KHR, p_surface_formats_origin],
+        p_surface_formats: Optional[Ptr[SurfaceFormat2KHR, p_surface_formats_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -2948,7 +2948,7 @@ struct GetSurfaceCapabilities2(Copyable):
             physical_device,
             Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
             Ptr(to=surface_format_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_surface_formats).bitcast[Ptr[SurfaceFormat2KHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_surface_formats).bitcast[Optional[Ptr[SurfaceFormat2KHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_surface_formats_2[
@@ -2987,18 +2987,18 @@ struct GetDisplayProperties2(Copyable):
     var _get_physical_device_display_properties_2: def(
         physical_device: PhysicalDevice,
         p_property_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_properties: Ptr[DisplayProperties2KHR, MutUntrackedOrigin],
+        p_properties: Optional[Ptr[DisplayProperties2KHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _get_physical_device_display_plane_properties_2: def(
         physical_device: PhysicalDevice,
         p_property_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_properties: Ptr[DisplayPlaneProperties2KHR, MutUntrackedOrigin],
+        p_properties: Optional[Ptr[DisplayPlaneProperties2KHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _get_display_mode_properties_2: def(
         physical_device: PhysicalDevice,
         display: DisplayKHR,
         p_property_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_properties: Ptr[DisplayModeProperties2KHR, MutUntrackedOrigin],
+        p_properties: Optional[Ptr[DisplayModeProperties2KHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _get_display_plane_capabilities_2: def(
         physical_device: PhysicalDevice,
@@ -3030,7 +3030,7 @@ struct GetDisplayProperties2(Copyable):
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[DisplayProperties2KHR, p_properties_origin],
+        p_properties: Optional[Ptr[DisplayProperties2KHR, p_properties_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3039,7 +3039,7 @@ struct GetDisplayProperties2(Copyable):
         return self._get_physical_device_display_properties_2(
             physical_device,
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_properties).bitcast[Ptr[DisplayProperties2KHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_properties).bitcast[Optional[Ptr[DisplayProperties2KHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_display_properties_2[
@@ -3076,7 +3076,7 @@ struct GetDisplayProperties2(Copyable):
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[DisplayPlaneProperties2KHR, p_properties_origin],
+        p_properties: Optional[Ptr[DisplayPlaneProperties2KHR, p_properties_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3085,7 +3085,7 @@ struct GetDisplayProperties2(Copyable):
         return self._get_physical_device_display_plane_properties_2(
             physical_device,
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_properties).bitcast[Ptr[DisplayPlaneProperties2KHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_properties).bitcast[Optional[Ptr[DisplayPlaneProperties2KHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_display_plane_properties_2[
@@ -3121,7 +3121,7 @@ struct GetDisplayProperties2(Copyable):
         physical_device: PhysicalDevice,
         display: DisplayKHR,
         mut property_count: UInt32,
-        p_properties: Ptr[DisplayModeProperties2KHR, p_properties_origin],
+        p_properties: Optional[Ptr[DisplayModeProperties2KHR, p_properties_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -3131,7 +3131,7 @@ struct GetDisplayProperties2(Copyable):
             physical_device,
             display,
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_properties).bitcast[Ptr[DisplayModeProperties2KHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_properties).bitcast[Optional[Ptr[DisplayModeProperties2KHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_display_mode_properties_2[p_properties_origin: MutOrigin = MutUntrackedOrigin](
@@ -3195,7 +3195,7 @@ struct GetMemoryRequirements2(Copyable):
         device: Device,
         p_info: Ptr[ImageSparseMemoryRequirementsInfo2, ImmutUntrackedOrigin],
         p_sparse_memory_requirement_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin],
+        p_sparse_memory_requirements: Optional[Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin]],
     ) thin abi("C")
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -3252,7 +3252,7 @@ struct GetMemoryRequirements2(Copyable):
         device: Device,
         info: ImageSparseMemoryRequirementsInfo2,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, p_sparse_memory_requirements_origin],
+        p_sparse_memory_requirements: Optional[Ptr[SparseImageMemoryRequirements2, p_sparse_memory_requirements_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -3262,7 +3262,7 @@ struct GetMemoryRequirements2(Copyable):
             device,
             Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
             Ptr(to=sparse_memory_requirement_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_sparse_memory_requirements).bitcast[Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin]]()[],
+            Ptr(to=p_sparse_memory_requirements).bitcast[Optional[Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin]]]()[],
         )
 
     def get_image_sparse_memory_requirements_2[
@@ -3298,13 +3298,13 @@ struct AccelerationStructure(Copyable):
     var _create_acceleration_structure: def(
         device: Device,
         p_create_info: Ptr[AccelerationStructureCreateInfoKHR, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_acceleration_structure: Ptr[AccelerationStructureKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _destroy_acceleration_structure: def(
         device: Device,
         acceleration_structure: AccelerationStructureKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
     ) thin abi("C")
     var _cmd_build_acceleration_structures: def(
         command_buffer: CommandBuffer,
@@ -3383,7 +3383,7 @@ struct AccelerationStructure(Copyable):
         device: Device,
         build_type: AccelerationStructureBuildTypeKHR,
         p_build_info: Ptr[AccelerationStructureBuildGeometryInfoKHR, ImmutUntrackedOrigin],
-        p_max_primitive_counts: Ptr[UInt32, ImmutUntrackedOrigin],
+        p_max_primitive_counts: Optional[Ptr[UInt32, ImmutUntrackedOrigin]],
         p_size_info: Ptr[AccelerationStructureBuildSizesInfoKHR, MutUntrackedOrigin],
     ) thin abi("C")
 
@@ -3445,7 +3445,7 @@ struct AccelerationStructure(Copyable):
         self,
         device: Device,
         create_info: AccelerationStructureCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut acceleration_structure: AccelerationStructureKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -3455,7 +3455,7 @@ struct AccelerationStructure(Copyable):
         return self._create_acceleration_structure(
             device,
             Ptr(to=create_info).bitcast[AccelerationStructureCreateInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=acceleration_structure).bitcast[AccelerationStructureKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -3463,7 +3463,7 @@ struct AccelerationStructure(Copyable):
         self,
         device: Device,
         acceleration_structure: AccelerationStructureKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -3472,7 +3472,7 @@ struct AccelerationStructure(Copyable):
         return self._destroy_acceleration_structure(
             device,
             acceleration_structure,
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
     def cmd_build_acceleration_structures[
@@ -3719,7 +3719,7 @@ struct AccelerationStructure(Copyable):
         device: Device,
         build_type: AccelerationStructureBuildTypeKHR,
         build_info: AccelerationStructureBuildGeometryInfoKHR,
-        p_max_primitive_counts: Ptr[UInt32, p_max_primitive_counts_origin],
+        p_max_primitive_counts: Optional[Ptr[UInt32, p_max_primitive_counts_origin]],
         mut size_info: AccelerationStructureBuildSizesInfoKHR,
     ):
         """See official vulkan docs for details.
@@ -3730,7 +3730,7 @@ struct AccelerationStructure(Copyable):
             device,
             build_type,
             Ptr(to=build_info).bitcast[AccelerationStructureBuildGeometryInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_max_primitive_counts).bitcast[Ptr[UInt32, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_max_primitive_counts).bitcast[Optional[Ptr[UInt32, ImmutUntrackedOrigin]]]()[],
             Ptr(to=size_info).bitcast[AccelerationStructureBuildSizesInfoKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -3753,7 +3753,7 @@ struct RayTracingPipeline(Copyable):
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
         p_create_infos: Ptr[RayTracingPipelineCreateInfoKHR, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_pipelines: Ptr[Pipeline, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _get_ray_tracing_shader_group_handles: def(
@@ -3851,7 +3851,7 @@ struct RayTracingPipeline(Copyable):
         pipeline_cache: PipelineCache,
         create_info_count: UInt32,
         p_create_infos: Ptr[RayTracingPipelineCreateInfoKHR, p_create_infos_origin],
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         p_pipelines: Ptr[Pipeline, p_pipelines_origin],
     ) -> Result:
         """See official vulkan docs for details.
@@ -3864,7 +3864,7 @@ struct RayTracingPipeline(Copyable):
             pipeline_cache,
             create_info_count,
             Ptr(to=p_create_infos).bitcast[Ptr[RayTracingPipelineCreateInfoKHR, ImmutUntrackedOrigin]]()[],
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutUntrackedOrigin]]()[],
         )
 
@@ -3960,13 +3960,13 @@ struct SamplerYcbcrConversion(Copyable):
     var _create_sampler_ycbcr_conversion: def(
         device: Device,
         p_create_info: Ptr[SamplerYcbcrConversionCreateInfo, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_ycbcr_conversion: Ptr[SamplerYcbcrConversion, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _destroy_sampler_ycbcr_conversion: def(
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
     ) thin abi("C")
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -3985,7 +3985,7 @@ struct SamplerYcbcrConversion(Copyable):
         self,
         device: Device,
         create_info: SamplerYcbcrConversionCreateInfo,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut ycbcr_conversion: SamplerYcbcrConversion,
     ) -> Result:
         """See official vulkan docs for details.
@@ -3995,7 +3995,7 @@ struct SamplerYcbcrConversion(Copyable):
         return self._create_sampler_ycbcr_conversion(
             device,
             Ptr(to=create_info).bitcast[SamplerYcbcrConversionCreateInfo]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -4003,7 +4003,7 @@ struct SamplerYcbcrConversion(Copyable):
         self,
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -4012,7 +4012,7 @@ struct SamplerYcbcrConversion(Copyable):
         return self._destroy_sampler_ycbcr_conversion(
             device,
             ycbcr_conversion,
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
 
@@ -4245,7 +4245,7 @@ struct FragmentShadingRate(Copyable):
     var _get_physical_device_fragment_shading_rates: def(
         physical_device: PhysicalDevice,
         p_fragment_shading_rate_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_fragment_shading_rates: Ptr[PhysicalDeviceFragmentShadingRateKHR, MutUntrackedOrigin],
+        p_fragment_shading_rates: Optional[Ptr[PhysicalDeviceFragmentShadingRateKHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _cmd_set_fragment_shading_rate: def(
         command_buffer: CommandBuffer,
@@ -4271,7 +4271,7 @@ struct FragmentShadingRate(Copyable):
         self,
         physical_device: PhysicalDevice,
         mut fragment_shading_rate_count: UInt32,
-        p_fragment_shading_rates: Ptr[PhysicalDeviceFragmentShadingRateKHR, p_fragment_shading_rates_origin],
+        p_fragment_shading_rates: Optional[Ptr[PhysicalDeviceFragmentShadingRateKHR, p_fragment_shading_rates_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4280,7 +4280,7 @@ struct FragmentShadingRate(Copyable):
         return self._get_physical_device_fragment_shading_rates(
             physical_device,
             Ptr(to=fragment_shading_rate_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_fragment_shading_rates).bitcast[Ptr[PhysicalDeviceFragmentShadingRateKHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_fragment_shading_rates).bitcast[Optional[Ptr[PhysicalDeviceFragmentShadingRateKHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_fragment_shading_rates[
@@ -4471,13 +4471,13 @@ struct DeferredHostOperations(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _create_deferred_operation: def(
         device: Device,
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_deferred_operation: Ptr[DeferredOperationKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _destroy_deferred_operation: def(
         device: Device,
         operation: DeferredOperationKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
     ) thin abi("C")
     var _get_deferred_operation_max_concurrency: def(
         device: Device, operation: DeferredOperationKHR
@@ -4513,7 +4513,7 @@ struct DeferredHostOperations(Copyable):
     def create_deferred_operation[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut deferred_operation: DeferredOperationKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -4522,7 +4522,7 @@ struct DeferredHostOperations(Copyable):
         """
         return self._create_deferred_operation(
             device,
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=deferred_operation).bitcast[DeferredOperationKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -4530,7 +4530,7 @@ struct DeferredHostOperations(Copyable):
         self,
         device: Device,
         operation: DeferredOperationKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -4539,7 +4539,7 @@ struct DeferredHostOperations(Copyable):
         return self._destroy_deferred_operation(
             device,
             operation,
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
     def get_deferred_operation_max_concurrency(
@@ -4574,19 +4574,19 @@ struct PipelineExecutableProperties(Copyable):
         device: Device,
         p_pipeline_info: Ptr[PipelineInfoKHR, ImmutUntrackedOrigin],
         p_executable_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_properties: Ptr[PipelineExecutablePropertiesKHR, MutUntrackedOrigin],
+        p_properties: Optional[Ptr[PipelineExecutablePropertiesKHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _get_pipeline_executable_statistics: def(
         device: Device,
         p_executable_info: Ptr[PipelineExecutableInfoKHR, ImmutUntrackedOrigin],
         p_statistic_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_statistics: Ptr[PipelineExecutableStatisticKHR, MutUntrackedOrigin],
+        p_statistics: Optional[Ptr[PipelineExecutableStatisticKHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _get_pipeline_executable_internal_representations: def(
         device: Device,
         p_executable_info: Ptr[PipelineExecutableInfoKHR, ImmutUntrackedOrigin],
         p_internal_representation_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_internal_representations: Ptr[PipelineExecutableInternalRepresentationKHR, MutUntrackedOrigin],
+        p_internal_representations: Optional[Ptr[PipelineExecutableInternalRepresentationKHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -4609,7 +4609,7 @@ struct PipelineExecutableProperties(Copyable):
         device: Device,
         pipeline_info: PipelineInfoKHR,
         mut executable_count: UInt32,
-        p_properties: Ptr[PipelineExecutablePropertiesKHR, p_properties_origin],
+        p_properties: Optional[Ptr[PipelineExecutablePropertiesKHR, p_properties_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4619,7 +4619,7 @@ struct PipelineExecutableProperties(Copyable):
             device,
             Ptr(to=pipeline_info).bitcast[PipelineInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
             Ptr(to=executable_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_properties).bitcast[Ptr[PipelineExecutablePropertiesKHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_properties).bitcast[Optional[Ptr[PipelineExecutablePropertiesKHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_pipeline_executable_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
@@ -4655,7 +4655,7 @@ struct PipelineExecutableProperties(Copyable):
         device: Device,
         executable_info: PipelineExecutableInfoKHR,
         mut statistic_count: UInt32,
-        p_statistics: Ptr[PipelineExecutableStatisticKHR, p_statistics_origin],
+        p_statistics: Optional[Ptr[PipelineExecutableStatisticKHR, p_statistics_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4665,7 +4665,7 @@ struct PipelineExecutableProperties(Copyable):
             device,
             Ptr(to=executable_info).bitcast[PipelineExecutableInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
             Ptr(to=statistic_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_statistics).bitcast[Ptr[PipelineExecutableStatisticKHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_statistics).bitcast[Optional[Ptr[PipelineExecutableStatisticKHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_pipeline_executable_statistics[p_statistics_origin: MutOrigin = MutUntrackedOrigin](
@@ -4703,7 +4703,7 @@ struct PipelineExecutableProperties(Copyable):
         device: Device,
         executable_info: PipelineExecutableInfoKHR,
         mut internal_representation_count: UInt32,
-        p_internal_representations: Ptr[PipelineExecutableInternalRepresentationKHR, p_internal_representations_origin],
+        p_internal_representations: Optional[Ptr[PipelineExecutableInternalRepresentationKHR, p_internal_representations_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4713,7 +4713,7 @@ struct PipelineExecutableProperties(Copyable):
             device,
             Ptr(to=executable_info).bitcast[PipelineExecutableInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
             Ptr(to=internal_representation_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_internal_representations).bitcast[Ptr[PipelineExecutableInternalRepresentationKHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_internal_representations).bitcast[Optional[Ptr[PipelineExecutableInternalRepresentationKHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_pipeline_executable_internal_representations[
@@ -4807,9 +4807,9 @@ struct VideoEncodeQueue(Copyable):
     var _get_encoded_video_session_parameters: def(
         device: Device,
         p_video_session_parameters_info: Ptr[VideoEncodeSessionParametersGetInfoKHR, ImmutUntrackedOrigin],
-        p_feedback_info: Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutUntrackedOrigin],
+        p_feedback_info: Optional[Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutUntrackedOrigin]],
         p_data_size: Ptr[UInt, MutUntrackedOrigin],
-        p_data: Ptr[NoneType, MutUntrackedOrigin],
+        p_data: Optional[Ptr[NoneType, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _cmd_encode_video: def(
         command_buffer: CommandBuffer, p_encode_info: Ptr[VideoEncodeInfoKHR, ImmutUntrackedOrigin]
@@ -4853,9 +4853,9 @@ struct VideoEncodeQueue(Copyable):
         self,
         device: Device,
         video_session_parameters_info: VideoEncodeSessionParametersGetInfoKHR,
-        p_feedback_info: Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, p_feedback_info_origin],
+        p_feedback_info: Optional[Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, p_feedback_info_origin]],
         mut data_size: UInt,
-        p_data: Ptr[NoneType, p_data_origin],
+        p_data: Optional[Ptr[NoneType, p_data_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -4864,9 +4864,9 @@ struct VideoEncodeQueue(Copyable):
         return self._get_encoded_video_session_parameters(
             device,
             Ptr(to=video_session_parameters_info).bitcast[VideoEncodeSessionParametersGetInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_feedback_info).bitcast[Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_feedback_info).bitcast[Optional[Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutUntrackedOrigin]]]()[],
             Ptr(to=data_size).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_data).bitcast[Ptr[NoneType, MutUntrackedOrigin]]()[],
+            Ptr(to=p_data).bitcast[Optional[Ptr[NoneType, MutUntrackedOrigin]]]()[],
         )
 
     def get_encoded_video_session_parameters[
@@ -4876,7 +4876,7 @@ struct VideoEncodeQueue(Copyable):
         self,
         device: Device,
         video_session_parameters_info: VideoEncodeSessionParametersGetInfoKHR,
-        p_feedback_info: Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, p_feedback_info_origin],
+        p_feedback_info: Optional[Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, p_feedback_info_origin]],
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
         
@@ -4889,7 +4889,7 @@ struct VideoEncodeQueue(Copyable):
             result = self._get_encoded_video_session_parameters(
                 device,
                 Ptr(to=video_session_parameters_info).bitcast[VideoEncodeSessionParametersGetInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-                Ptr(to=p_feedback_info).bitcast[Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutUntrackedOrigin]]()[],
+                Ptr(to=p_feedback_info).bitcast[Optional[Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutUntrackedOrigin]]]()[],
                 Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
                 Ptr[NoneType, MutUntrackedOrigin].unsafe_dangling(),
             )
@@ -4898,7 +4898,7 @@ struct VideoEncodeQueue(Copyable):
                 result = self._get_encoded_video_session_parameters(
                 device,
                 Ptr(to=video_session_parameters_info).bitcast[VideoEncodeSessionParametersGetInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-                Ptr(to=p_feedback_info).bitcast[Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutUntrackedOrigin]]()[],
+                Ptr(to=p_feedback_info).bitcast[Optional[Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutUntrackedOrigin]]]()[],
                 Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().bitcast[NoneType]().unsafe_origin_cast[MutUntrackedOrigin](),
             )
@@ -5212,7 +5212,7 @@ struct Maintenance4(Copyable):
         device: Device,
         p_info: Ptr[DeviceImageMemoryRequirements, ImmutUntrackedOrigin],
         p_sparse_memory_requirement_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin],
+        p_sparse_memory_requirements: Optional[Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin]],
     ) thin abi("C")
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -5269,7 +5269,7 @@ struct Maintenance4(Copyable):
         device: Device,
         info: DeviceImageMemoryRequirements,
         mut sparse_memory_requirement_count: UInt32,
-        p_sparse_memory_requirements: Ptr[SparseImageMemoryRequirements2, p_sparse_memory_requirements_origin],
+        p_sparse_memory_requirements: Optional[Ptr[SparseImageMemoryRequirements2, p_sparse_memory_requirements_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -5279,7 +5279,7 @@ struct Maintenance4(Copyable):
             device,
             Ptr(to=info).bitcast[DeviceImageMemoryRequirements]().unsafe_origin_cast[ImmutUntrackedOrigin](),
             Ptr(to=sparse_memory_requirement_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_sparse_memory_requirements).bitcast[Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin]]()[],
+            Ptr(to=p_sparse_memory_requirements).bitcast[Optional[Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin]]]()[],
         )
 
     def get_device_image_sparse_memory_requirements[
@@ -5449,17 +5449,17 @@ struct PipelineBinary(Copyable):
     var _create_pipeline_binaries: def(
         device: Device,
         p_create_info: Ptr[PipelineBinaryCreateInfoKHR, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_binaries: Ptr[PipelineBinaryHandlesInfoKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _destroy_pipeline_binary: def(
         device: Device,
         pipeline_binary: PipelineBinaryKHR,
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
     ) thin abi("C")
     var _get_pipeline_key: def(
         device: Device,
-        p_pipeline_create_info: Ptr[PipelineCreateInfoKHR, ImmutUntrackedOrigin],
+        p_pipeline_create_info: Optional[Ptr[PipelineCreateInfoKHR, ImmutUntrackedOrigin]],
         p_pipeline_key: Ptr[PipelineBinaryKeyKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var _get_pipeline_binary_data: def(
@@ -5467,12 +5467,12 @@ struct PipelineBinary(Copyable):
         p_info: Ptr[PipelineBinaryDataInfoKHR, ImmutUntrackedOrigin],
         p_pipeline_binary_key: Ptr[PipelineBinaryKeyKHR, MutUntrackedOrigin],
         p_pipeline_binary_data_size: Ptr[UInt, MutUntrackedOrigin],
-        p_pipeline_binary_data: Ptr[NoneType, MutUntrackedOrigin],
+        p_pipeline_binary_data: Optional[Ptr[NoneType, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _release_captured_pipeline_data: def(
         device: Device,
         p_info: Ptr[ReleaseCapturedPipelineDataInfoKHR, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -5500,7 +5500,7 @@ struct PipelineBinary(Copyable):
         self,
         device: Device,
         create_info: PipelineBinaryCreateInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut binaries: PipelineBinaryHandlesInfoKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -5510,7 +5510,7 @@ struct PipelineBinary(Copyable):
         return self._create_pipeline_binaries(
             device,
             Ptr(to=create_info).bitcast[PipelineBinaryCreateInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=binaries).bitcast[PipelineBinaryHandlesInfoKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -5518,7 +5518,7 @@ struct PipelineBinary(Copyable):
         self,
         device: Device,
         pipeline_binary: PipelineBinaryKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -5527,13 +5527,13 @@ struct PipelineBinary(Copyable):
         return self._destroy_pipeline_binary(
             device,
             pipeline_binary,
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
     def get_pipeline_key[p_pipeline_create_info_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
-        p_pipeline_create_info: Ptr[PipelineCreateInfoKHR, p_pipeline_create_info_origin],
+        p_pipeline_create_info: Optional[Ptr[PipelineCreateInfoKHR, p_pipeline_create_info_origin]],
         mut pipeline_key: PipelineBinaryKeyKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -5542,7 +5542,7 @@ struct PipelineBinary(Copyable):
         """
         return self._get_pipeline_key(
             device,
-            Ptr(to=p_pipeline_create_info).bitcast[Ptr[PipelineCreateInfoKHR, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_pipeline_create_info).bitcast[Optional[Ptr[PipelineCreateInfoKHR, ImmutUntrackedOrigin]]]()[],
             Ptr(to=pipeline_key).bitcast[PipelineBinaryKeyKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -5552,7 +5552,7 @@ struct PipelineBinary(Copyable):
         info: PipelineBinaryDataInfoKHR,
         mut pipeline_binary_key: PipelineBinaryKeyKHR,
         mut pipeline_binary_data_size: UInt,
-        p_pipeline_binary_data: Ptr[NoneType, p_pipeline_binary_data_origin],
+        p_pipeline_binary_data: Optional[Ptr[NoneType, p_pipeline_binary_data_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5563,7 +5563,7 @@ struct PipelineBinary(Copyable):
             Ptr(to=info).bitcast[PipelineBinaryDataInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
             Ptr(to=pipeline_binary_key).bitcast[PipelineBinaryKeyKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
             Ptr(to=pipeline_binary_data_size).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_pipeline_binary_data).bitcast[Ptr[NoneType, MutUntrackedOrigin]]()[],
+            Ptr(to=p_pipeline_binary_data).bitcast[Optional[Ptr[NoneType, MutUntrackedOrigin]]]()[],
         )
 
     def get_pipeline_binary_data[p_pipeline_binary_data_origin: MutOrigin = MutUntrackedOrigin](
@@ -5603,7 +5603,7 @@ struct PipelineBinary(Copyable):
         self,
         device: Device,
         info: ReleaseCapturedPipelineDataInfoKHR,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5612,7 +5612,7 @@ struct PipelineBinary(Copyable):
         return self._release_captured_pipeline_data(
             device,
             Ptr(to=info).bitcast[ReleaseCapturedPipelineDataInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
 
@@ -5649,7 +5649,7 @@ struct CooperativeMatrix(Copyable):
     var _get_physical_device_cooperative_matrix_properties: def(
         physical_device: PhysicalDevice,
         p_property_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_properties: Ptr[CooperativeMatrixPropertiesKHR, MutUntrackedOrigin],
+        p_properties: Optional[Ptr[CooperativeMatrixPropertiesKHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -5667,7 +5667,7 @@ struct CooperativeMatrix(Copyable):
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
-        p_properties: Ptr[CooperativeMatrixPropertiesKHR, p_properties_origin],
+        p_properties: Optional[Ptr[CooperativeMatrixPropertiesKHR, p_properties_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5676,7 +5676,7 @@ struct CooperativeMatrix(Copyable):
         return self._get_physical_device_cooperative_matrix_properties(
             physical_device,
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_properties).bitcast[Ptr[CooperativeMatrixPropertiesKHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_properties).bitcast[Optional[Ptr[CooperativeMatrixPropertiesKHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_cooperative_matrix_properties[
@@ -5741,7 +5741,7 @@ struct CalibratedTimestamps(Copyable):
     var _get_physical_device_calibrateable_time_domains: def(
         physical_device: PhysicalDevice,
         p_time_domain_count: Ptr[UInt32, MutUntrackedOrigin],
-        p_time_domains: Ptr[TimeDomainKHR, MutUntrackedOrigin],
+        p_time_domains: Optional[Ptr[TimeDomainKHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
     var _get_calibrated_timestamps: def(
         device: Device,
@@ -5769,7 +5769,7 @@ struct CalibratedTimestamps(Copyable):
         self,
         physical_device: PhysicalDevice,
         mut time_domain_count: UInt32,
-        p_time_domains: Ptr[TimeDomainKHR, p_time_domains_origin],
+        p_time_domains: Optional[Ptr[TimeDomainKHR, p_time_domains_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -5778,7 +5778,7 @@ struct CalibratedTimestamps(Copyable):
         return self._get_physical_device_calibrateable_time_domains(
             physical_device,
             Ptr(to=time_domain_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_time_domains).bitcast[Ptr[TimeDomainKHR, MutUntrackedOrigin]]()[],
+            Ptr(to=p_time_domains).bitcast[Optional[Ptr[TimeDomainKHR, MutUntrackedOrigin]]]()[],
         )
 
     def get_physical_device_calibrateable_time_domains[
@@ -6017,7 +6017,7 @@ struct Maintenance10(Copyable):
     var _dlhandle: ArcPointer[OwnedDLHandle]
     var _cmd_end_rendering_2: def(
         command_buffer: CommandBuffer,
-        p_rendering_end_info: Ptr[RenderingEndInfoKHR, ImmutUntrackedOrigin],
+        p_rendering_end_info: Optional[Ptr[RenderingEndInfoKHR, ImmutUntrackedOrigin]],
     ) thin abi("C")
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -6032,7 +6032,7 @@ struct Maintenance10(Copyable):
     def cmd_end_rendering_2[p_rendering_end_info_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
-        p_rendering_end_info: Ptr[RenderingEndInfoKHR, p_rendering_end_info_origin],
+        p_rendering_end_info: Optional[Ptr[RenderingEndInfoKHR, p_rendering_end_info_origin]],
     ):
         """See official vulkan docs for details.
         
@@ -6040,5 +6040,5 @@ struct Maintenance10(Copyable):
         """
         return self._cmd_end_rendering_2(
             command_buffer,
-            Ptr(to=p_rendering_end_info).bitcast[Ptr[RenderingEndInfoKHR, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_rendering_end_info).bitcast[Optional[Ptr[RenderingEndInfoKHR, ImmutUntrackedOrigin]]]()[],
         )

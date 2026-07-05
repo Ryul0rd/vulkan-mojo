@@ -81,7 +81,7 @@ struct ShaderInfo(Copyable):
         shader_stage: ShaderStageFlagBits,
         info_type: ShaderInfoTypeAMD,
         p_info_size: Ptr[UInt, MutUntrackedOrigin],
-        p_info: Ptr[NoneType, MutUntrackedOrigin],
+        p_info: Optional[Ptr[NoneType, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
@@ -100,7 +100,7 @@ struct ShaderInfo(Copyable):
         shader_stage: ShaderStageFlagBits,
         info_type: ShaderInfoTypeAMD,
         mut info_size: UInt,
-        p_info: Ptr[NoneType, p_info_origin],
+        p_info: Optional[Ptr[NoneType, p_info_origin]],
     ) -> Result:
         """See official vulkan docs for details.
         
@@ -112,7 +112,7 @@ struct ShaderInfo(Copyable):
             shader_stage,
             info_type,
             Ptr(to=info_size).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr(to=p_info).bitcast[Ptr[NoneType, MutUntrackedOrigin]]()[],
+            Ptr(to=p_info).bitcast[Optional[Ptr[NoneType, MutUntrackedOrigin]]]()[],
         )
 
     def get_shader_info[p_info_origin: MutOrigin = MutUntrackedOrigin](

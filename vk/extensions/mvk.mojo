@@ -8,7 +8,7 @@ struct IosSurface(Copyable):
     var _create_ios_surface: def(
         instance: Instance,
         p_create_info: Ptr[IOSSurfaceCreateInfoMVK, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_surface: Ptr[SurfaceKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
@@ -25,7 +25,7 @@ struct IosSurface(Copyable):
         self,
         instance: Instance,
         create_info: IOSSurfaceCreateInfoMVK,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -35,7 +35,7 @@ struct IosSurface(Copyable):
         return self._create_ios_surface(
             instance,
             Ptr(to=create_info).bitcast[IOSSurfaceCreateInfoMVK]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=surface).bitcast[SurfaceKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
@@ -45,7 +45,7 @@ struct MacosSurface(Copyable):
     var _create_mac_os_surface: def(
         instance: Instance,
         p_create_info: Ptr[MacOSSurfaceCreateInfoMVK, ImmutUntrackedOrigin],
-        p_allocator: Ptr[AllocationCallbacks, ImmutUntrackedOrigin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]],
         p_surface: Ptr[SurfaceKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
@@ -62,7 +62,7 @@ struct MacosSurface(Copyable):
         self,
         instance: Instance,
         create_info: MacOSSurfaceCreateInfoMVK,
-        p_allocator: Ptr[AllocationCallbacks, p_allocator_origin],
+        p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
         mut surface: SurfaceKHR,
     ) -> Result:
         """See official vulkan docs for details.
@@ -72,6 +72,6 @@ struct MacosSurface(Copyable):
         return self._create_mac_os_surface(
             instance,
             Ptr(to=create_info).bitcast[MacOSSurfaceCreateInfoMVK]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=p_allocator).bitcast[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
             Ptr(to=surface).bitcast[SurfaceKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
