@@ -1,3 +1,6 @@
+from std.os import abort
+
+
 comptime RayTracingInvocationReorderModeNV = RayTracingInvocationReorderModeEXT
 comptime PrivateDataSlotCreateFlagBitsEXT = PrivateDataSlotCreateFlagBits
 comptime DescriptorUpdateTemplateTypeKHR = DescriptorUpdateTemplateType

@@ -1617,6 +1617,8 @@ def bind_enums(files: Dict[str, str], registry: Registry):
 
     # Emission
     parts: List[str] = []
+    parts.append("from std.os import abort\n")
+    parts.append("\n\n")
     for alias in aliases:
         parts.append(str(alias))
     for enum in enums:
