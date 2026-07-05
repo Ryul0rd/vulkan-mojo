@@ -52,7 +52,7 @@ struct BinaryImport(Copyable):
             device, "vkCmdCuLaunchKernelNVX".as_c_string_slice()
         )).bitcast[type_of(self._cmd_cu_launch_kernel)]()[]
 
-    def create_cu_module[p_allocator_origin: ImmutOrigin](
+    def create_cu_module[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: CuModuleCreateInfoNVX,
@@ -70,7 +70,7 @@ struct BinaryImport(Copyable):
             Ptr(to=module).bitcast[CuModuleNVX]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def create_cu_function[p_allocator_origin: ImmutOrigin](
+    def create_cu_function[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: CuFunctionCreateInfoNVX,
@@ -88,7 +88,7 @@ struct BinaryImport(Copyable):
             Ptr(to=function).bitcast[CuFunctionNVX]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_cu_module[p_allocator_origin: ImmutOrigin](
+    def destroy_cu_module[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         module: CuModuleNVX,
@@ -104,7 +104,7 @@ struct BinaryImport(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def destroy_cu_function[p_allocator_origin: ImmutOrigin](
+    def destroy_cu_function[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         function: CuFunctionNVX,

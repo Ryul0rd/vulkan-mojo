@@ -44,7 +44,7 @@ struct DescriptorSetHostMapping(Copyable):
             Ptr(to=host_mapping).bitcast[DescriptorSetLayoutHostMappingInfoVALVE]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_descriptor_set_host_mapping[p_data_origin: MutOrigin](
+    def get_descriptor_set_host_mapping[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         descriptor_set: DescriptorSet,

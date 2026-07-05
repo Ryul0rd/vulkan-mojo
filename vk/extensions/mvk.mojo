@@ -21,7 +21,7 @@ struct IosSurface(Copyable):
             instance, "vkCreateIOSSurfaceMVK".as_c_string_slice()
         )).bitcast[type_of(self._create_ios_surface)]()[]
 
-    def create_ios_surface[p_allocator_origin: ImmutOrigin](
+    def create_ios_surface[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         instance: Instance,
         create_info: IOSSurfaceCreateInfoMVK,
@@ -58,7 +58,7 @@ struct MacosSurface(Copyable):
             instance, "vkCreateMacOSSurfaceMVK".as_c_string_slice()
         )).bitcast[type_of(self._create_mac_os_surface)]()[]
 
-    def create_mac_os_surface[p_allocator_origin: ImmutOrigin](
+    def create_mac_os_surface[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         instance: Instance,
         create_info: MacOSSurfaceCreateInfoMVK,

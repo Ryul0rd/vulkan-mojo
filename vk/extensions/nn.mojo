@@ -21,7 +21,7 @@ struct ViSurface(Copyable):
             instance, "vkCreateViSurfaceNN".as_c_string_slice()
         )).bitcast[type_of(self._create_vi_surface)]()[]
 
-    def create_vi_surface[p_allocator_origin: ImmutOrigin](
+    def create_vi_surface[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         instance: Instance,
         create_info: ViSurfaceCreateInfoNN,

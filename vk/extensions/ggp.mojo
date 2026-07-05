@@ -21,7 +21,7 @@ struct StreamDescriptorSurface(Copyable):
             instance, "vkCreateStreamDescriptorSurfaceGGP".as_c_string_slice()
         )).bitcast[type_of(self._create_stream_descriptor_surface)]()[]
 
-    def create_stream_descriptor_surface[p_allocator_origin: ImmutOrigin](
+    def create_stream_descriptor_surface[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         instance: Instance,
         create_info: StreamDescriptorSurfaceCreateInfoGGP,

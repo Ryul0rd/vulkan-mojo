@@ -45,7 +45,7 @@ struct DisplayTiming(Copyable):
             Ptr(to=display_timing_properties).bitcast[RefreshCycleDurationGOOGLE]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_past_presentation_timing[p_presentation_timings_origin: MutOrigin](
+    def get_past_presentation_timing[p_presentation_timings_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         swapchain: SwapchainKHR,
@@ -63,7 +63,7 @@ struct DisplayTiming(Copyable):
             Ptr(to=p_presentation_timings).bitcast[Optional[Ptr[PastPresentationTimingGOOGLE, MutUntrackedOrigin]]]()[],
         )
 
-    def get_past_presentation_timing[p_presentation_timings_origin: MutOrigin](
+    def get_past_presentation_timing[p_presentation_timings_origin: MutOrigin = MutUntrackedOrigin](
         self, device: Device, swapchain: SwapchainKHR
     ) -> ListResult[PastPresentationTimingGOOGLE]:
         """See official vulkan docs for details.

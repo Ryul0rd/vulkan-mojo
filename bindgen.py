@@ -929,6 +929,7 @@ def as_parametric_type(name: str, mojo_type: MojoType, parameters: List[MojoPara
         parameters.append(MojoParameter(
             name=param_name,
             type="MutOrigin" if is_mutable else "ImmutOrigin",
+            default_value="MutUntrackedOrigin" if is_mutable else "ImmutUntrackedOrigin"
         ))
         new_pointee = as_parametric_type(name, mojo_type.pointee_type, parameters)
         return MojoPointerType(
@@ -943,6 +944,7 @@ def as_parametric_type(name: str, mojo_type: MojoType, parameters: List[MojoPara
         parameters.append(MojoParameter(
             name=param_name,
             type="MutOrigin" if is_mutable else "ImmutOrigin",
+            default_value="MutUntrackedOrigin" if is_mutable else "ImmutUntrackedOrigin",
         ))
         return MojoBaseType(
             name="CStringSlice",

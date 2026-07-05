@@ -25,7 +25,7 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
     def get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
         return self._dlhandle
 
-    def create_instance[p_allocator_origin: ImmutOrigin](
+    def create_instance[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         create_info: InstanceCreateInfo,
         p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
@@ -42,7 +42,8 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         )
 
     def enumerate_instance_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         p_layer_name: CStringSlice[p_layer_name_origin],
@@ -60,7 +61,8 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         )
 
     def enumerate_instance_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
@@ -87,7 +89,7 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self,
         mut property_count: UInt32,
         p_properties: Optional[Ptr[LayerProperties, p_properties_origin]],
@@ -101,7 +103,7 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[LayerProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
@@ -139,7 +141,7 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
     def get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
         return self._dlhandle
 
-    def create_instance[p_allocator_origin: ImmutOrigin](
+    def create_instance[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         create_info: InstanceCreateInfo,
         p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
@@ -156,7 +158,8 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         )
 
     def enumerate_instance_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         p_layer_name: CStringSlice[p_layer_name_origin],
@@ -174,7 +177,8 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         )
 
     def enumerate_instance_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
@@ -201,7 +205,7 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self,
         mut property_count: UInt32,
         p_properties: Optional[Ptr[LayerProperties, p_properties_origin]],
@@ -215,7 +219,7 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[LayerProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
@@ -262,7 +266,7 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
     def get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
         return self._dlhandle
 
-    def create_instance[p_allocator_origin: ImmutOrigin](
+    def create_instance[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         create_info: InstanceCreateInfo,
         p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
@@ -279,7 +283,8 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
         )
 
     def enumerate_instance_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         p_layer_name: CStringSlice[p_layer_name_origin],
@@ -297,7 +302,8 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
         )
 
     def enumerate_instance_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
@@ -324,7 +330,7 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self,
         mut property_count: UInt32,
         p_properties: Optional[Ptr[LayerProperties, p_properties_origin]],
@@ -338,7 +344,7 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[LayerProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
@@ -385,7 +391,7 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
     def get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
         return self._dlhandle
 
-    def create_instance[p_allocator_origin: ImmutOrigin](
+    def create_instance[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         create_info: InstanceCreateInfo,
         p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
@@ -402,7 +408,8 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
         )
 
     def enumerate_instance_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         p_layer_name: CStringSlice[p_layer_name_origin],
@@ -420,7 +427,8 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
         )
 
     def enumerate_instance_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
@@ -447,7 +455,7 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self,
         mut property_count: UInt32,
         p_properties: Optional[Ptr[LayerProperties, p_properties_origin]],
@@ -461,7 +469,7 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[LayerProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
@@ -508,7 +516,7 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
     def get_dlhandle(self) -> ArcPointer[OwnedDLHandle]:
         return self._dlhandle
 
-    def create_instance[p_allocator_origin: ImmutOrigin](
+    def create_instance[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         create_info: InstanceCreateInfo,
         p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
@@ -525,7 +533,8 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
         )
 
     def enumerate_instance_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         p_layer_name: CStringSlice[p_layer_name_origin],
@@ -543,7 +552,8 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
         )
 
     def enumerate_instance_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
@@ -570,7 +580,7 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self,
         mut property_count: UInt32,
         p_properties: Optional[Ptr[LayerProperties, p_properties_origin]],
@@ -584,7 +594,7 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[LayerProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_instance_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
@@ -626,7 +636,7 @@ struct InstanceFunctionsV1_0(Copyable):
         self._dlhandle = global_functions.get_dlhandle()
         self._v1_0 = InstanceFunctionsAdditionsV1_0(self._dlhandle, instance)
 
-    def destroy_instance[p_allocator_origin: ImmutOrigin](
+    def destroy_instance[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         instance: Instance,
         p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
@@ -640,7 +650,7 @@ struct InstanceFunctionsV1_0(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin](
+    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutUntrackedOrigin](
         self,
         instance: Instance,
         mut physical_device_count: UInt32,
@@ -656,7 +666,7 @@ struct InstanceFunctionsV1_0(Copyable):
             Ptr(to=p_physical_devices).bitcast[Optional[Ptr[PhysicalDevice, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin](
+    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutUntrackedOrigin](
         self, instance: Instance
     ) -> ListResult[PhysicalDevice]:
         """See official vulkan docs for details.
@@ -746,7 +756,9 @@ struct InstanceFunctionsV1_0(Copyable):
             Ptr(to=properties).bitcast[PhysicalDeviceProperties]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_physical_device_queue_family_properties[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
@@ -762,7 +774,9 @@ struct InstanceFunctionsV1_0(Copyable):
             Ptr(to=p_queue_family_properties).bitcast[Optional[Ptr[QueueFamilyProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_queue_family_properties[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties]:
         """See official vulkan docs for details.
@@ -797,7 +811,7 @@ struct InstanceFunctionsV1_0(Copyable):
             Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_instance_proc_addr[p_name_origin: ImmutOrigin](
+    def get_instance_proc_addr[p_name_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, instance: Instance, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
@@ -808,7 +822,7 @@ struct InstanceFunctionsV1_0(Copyable):
             instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
-    def create_device[p_allocator_origin: ImmutOrigin](
+    def create_device[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         physical_device: PhysicalDevice,
         create_info: DeviceCreateInfo,
@@ -827,7 +841,8 @@ struct InstanceFunctionsV1_0(Copyable):
         )
 
     def enumerate_device_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         physical_device: PhysicalDevice,
@@ -847,7 +862,8 @@ struct InstanceFunctionsV1_0(Copyable):
         )
 
     def enumerate_device_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
@@ -876,7 +892,7 @@ struct InstanceFunctionsV1_0(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def enumerate_device_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
@@ -892,7 +908,7 @@ struct InstanceFunctionsV1_0(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[LayerProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_device_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self, physical_device: PhysicalDevice
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
@@ -918,7 +934,9 @@ struct InstanceFunctionsV1_0(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def get_physical_device_sparse_image_format_properties[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -944,7 +962,9 @@ struct InstanceFunctionsV1_0(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[SparseImageFormatProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_sparse_image_format_properties[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -994,7 +1014,7 @@ struct InstanceFunctionsV1_1(Copyable):
         self._v1_0 = InstanceFunctionsAdditionsV1_0(self._dlhandle, instance)
         self._v1_1 = InstanceFunctionsAdditionsV1_1(self._dlhandle, instance)
 
-    def destroy_instance[p_allocator_origin: ImmutOrigin](
+    def destroy_instance[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         instance: Instance,
         p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
@@ -1008,7 +1028,7 @@ struct InstanceFunctionsV1_1(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin](
+    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutUntrackedOrigin](
         self,
         instance: Instance,
         mut physical_device_count: UInt32,
@@ -1024,7 +1044,7 @@ struct InstanceFunctionsV1_1(Copyable):
             Ptr(to=p_physical_devices).bitcast[Optional[Ptr[PhysicalDevice, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin](
+    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutUntrackedOrigin](
         self, instance: Instance
     ) -> ListResult[PhysicalDevice]:
         """See official vulkan docs for details.
@@ -1114,7 +1134,9 @@ struct InstanceFunctionsV1_1(Copyable):
             Ptr(to=properties).bitcast[PhysicalDeviceProperties]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_physical_device_queue_family_properties[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
@@ -1130,7 +1152,9 @@ struct InstanceFunctionsV1_1(Copyable):
             Ptr(to=p_queue_family_properties).bitcast[Optional[Ptr[QueueFamilyProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_queue_family_properties[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties]:
         """See official vulkan docs for details.
@@ -1165,7 +1189,7 @@ struct InstanceFunctionsV1_1(Copyable):
             Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_instance_proc_addr[p_name_origin: ImmutOrigin](
+    def get_instance_proc_addr[p_name_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, instance: Instance, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
@@ -1176,7 +1200,7 @@ struct InstanceFunctionsV1_1(Copyable):
             instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
-    def create_device[p_allocator_origin: ImmutOrigin](
+    def create_device[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         physical_device: PhysicalDevice,
         create_info: DeviceCreateInfo,
@@ -1195,7 +1219,8 @@ struct InstanceFunctionsV1_1(Copyable):
         )
 
     def enumerate_device_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         physical_device: PhysicalDevice,
@@ -1215,7 +1240,8 @@ struct InstanceFunctionsV1_1(Copyable):
         )
 
     def enumerate_device_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
@@ -1244,7 +1270,7 @@ struct InstanceFunctionsV1_1(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def enumerate_device_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
@@ -1260,7 +1286,7 @@ struct InstanceFunctionsV1_1(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[LayerProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_device_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self, physical_device: PhysicalDevice
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
@@ -1286,7 +1312,9 @@ struct InstanceFunctionsV1_1(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def get_physical_device_sparse_image_format_properties[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -1312,7 +1340,9 @@ struct InstanceFunctionsV1_1(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[SparseImageFormatProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_sparse_image_format_properties[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -1351,7 +1381,9 @@ struct InstanceFunctionsV1_1(Copyable):
         list._len = Int(count)
         return list^
 
-    def enumerate_physical_device_groups[p_physical_device_group_properties_origin: MutOrigin](
+    def enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         instance: Instance,
         mut physical_device_group_count: UInt32,
@@ -1367,7 +1399,9 @@ struct InstanceFunctionsV1_1(Copyable):
             Ptr(to=p_physical_device_group_properties).bitcast[Optional[Ptr[PhysicalDeviceGroupProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_physical_device_groups[p_physical_device_group_properties_origin: MutOrigin](
+    def enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, instance: Instance
     ) -> ListResult[PhysicalDeviceGroupProperties]:
         """See official vulkan docs for details.
@@ -1449,7 +1483,9 @@ struct InstanceFunctionsV1_1(Copyable):
             Ptr(to=image_format_properties).bitcast[ImageFormatProperties2]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_physical_device_queue_family_properties_2[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
@@ -1465,7 +1501,9 @@ struct InstanceFunctionsV1_1(Copyable):
             Ptr(to=p_queue_family_properties).bitcast[Optional[Ptr[QueueFamilyProperties2, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_queue_family_properties_2[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties2]:
         """See official vulkan docs for details.
@@ -1502,7 +1540,9 @@ struct InstanceFunctionsV1_1(Copyable):
             Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_physical_device_sparse_image_format_properties_2[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format_info: PhysicalDeviceSparseImageFormatInfo2,
@@ -1520,7 +1560,9 @@ struct InstanceFunctionsV1_1(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[SparseImageFormatProperties2, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_sparse_image_format_properties_2[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice, format_info: PhysicalDeviceSparseImageFormatInfo2
     ) -> List[SparseImageFormatProperties2]:
         """See official vulkan docs for details.
@@ -1604,7 +1646,7 @@ struct InstanceFunctionsV1_2(Copyable):
         self._v1_0 = InstanceFunctionsAdditionsV1_0(self._dlhandle, instance)
         self._v1_1 = InstanceFunctionsAdditionsV1_1(self._dlhandle, instance)
 
-    def destroy_instance[p_allocator_origin: ImmutOrigin](
+    def destroy_instance[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         instance: Instance,
         p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
@@ -1618,7 +1660,7 @@ struct InstanceFunctionsV1_2(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin](
+    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutUntrackedOrigin](
         self,
         instance: Instance,
         mut physical_device_count: UInt32,
@@ -1634,7 +1676,7 @@ struct InstanceFunctionsV1_2(Copyable):
             Ptr(to=p_physical_devices).bitcast[Optional[Ptr[PhysicalDevice, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin](
+    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutUntrackedOrigin](
         self, instance: Instance
     ) -> ListResult[PhysicalDevice]:
         """See official vulkan docs for details.
@@ -1724,7 +1766,9 @@ struct InstanceFunctionsV1_2(Copyable):
             Ptr(to=properties).bitcast[PhysicalDeviceProperties]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_physical_device_queue_family_properties[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
@@ -1740,7 +1784,9 @@ struct InstanceFunctionsV1_2(Copyable):
             Ptr(to=p_queue_family_properties).bitcast[Optional[Ptr[QueueFamilyProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_queue_family_properties[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties]:
         """See official vulkan docs for details.
@@ -1775,7 +1821,7 @@ struct InstanceFunctionsV1_2(Copyable):
             Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_instance_proc_addr[p_name_origin: ImmutOrigin](
+    def get_instance_proc_addr[p_name_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, instance: Instance, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
@@ -1786,7 +1832,7 @@ struct InstanceFunctionsV1_2(Copyable):
             instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
-    def create_device[p_allocator_origin: ImmutOrigin](
+    def create_device[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         physical_device: PhysicalDevice,
         create_info: DeviceCreateInfo,
@@ -1805,7 +1851,8 @@ struct InstanceFunctionsV1_2(Copyable):
         )
 
     def enumerate_device_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         physical_device: PhysicalDevice,
@@ -1825,7 +1872,8 @@ struct InstanceFunctionsV1_2(Copyable):
         )
 
     def enumerate_device_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
@@ -1854,7 +1902,7 @@ struct InstanceFunctionsV1_2(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def enumerate_device_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
@@ -1870,7 +1918,7 @@ struct InstanceFunctionsV1_2(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[LayerProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_device_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self, physical_device: PhysicalDevice
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
@@ -1896,7 +1944,9 @@ struct InstanceFunctionsV1_2(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def get_physical_device_sparse_image_format_properties[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -1922,7 +1972,9 @@ struct InstanceFunctionsV1_2(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[SparseImageFormatProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_sparse_image_format_properties[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -1961,7 +2013,9 @@ struct InstanceFunctionsV1_2(Copyable):
         list._len = Int(count)
         return list^
 
-    def enumerate_physical_device_groups[p_physical_device_group_properties_origin: MutOrigin](
+    def enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         instance: Instance,
         mut physical_device_group_count: UInt32,
@@ -1977,7 +2031,9 @@ struct InstanceFunctionsV1_2(Copyable):
             Ptr(to=p_physical_device_group_properties).bitcast[Optional[Ptr[PhysicalDeviceGroupProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_physical_device_groups[p_physical_device_group_properties_origin: MutOrigin](
+    def enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, instance: Instance
     ) -> ListResult[PhysicalDeviceGroupProperties]:
         """See official vulkan docs for details.
@@ -2059,7 +2115,9 @@ struct InstanceFunctionsV1_2(Copyable):
             Ptr(to=image_format_properties).bitcast[ImageFormatProperties2]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_physical_device_queue_family_properties_2[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
@@ -2075,7 +2133,9 @@ struct InstanceFunctionsV1_2(Copyable):
             Ptr(to=p_queue_family_properties).bitcast[Optional[Ptr[QueueFamilyProperties2, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_queue_family_properties_2[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties2]:
         """See official vulkan docs for details.
@@ -2112,7 +2172,9 @@ struct InstanceFunctionsV1_2(Copyable):
             Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_physical_device_sparse_image_format_properties_2[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format_info: PhysicalDeviceSparseImageFormatInfo2,
@@ -2130,7 +2192,9 @@ struct InstanceFunctionsV1_2(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[SparseImageFormatProperties2, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_sparse_image_format_properties_2[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice, format_info: PhysicalDeviceSparseImageFormatInfo2
     ) -> List[SparseImageFormatProperties2]:
         """See official vulkan docs for details.
@@ -2216,7 +2280,7 @@ struct InstanceFunctionsV1_3(Copyable):
         self._v1_1 = InstanceFunctionsAdditionsV1_1(self._dlhandle, instance)
         self._v1_3 = InstanceFunctionsAdditionsV1_3(self._dlhandle, instance)
 
-    def destroy_instance[p_allocator_origin: ImmutOrigin](
+    def destroy_instance[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         instance: Instance,
         p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
@@ -2230,7 +2294,7 @@ struct InstanceFunctionsV1_3(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin](
+    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutUntrackedOrigin](
         self,
         instance: Instance,
         mut physical_device_count: UInt32,
@@ -2246,7 +2310,7 @@ struct InstanceFunctionsV1_3(Copyable):
             Ptr(to=p_physical_devices).bitcast[Optional[Ptr[PhysicalDevice, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin](
+    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutUntrackedOrigin](
         self, instance: Instance
     ) -> ListResult[PhysicalDevice]:
         """See official vulkan docs for details.
@@ -2336,7 +2400,9 @@ struct InstanceFunctionsV1_3(Copyable):
             Ptr(to=properties).bitcast[PhysicalDeviceProperties]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_physical_device_queue_family_properties[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
@@ -2352,7 +2418,9 @@ struct InstanceFunctionsV1_3(Copyable):
             Ptr(to=p_queue_family_properties).bitcast[Optional[Ptr[QueueFamilyProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_queue_family_properties[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties]:
         """See official vulkan docs for details.
@@ -2387,7 +2455,7 @@ struct InstanceFunctionsV1_3(Copyable):
             Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_instance_proc_addr[p_name_origin: ImmutOrigin](
+    def get_instance_proc_addr[p_name_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, instance: Instance, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
@@ -2398,7 +2466,7 @@ struct InstanceFunctionsV1_3(Copyable):
             instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
-    def create_device[p_allocator_origin: ImmutOrigin](
+    def create_device[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         physical_device: PhysicalDevice,
         create_info: DeviceCreateInfo,
@@ -2417,7 +2485,8 @@ struct InstanceFunctionsV1_3(Copyable):
         )
 
     def enumerate_device_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         physical_device: PhysicalDevice,
@@ -2437,7 +2506,8 @@ struct InstanceFunctionsV1_3(Copyable):
         )
 
     def enumerate_device_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
@@ -2466,7 +2536,7 @@ struct InstanceFunctionsV1_3(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def enumerate_device_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
@@ -2482,7 +2552,7 @@ struct InstanceFunctionsV1_3(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[LayerProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_device_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self, physical_device: PhysicalDevice
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
@@ -2508,7 +2578,9 @@ struct InstanceFunctionsV1_3(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def get_physical_device_sparse_image_format_properties[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -2534,7 +2606,9 @@ struct InstanceFunctionsV1_3(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[SparseImageFormatProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_sparse_image_format_properties[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -2573,7 +2647,9 @@ struct InstanceFunctionsV1_3(Copyable):
         list._len = Int(count)
         return list^
 
-    def enumerate_physical_device_groups[p_physical_device_group_properties_origin: MutOrigin](
+    def enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         instance: Instance,
         mut physical_device_group_count: UInt32,
@@ -2589,7 +2665,9 @@ struct InstanceFunctionsV1_3(Copyable):
             Ptr(to=p_physical_device_group_properties).bitcast[Optional[Ptr[PhysicalDeviceGroupProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_physical_device_groups[p_physical_device_group_properties_origin: MutOrigin](
+    def enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, instance: Instance
     ) -> ListResult[PhysicalDeviceGroupProperties]:
         """See official vulkan docs for details.
@@ -2671,7 +2749,9 @@ struct InstanceFunctionsV1_3(Copyable):
             Ptr(to=image_format_properties).bitcast[ImageFormatProperties2]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_physical_device_queue_family_properties_2[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
@@ -2687,7 +2767,9 @@ struct InstanceFunctionsV1_3(Copyable):
             Ptr(to=p_queue_family_properties).bitcast[Optional[Ptr[QueueFamilyProperties2, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_queue_family_properties_2[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties2]:
         """See official vulkan docs for details.
@@ -2724,7 +2806,9 @@ struct InstanceFunctionsV1_3(Copyable):
             Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_physical_device_sparse_image_format_properties_2[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format_info: PhysicalDeviceSparseImageFormatInfo2,
@@ -2742,7 +2826,9 @@ struct InstanceFunctionsV1_3(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[SparseImageFormatProperties2, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_sparse_image_format_properties_2[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice, format_info: PhysicalDeviceSparseImageFormatInfo2
     ) -> List[SparseImageFormatProperties2]:
         """See official vulkan docs for details.
@@ -2815,7 +2901,9 @@ struct InstanceFunctionsV1_3(Copyable):
             Ptr(to=external_semaphore_properties).bitcast[ExternalSemaphoreProperties]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_physical_device_tool_properties[p_tool_properties_origin: MutOrigin](
+    def get_physical_device_tool_properties[
+        p_tool_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut tool_count: UInt32,
@@ -2831,7 +2919,9 @@ struct InstanceFunctionsV1_3(Copyable):
             Ptr(to=p_tool_properties).bitcast[Optional[Ptr[PhysicalDeviceToolProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_tool_properties[p_tool_properties_origin: MutOrigin](
+    def get_physical_device_tool_properties[
+        p_tool_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> ListResult[PhysicalDeviceToolProperties]:
         """See official vulkan docs for details.
@@ -2870,7 +2960,7 @@ struct InstanceFunctionsV1_4(Copyable):
         self._v1_1 = InstanceFunctionsAdditionsV1_1(self._dlhandle, instance)
         self._v1_3 = InstanceFunctionsAdditionsV1_3(self._dlhandle, instance)
 
-    def destroy_instance[p_allocator_origin: ImmutOrigin](
+    def destroy_instance[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         instance: Instance,
         p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]],
@@ -2884,7 +2974,7 @@ struct InstanceFunctionsV1_4(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin](
+    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutUntrackedOrigin](
         self,
         instance: Instance,
         mut physical_device_count: UInt32,
@@ -2900,7 +2990,7 @@ struct InstanceFunctionsV1_4(Copyable):
             Ptr(to=p_physical_devices).bitcast[Optional[Ptr[PhysicalDevice, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin](
+    def enumerate_physical_devices[p_physical_devices_origin: MutOrigin = MutUntrackedOrigin](
         self, instance: Instance
     ) -> ListResult[PhysicalDevice]:
         """See official vulkan docs for details.
@@ -2990,7 +3080,9 @@ struct InstanceFunctionsV1_4(Copyable):
             Ptr(to=properties).bitcast[PhysicalDeviceProperties]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_physical_device_queue_family_properties[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
@@ -3006,7 +3098,9 @@ struct InstanceFunctionsV1_4(Copyable):
             Ptr(to=p_queue_family_properties).bitcast[Optional[Ptr[QueueFamilyProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_queue_family_properties[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties]:
         """See official vulkan docs for details.
@@ -3041,7 +3135,7 @@ struct InstanceFunctionsV1_4(Copyable):
             Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_instance_proc_addr[p_name_origin: ImmutOrigin](
+    def get_instance_proc_addr[p_name_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, instance: Instance, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
@@ -3052,7 +3146,7 @@ struct InstanceFunctionsV1_4(Copyable):
             instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
-    def create_device[p_allocator_origin: ImmutOrigin](
+    def create_device[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         physical_device: PhysicalDevice,
         create_info: DeviceCreateInfo,
@@ -3071,7 +3165,8 @@ struct InstanceFunctionsV1_4(Copyable):
         )
 
     def enumerate_device_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         physical_device: PhysicalDevice,
@@ -3091,7 +3186,8 @@ struct InstanceFunctionsV1_4(Copyable):
         )
 
     def enumerate_device_extension_properties[
-        p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
+        p_layer_name_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_properties_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
@@ -3120,7 +3216,7 @@ struct InstanceFunctionsV1_4(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def enumerate_device_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
@@ -3136,7 +3232,7 @@ struct InstanceFunctionsV1_4(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[LayerProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_device_layer_properties[p_properties_origin: MutOrigin](
+    def enumerate_device_layer_properties[p_properties_origin: MutOrigin = MutUntrackedOrigin](
         self, physical_device: PhysicalDevice
     ) -> ListResult[LayerProperties]:
         """See official vulkan docs for details.
@@ -3162,7 +3258,9 @@ struct InstanceFunctionsV1_4(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def get_physical_device_sparse_image_format_properties[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -3188,7 +3286,9 @@ struct InstanceFunctionsV1_4(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[SparseImageFormatProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_sparse_image_format_properties[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format: Format,
@@ -3227,7 +3327,9 @@ struct InstanceFunctionsV1_4(Copyable):
         list._len = Int(count)
         return list^
 
-    def enumerate_physical_device_groups[p_physical_device_group_properties_origin: MutOrigin](
+    def enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         instance: Instance,
         mut physical_device_group_count: UInt32,
@@ -3243,7 +3345,9 @@ struct InstanceFunctionsV1_4(Copyable):
             Ptr(to=p_physical_device_group_properties).bitcast[Optional[Ptr[PhysicalDeviceGroupProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def enumerate_physical_device_groups[p_physical_device_group_properties_origin: MutOrigin](
+    def enumerate_physical_device_groups[
+        p_physical_device_group_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, instance: Instance
     ) -> ListResult[PhysicalDeviceGroupProperties]:
         """See official vulkan docs for details.
@@ -3325,7 +3429,9 @@ struct InstanceFunctionsV1_4(Copyable):
             Ptr(to=image_format_properties).bitcast[ImageFormatProperties2]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_physical_device_queue_family_properties_2[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut queue_family_property_count: UInt32,
@@ -3341,7 +3447,9 @@ struct InstanceFunctionsV1_4(Copyable):
             Ptr(to=p_queue_family_properties).bitcast[Optional[Ptr[QueueFamilyProperties2, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_queue_family_properties_2[p_queue_family_properties_origin: MutOrigin](
+    def get_physical_device_queue_family_properties_2[
+        p_queue_family_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> List[QueueFamilyProperties2]:
         """See official vulkan docs for details.
@@ -3378,7 +3486,9 @@ struct InstanceFunctionsV1_4(Copyable):
             Ptr(to=memory_properties).bitcast[PhysicalDeviceMemoryProperties2]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_physical_device_sparse_image_format_properties_2[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         format_info: PhysicalDeviceSparseImageFormatInfo2,
@@ -3396,7 +3506,9 @@ struct InstanceFunctionsV1_4(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[SparseImageFormatProperties2, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_sparse_image_format_properties_2[p_properties_origin: MutOrigin](
+    def get_physical_device_sparse_image_format_properties_2[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice, format_info: PhysicalDeviceSparseImageFormatInfo2
     ) -> List[SparseImageFormatProperties2]:
         """See official vulkan docs for details.
@@ -3469,7 +3581,9 @@ struct InstanceFunctionsV1_4(Copyable):
             Ptr(to=external_semaphore_properties).bitcast[ExternalSemaphoreProperties]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_physical_device_tool_properties[p_tool_properties_origin: MutOrigin](
+    def get_physical_device_tool_properties[
+        p_tool_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut tool_count: UInt32,
@@ -3485,7 +3599,9 @@ struct InstanceFunctionsV1_4(Copyable):
             Ptr(to=p_tool_properties).bitcast[Optional[Ptr[PhysicalDeviceToolProperties, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_tool_properties[p_tool_properties_origin: MutOrigin](
+    def get_physical_device_tool_properties[
+        p_tool_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> ListResult[PhysicalDeviceToolProperties]:
         """See official vulkan docs for details.
@@ -3520,7 +3636,7 @@ struct DeviceFunctionsV1_0(Copyable):
         self._dlhandle = global_functions.get_dlhandle()
         self._v1_0 = DeviceFunctionsAdditionsV1_0(self._dlhandle, device)
 
-    def get_device_proc_addr[p_name_origin: ImmutOrigin](
+    def get_device_proc_addr[p_name_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, device: Device, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
@@ -3531,7 +3647,7 @@ struct DeviceFunctionsV1_0(Copyable):
             device, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
-    def destroy_device[p_allocator_origin: ImmutOrigin](
+    def destroy_device[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, device: Device, p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]]
     ):
         """See official vulkan docs for details.
@@ -3557,7 +3673,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=queue).bitcast[Queue]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def queue_submit[p_submits_origin: ImmutOrigin](
+    def queue_submit[p_submits_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         queue: Queue,
         submit_count: UInt32,
@@ -3586,7 +3702,7 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.device_wait_idle(device)
 
-    def allocate_memory[p_allocator_origin: ImmutOrigin](
+    def allocate_memory[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         allocate_info: MemoryAllocateInfo,
@@ -3604,7 +3720,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=memory).bitcast[DeviceMemory]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def free_memory[p_allocator_origin: ImmutOrigin](
+    def free_memory[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
@@ -3620,7 +3736,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def map_memory[p_data_origin: MutOrigin](
+    def map_memory[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
@@ -3649,7 +3765,7 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.unmap_memory(device, memory)
 
-    def flush_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin](
+    def flush_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
@@ -3665,7 +3781,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_memory_ranges).bitcast[Ptr[MappedMemoryRange, ImmutUntrackedOrigin]]()[],
         )
 
-    def invalidate_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin](
+    def invalidate_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
@@ -3738,7 +3854,9 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=memory_requirements).bitcast[MemoryRequirements]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_image_sparse_memory_requirements[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         device: Device,
         image: Image,
@@ -3756,7 +3874,9 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_sparse_memory_requirements).bitcast[Optional[Ptr[SparseImageMemoryRequirements, MutUntrackedOrigin]]]()[],
         )
 
-    def get_image_sparse_memory_requirements[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, device: Device, image: Image
     ) -> List[SparseImageMemoryRequirements]:
         """See official vulkan docs for details.
@@ -3781,7 +3901,7 @@ struct DeviceFunctionsV1_0(Copyable):
         list._len = Int(count)
         return list^
 
-    def queue_bind_sparse[p_bind_info_origin: ImmutOrigin](
+    def queue_bind_sparse[p_bind_info_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         queue: Queue,
         bind_info_count: UInt32,
@@ -3799,7 +3919,7 @@ struct DeviceFunctionsV1_0(Copyable):
             fence,
         )
 
-    def create_fence[p_allocator_origin: ImmutOrigin](
+    def create_fence[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: FenceCreateInfo,
@@ -3817,7 +3937,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=fence).bitcast[Fence]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_fence[p_allocator_origin: ImmutOrigin](
+    def destroy_fence[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         fence: Fence,
@@ -3833,7 +3953,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def reset_fences[p_fences_origin: ImmutOrigin](
+    def reset_fences[p_fences_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence, p_fences_origin]
     ) -> Result:
         """See official vulkan docs for details.
@@ -3851,7 +3971,7 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.get_fence_status(device, fence)
 
-    def wait_for_fences[p_fences_origin: ImmutOrigin](
+    def wait_for_fences[p_fences_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         fence_count: UInt32,
@@ -3871,7 +3991,7 @@ struct DeviceFunctionsV1_0(Copyable):
             timeout,
         )
 
-    def create_semaphore[p_allocator_origin: ImmutOrigin](
+    def create_semaphore[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: SemaphoreCreateInfo,
@@ -3889,7 +4009,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=semaphore).bitcast[Semaphore]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_semaphore[p_allocator_origin: ImmutOrigin](
+    def destroy_semaphore[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         semaphore: Semaphore,
@@ -3905,7 +4025,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_query_pool[p_allocator_origin: ImmutOrigin](
+    def create_query_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: QueryPoolCreateInfo,
@@ -3923,7 +4043,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=query_pool).bitcast[QueryPool]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_query_pool[p_allocator_origin: ImmutOrigin](
+    def destroy_query_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
@@ -3939,7 +4059,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def get_query_pool_results[p_data_origin: MutOrigin](
+    def get_query_pool_results[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
@@ -3965,7 +4085,7 @@ struct DeviceFunctionsV1_0(Copyable):
             flags,
         )
 
-    def create_buffer[p_allocator_origin: ImmutOrigin](
+    def create_buffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: BufferCreateInfo,
@@ -3983,7 +4103,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=buffer).bitcast[Buffer]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_buffer[p_allocator_origin: ImmutOrigin](
+    def destroy_buffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         buffer: Buffer,
@@ -3999,7 +4119,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_image[p_allocator_origin: ImmutOrigin](
+    def create_image[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: ImageCreateInfo,
@@ -4017,7 +4137,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=image).bitcast[Image]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_image[p_allocator_origin: ImmutOrigin](
+    def destroy_image[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         image: Image,
@@ -4051,7 +4171,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=layout).bitcast[SubresourceLayout]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def create_image_view[p_allocator_origin: ImmutOrigin](
+    def create_image_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: ImageViewCreateInfo,
@@ -4069,7 +4189,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=view).bitcast[ImageView]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_image_view[p_allocator_origin: ImmutOrigin](
+    def destroy_image_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         image_view: ImageView,
@@ -4085,7 +4205,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_command_pool[p_allocator_origin: ImmutOrigin](
+    def create_command_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: CommandPoolCreateInfo,
@@ -4103,7 +4223,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=command_pool).bitcast[CommandPool]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_command_pool[p_allocator_origin: ImmutOrigin](
+    def destroy_command_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
@@ -4128,7 +4248,7 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.reset_command_pool(device, command_pool, flags)
 
-    def allocate_command_buffers[p_command_buffers_origin: MutOrigin](
+    def allocate_command_buffers[p_command_buffers_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         allocate_info: CommandBufferAllocateInfo,
@@ -4144,7 +4264,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, MutUntrackedOrigin]]()[],
         )
 
-    def free_command_buffers[p_command_buffers_origin: ImmutOrigin](
+    def free_command_buffers[p_command_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
@@ -4190,7 +4310,7 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.reset_command_buffer(command_buffer, flags)
 
-    def cmd_copy_buffer[p_regions_origin: ImmutOrigin](
+    def cmd_copy_buffer[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
@@ -4210,7 +4330,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[BufferCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_copy_image[p_regions_origin: ImmutOrigin](
+    def cmd_copy_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -4234,7 +4354,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[ImageCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_copy_buffer_to_image[p_regions_origin: ImmutOrigin](
+    def cmd_copy_buffer_to_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
@@ -4256,7 +4376,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_copy_image_to_buffer[p_regions_origin: ImmutOrigin](
+    def cmd_copy_image_to_buffer[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -4278,7 +4398,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_update_buffer[p_data_origin: ImmutOrigin](
+    def cmd_update_buffer[p_data_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         dst_buffer: Buffer,
@@ -4313,9 +4433,9 @@ struct DeviceFunctionsV1_0(Copyable):
         return self._v1_0.cmd_fill_buffer(command_buffer, dst_buffer, dst_offset, size, data)
 
     def cmd_pipeline_barrier[
-        p_memory_barriers_origin: ImmutOrigin,
-        p_buffer_memory_barriers_origin: ImmutOrigin,
-        p_image_memory_barriers_origin: ImmutOrigin,
+        p_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -4411,7 +4531,7 @@ struct DeviceFunctionsV1_0(Copyable):
             command_buffer, query_pool, first_query, query_count, dst_buffer, dst_offset, stride, flags
         )
 
-    def cmd_execute_commands[p_command_buffers_origin: ImmutOrigin](
+    def cmd_execute_commands[p_command_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         command_buffer_count: UInt32,
@@ -4427,7 +4547,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, ImmutUntrackedOrigin]]()[],
         )
 
-    def create_event[p_allocator_origin: ImmutOrigin](
+    def create_event[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: EventCreateInfo,
@@ -4445,7 +4565,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=event).bitcast[Event]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_event[p_allocator_origin: ImmutOrigin](
+    def destroy_event[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         event: Event,
@@ -4482,7 +4602,7 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.reset_event(device, event)
 
-    def create_buffer_view[p_allocator_origin: ImmutOrigin](
+    def create_buffer_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: BufferViewCreateInfo,
@@ -4500,7 +4620,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=view).bitcast[BufferView]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_buffer_view[p_allocator_origin: ImmutOrigin](
+    def destroy_buffer_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         buffer_view: BufferView,
@@ -4516,7 +4636,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_shader_module[p_allocator_origin: ImmutOrigin](
+    def create_shader_module[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
@@ -4534,7 +4654,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=shader_module).bitcast[ShaderModule]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_shader_module[p_allocator_origin: ImmutOrigin](
+    def destroy_shader_module[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         shader_module: ShaderModule,
@@ -4550,7 +4670,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_pipeline_cache[p_allocator_origin: ImmutOrigin](
+    def create_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: PipelineCacheCreateInfo,
@@ -4568,7 +4688,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=pipeline_cache).bitcast[PipelineCache]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_pipeline_cache[p_allocator_origin: ImmutOrigin](
+    def destroy_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
@@ -4584,7 +4704,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def get_pipeline_cache_data[p_data_origin: MutOrigin](
+    def get_pipeline_cache_data[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
@@ -4602,7 +4722,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_data).bitcast[Optional[Ptr[NoneType, MutUntrackedOrigin]]]()[],
         )
 
-    def get_pipeline_cache_data[p_data_origin: MutOrigin](
+    def get_pipeline_cache_data[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self, device: Device, pipeline_cache: PipelineCache
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
@@ -4630,7 +4750,7 @@ struct DeviceFunctionsV1_0(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def merge_pipeline_caches[p_src_caches_origin: ImmutOrigin](
+    def merge_pipeline_caches[p_src_caches_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         dst_cache: PipelineCache,
@@ -4649,9 +4769,9 @@ struct DeviceFunctionsV1_0(Copyable):
         )
 
     def create_compute_pipelines[
-        p_create_infos_origin: ImmutOrigin,
-        p_allocator_origin: ImmutOrigin,
-        p_pipelines_origin: MutOrigin,
+        p_create_infos_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_pipelines_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -4674,7 +4794,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutUntrackedOrigin]]()[],
         )
 
-    def destroy_pipeline[p_allocator_origin: ImmutOrigin](
+    def destroy_pipeline[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
@@ -4690,7 +4810,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_pipeline_layout[p_allocator_origin: ImmutOrigin](
+    def create_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: PipelineLayoutCreateInfo,
@@ -4708,7 +4828,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=pipeline_layout).bitcast[PipelineLayout]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_pipeline_layout[p_allocator_origin: ImmutOrigin](
+    def destroy_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         pipeline_layout: PipelineLayout,
@@ -4724,7 +4844,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_sampler[p_allocator_origin: ImmutOrigin](
+    def create_sampler[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: SamplerCreateInfo,
@@ -4742,7 +4862,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=sampler).bitcast[Sampler]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_sampler[p_allocator_origin: ImmutOrigin](
+    def destroy_sampler[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         sampler: Sampler,
@@ -4758,7 +4878,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_descriptor_set_layout[p_allocator_origin: ImmutOrigin](
+    def create_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
@@ -4776,7 +4896,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=set_layout).bitcast[DescriptorSetLayout]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_descriptor_set_layout[p_allocator_origin: ImmutOrigin](
+    def destroy_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_set_layout: DescriptorSetLayout,
@@ -4792,7 +4912,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_descriptor_pool[p_allocator_origin: ImmutOrigin](
+    def create_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: DescriptorPoolCreateInfo,
@@ -4810,7 +4930,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=descriptor_pool).bitcast[DescriptorPool]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_descriptor_pool[p_allocator_origin: ImmutOrigin](
+    def destroy_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
@@ -4835,7 +4955,7 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.reset_descriptor_pool(device, descriptor_pool, flags)
 
-    def allocate_descriptor_sets[p_descriptor_sets_origin: MutOrigin](
+    def allocate_descriptor_sets[p_descriptor_sets_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         allocate_info: DescriptorSetAllocateInfo,
@@ -4851,7 +4971,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, MutUntrackedOrigin]]()[],
         )
 
-    def free_descriptor_sets[p_descriptor_sets_origin: ImmutOrigin](
+    def free_descriptor_sets[p_descriptor_sets_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
@@ -4870,7 +4990,8 @@ struct DeviceFunctionsV1_0(Copyable):
         )
 
     def update_descriptor_sets[
-        p_descriptor_writes_origin: ImmutOrigin, p_descriptor_copies_origin: ImmutOrigin
+        p_descriptor_writes_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_descriptor_copies_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -4904,7 +5025,8 @@ struct DeviceFunctionsV1_0(Copyable):
         return self._v1_0.cmd_bind_pipeline(command_buffer, pipeline_bind_point, pipeline)
 
     def cmd_bind_descriptor_sets[
-        p_descriptor_sets_origin: ImmutOrigin, p_dynamic_offsets_origin: ImmutOrigin
+        p_descriptor_sets_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_dynamic_offsets_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -4931,7 +5053,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_dynamic_offsets).bitcast[Ptr[UInt32, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_clear_color_image[p_ranges_origin: ImmutOrigin](
+    def cmd_clear_color_image[p_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
@@ -4994,10 +5116,10 @@ struct DeviceFunctionsV1_0(Copyable):
         return self._v1_0.cmd_reset_event(command_buffer, event, stage_mask)
 
     def cmd_wait_events[
-        p_events_origin: ImmutOrigin,
-        p_memory_barriers_origin: ImmutOrigin,
-        p_buffer_memory_barriers_origin: ImmutOrigin,
-        p_image_memory_barriers_origin: ImmutOrigin,
+        p_events_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -5030,7 +5152,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_image_memory_barriers).bitcast[Ptr[ImageMemoryBarrier, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_push_constants[p_values_origin: ImmutOrigin](
+    def cmd_push_constants[p_values_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         layout: PipelineLayout,
@@ -5053,9 +5175,9 @@ struct DeviceFunctionsV1_0(Copyable):
         )
 
     def create_graphics_pipelines[
-        p_create_infos_origin: ImmutOrigin,
-        p_allocator_origin: ImmutOrigin,
-        p_pipelines_origin: MutOrigin,
+        p_create_infos_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_pipelines_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -5078,7 +5200,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutUntrackedOrigin]]()[],
         )
 
-    def create_framebuffer[p_allocator_origin: ImmutOrigin](
+    def create_framebuffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: FramebufferCreateInfo,
@@ -5096,7 +5218,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=framebuffer).bitcast[Framebuffer]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_framebuffer[p_allocator_origin: ImmutOrigin](
+    def destroy_framebuffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         framebuffer: Framebuffer,
@@ -5112,7 +5234,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_render_pass[p_allocator_origin: ImmutOrigin](
+    def create_render_pass[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo,
@@ -5130,7 +5252,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=render_pass).bitcast[RenderPass]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_render_pass[p_allocator_origin: ImmutOrigin](
+    def destroy_render_pass[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         render_pass: RenderPass,
@@ -5159,7 +5281,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=granularity).bitcast[Extent2D]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def cmd_set_viewport[p_viewports_origin: ImmutOrigin](
+    def cmd_set_viewport[p_viewports_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
@@ -5177,7 +5299,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_viewports).bitcast[Ptr[Viewport, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_set_scissor[p_scissors_origin: ImmutOrigin](
+    def cmd_set_scissor[p_scissors_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         first_scissor: UInt32,
@@ -5275,7 +5397,10 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.cmd_bind_index_buffer(command_buffer, buffer, offset, index_type)
 
-    def cmd_bind_vertex_buffers[p_buffers_origin: ImmutOrigin, p_offsets_origin: ImmutOrigin](
+    def cmd_bind_vertex_buffers[
+        p_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_offsets_origin: ImmutOrigin = ImmutUntrackedOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         first_binding: UInt32,
@@ -5356,7 +5481,7 @@ struct DeviceFunctionsV1_0(Copyable):
         """
         return self._v1_0.cmd_draw_indexed_indirect(command_buffer, buffer, offset, draw_count, stride)
 
-    def cmd_blit_image[p_regions_origin: ImmutOrigin](
+    def cmd_blit_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -5382,7 +5507,7 @@ struct DeviceFunctionsV1_0(Copyable):
             filter,
         )
 
-    def cmd_clear_depth_stencil_image[p_ranges_origin: ImmutOrigin](
+    def cmd_clear_depth_stencil_image[p_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
@@ -5404,7 +5529,10 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_ranges).bitcast[Ptr[ImageSubresourceRange, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_clear_attachments[p_attachments_origin: ImmutOrigin, p_rects_origin: ImmutOrigin](
+    def cmd_clear_attachments[
+        p_attachments_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_rects_origin: ImmutOrigin = ImmutUntrackedOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
@@ -5424,7 +5552,7 @@ struct DeviceFunctionsV1_0(Copyable):
             Ptr(to=p_rects).bitcast[Ptr[ClearRect, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_resolve_image[p_regions_origin: ImmutOrigin](
+    def cmd_resolve_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -5489,7 +5617,7 @@ struct DeviceFunctionsV1_1(Copyable):
         self._v1_0 = DeviceFunctionsAdditionsV1_0(self._dlhandle, device)
         self._v1_1 = DeviceFunctionsAdditionsV1_1(self._dlhandle, device)
 
-    def get_device_proc_addr[p_name_origin: ImmutOrigin](
+    def get_device_proc_addr[p_name_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, device: Device, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
@@ -5500,7 +5628,7 @@ struct DeviceFunctionsV1_1(Copyable):
             device, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
-    def destroy_device[p_allocator_origin: ImmutOrigin](
+    def destroy_device[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, device: Device, p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]]
     ):
         """See official vulkan docs for details.
@@ -5526,7 +5654,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=queue).bitcast[Queue]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def queue_submit[p_submits_origin: ImmutOrigin](
+    def queue_submit[p_submits_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         queue: Queue,
         submit_count: UInt32,
@@ -5555,7 +5683,7 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.device_wait_idle(device)
 
-    def allocate_memory[p_allocator_origin: ImmutOrigin](
+    def allocate_memory[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         allocate_info: MemoryAllocateInfo,
@@ -5573,7 +5701,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=memory).bitcast[DeviceMemory]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def free_memory[p_allocator_origin: ImmutOrigin](
+    def free_memory[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
@@ -5589,7 +5717,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def map_memory[p_data_origin: MutOrigin](
+    def map_memory[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
@@ -5618,7 +5746,7 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.unmap_memory(device, memory)
 
-    def flush_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin](
+    def flush_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
@@ -5634,7 +5762,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_memory_ranges).bitcast[Ptr[MappedMemoryRange, ImmutUntrackedOrigin]]()[],
         )
 
-    def invalidate_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin](
+    def invalidate_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
@@ -5707,7 +5835,9 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=memory_requirements).bitcast[MemoryRequirements]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_image_sparse_memory_requirements[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         device: Device,
         image: Image,
@@ -5725,7 +5855,9 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_sparse_memory_requirements).bitcast[Optional[Ptr[SparseImageMemoryRequirements, MutUntrackedOrigin]]]()[],
         )
 
-    def get_image_sparse_memory_requirements[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, device: Device, image: Image
     ) -> List[SparseImageMemoryRequirements]:
         """See official vulkan docs for details.
@@ -5750,7 +5882,7 @@ struct DeviceFunctionsV1_1(Copyable):
         list._len = Int(count)
         return list^
 
-    def queue_bind_sparse[p_bind_info_origin: ImmutOrigin](
+    def queue_bind_sparse[p_bind_info_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         queue: Queue,
         bind_info_count: UInt32,
@@ -5768,7 +5900,7 @@ struct DeviceFunctionsV1_1(Copyable):
             fence,
         )
 
-    def create_fence[p_allocator_origin: ImmutOrigin](
+    def create_fence[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: FenceCreateInfo,
@@ -5786,7 +5918,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=fence).bitcast[Fence]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_fence[p_allocator_origin: ImmutOrigin](
+    def destroy_fence[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         fence: Fence,
@@ -5802,7 +5934,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def reset_fences[p_fences_origin: ImmutOrigin](
+    def reset_fences[p_fences_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence, p_fences_origin]
     ) -> Result:
         """See official vulkan docs for details.
@@ -5820,7 +5952,7 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.get_fence_status(device, fence)
 
-    def wait_for_fences[p_fences_origin: ImmutOrigin](
+    def wait_for_fences[p_fences_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         fence_count: UInt32,
@@ -5840,7 +5972,7 @@ struct DeviceFunctionsV1_1(Copyable):
             timeout,
         )
 
-    def create_semaphore[p_allocator_origin: ImmutOrigin](
+    def create_semaphore[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: SemaphoreCreateInfo,
@@ -5858,7 +5990,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=semaphore).bitcast[Semaphore]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_semaphore[p_allocator_origin: ImmutOrigin](
+    def destroy_semaphore[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         semaphore: Semaphore,
@@ -5874,7 +6006,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_query_pool[p_allocator_origin: ImmutOrigin](
+    def create_query_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: QueryPoolCreateInfo,
@@ -5892,7 +6024,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=query_pool).bitcast[QueryPool]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_query_pool[p_allocator_origin: ImmutOrigin](
+    def destroy_query_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
@@ -5908,7 +6040,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def get_query_pool_results[p_data_origin: MutOrigin](
+    def get_query_pool_results[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
@@ -5934,7 +6066,7 @@ struct DeviceFunctionsV1_1(Copyable):
             flags,
         )
 
-    def create_buffer[p_allocator_origin: ImmutOrigin](
+    def create_buffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: BufferCreateInfo,
@@ -5952,7 +6084,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=buffer).bitcast[Buffer]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_buffer[p_allocator_origin: ImmutOrigin](
+    def destroy_buffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         buffer: Buffer,
@@ -5968,7 +6100,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_image[p_allocator_origin: ImmutOrigin](
+    def create_image[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: ImageCreateInfo,
@@ -5986,7 +6118,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=image).bitcast[Image]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_image[p_allocator_origin: ImmutOrigin](
+    def destroy_image[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         image: Image,
@@ -6020,7 +6152,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=layout).bitcast[SubresourceLayout]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def create_image_view[p_allocator_origin: ImmutOrigin](
+    def create_image_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: ImageViewCreateInfo,
@@ -6038,7 +6170,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=view).bitcast[ImageView]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_image_view[p_allocator_origin: ImmutOrigin](
+    def destroy_image_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         image_view: ImageView,
@@ -6054,7 +6186,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_command_pool[p_allocator_origin: ImmutOrigin](
+    def create_command_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: CommandPoolCreateInfo,
@@ -6072,7 +6204,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=command_pool).bitcast[CommandPool]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_command_pool[p_allocator_origin: ImmutOrigin](
+    def destroy_command_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
@@ -6097,7 +6229,7 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.reset_command_pool(device, command_pool, flags)
 
-    def allocate_command_buffers[p_command_buffers_origin: MutOrigin](
+    def allocate_command_buffers[p_command_buffers_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         allocate_info: CommandBufferAllocateInfo,
@@ -6113,7 +6245,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, MutUntrackedOrigin]]()[],
         )
 
-    def free_command_buffers[p_command_buffers_origin: ImmutOrigin](
+    def free_command_buffers[p_command_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
@@ -6159,7 +6291,7 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.reset_command_buffer(command_buffer, flags)
 
-    def cmd_copy_buffer[p_regions_origin: ImmutOrigin](
+    def cmd_copy_buffer[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
@@ -6179,7 +6311,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[BufferCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_copy_image[p_regions_origin: ImmutOrigin](
+    def cmd_copy_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -6203,7 +6335,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[ImageCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_copy_buffer_to_image[p_regions_origin: ImmutOrigin](
+    def cmd_copy_buffer_to_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
@@ -6225,7 +6357,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_copy_image_to_buffer[p_regions_origin: ImmutOrigin](
+    def cmd_copy_image_to_buffer[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -6247,7 +6379,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_update_buffer[p_data_origin: ImmutOrigin](
+    def cmd_update_buffer[p_data_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         dst_buffer: Buffer,
@@ -6282,9 +6414,9 @@ struct DeviceFunctionsV1_1(Copyable):
         return self._v1_0.cmd_fill_buffer(command_buffer, dst_buffer, dst_offset, size, data)
 
     def cmd_pipeline_barrier[
-        p_memory_barriers_origin: ImmutOrigin,
-        p_buffer_memory_barriers_origin: ImmutOrigin,
-        p_image_memory_barriers_origin: ImmutOrigin,
+        p_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -6380,7 +6512,7 @@ struct DeviceFunctionsV1_1(Copyable):
             command_buffer, query_pool, first_query, query_count, dst_buffer, dst_offset, stride, flags
         )
 
-    def cmd_execute_commands[p_command_buffers_origin: ImmutOrigin](
+    def cmd_execute_commands[p_command_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         command_buffer_count: UInt32,
@@ -6396,7 +6528,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, ImmutUntrackedOrigin]]()[],
         )
 
-    def create_event[p_allocator_origin: ImmutOrigin](
+    def create_event[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: EventCreateInfo,
@@ -6414,7 +6546,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=event).bitcast[Event]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_event[p_allocator_origin: ImmutOrigin](
+    def destroy_event[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         event: Event,
@@ -6451,7 +6583,7 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.reset_event(device, event)
 
-    def create_buffer_view[p_allocator_origin: ImmutOrigin](
+    def create_buffer_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: BufferViewCreateInfo,
@@ -6469,7 +6601,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=view).bitcast[BufferView]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_buffer_view[p_allocator_origin: ImmutOrigin](
+    def destroy_buffer_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         buffer_view: BufferView,
@@ -6485,7 +6617,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_shader_module[p_allocator_origin: ImmutOrigin](
+    def create_shader_module[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
@@ -6503,7 +6635,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=shader_module).bitcast[ShaderModule]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_shader_module[p_allocator_origin: ImmutOrigin](
+    def destroy_shader_module[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         shader_module: ShaderModule,
@@ -6519,7 +6651,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_pipeline_cache[p_allocator_origin: ImmutOrigin](
+    def create_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: PipelineCacheCreateInfo,
@@ -6537,7 +6669,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=pipeline_cache).bitcast[PipelineCache]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_pipeline_cache[p_allocator_origin: ImmutOrigin](
+    def destroy_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
@@ -6553,7 +6685,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def get_pipeline_cache_data[p_data_origin: MutOrigin](
+    def get_pipeline_cache_data[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
@@ -6571,7 +6703,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_data).bitcast[Optional[Ptr[NoneType, MutUntrackedOrigin]]]()[],
         )
 
-    def get_pipeline_cache_data[p_data_origin: MutOrigin](
+    def get_pipeline_cache_data[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self, device: Device, pipeline_cache: PipelineCache
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
@@ -6599,7 +6731,7 @@ struct DeviceFunctionsV1_1(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def merge_pipeline_caches[p_src_caches_origin: ImmutOrigin](
+    def merge_pipeline_caches[p_src_caches_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         dst_cache: PipelineCache,
@@ -6618,9 +6750,9 @@ struct DeviceFunctionsV1_1(Copyable):
         )
 
     def create_compute_pipelines[
-        p_create_infos_origin: ImmutOrigin,
-        p_allocator_origin: ImmutOrigin,
-        p_pipelines_origin: MutOrigin,
+        p_create_infos_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_pipelines_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -6643,7 +6775,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutUntrackedOrigin]]()[],
         )
 
-    def destroy_pipeline[p_allocator_origin: ImmutOrigin](
+    def destroy_pipeline[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
@@ -6659,7 +6791,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_pipeline_layout[p_allocator_origin: ImmutOrigin](
+    def create_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: PipelineLayoutCreateInfo,
@@ -6677,7 +6809,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=pipeline_layout).bitcast[PipelineLayout]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_pipeline_layout[p_allocator_origin: ImmutOrigin](
+    def destroy_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         pipeline_layout: PipelineLayout,
@@ -6693,7 +6825,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_sampler[p_allocator_origin: ImmutOrigin](
+    def create_sampler[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: SamplerCreateInfo,
@@ -6711,7 +6843,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=sampler).bitcast[Sampler]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_sampler[p_allocator_origin: ImmutOrigin](
+    def destroy_sampler[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         sampler: Sampler,
@@ -6727,7 +6859,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_descriptor_set_layout[p_allocator_origin: ImmutOrigin](
+    def create_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
@@ -6745,7 +6877,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=set_layout).bitcast[DescriptorSetLayout]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_descriptor_set_layout[p_allocator_origin: ImmutOrigin](
+    def destroy_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_set_layout: DescriptorSetLayout,
@@ -6761,7 +6893,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_descriptor_pool[p_allocator_origin: ImmutOrigin](
+    def create_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: DescriptorPoolCreateInfo,
@@ -6779,7 +6911,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=descriptor_pool).bitcast[DescriptorPool]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_descriptor_pool[p_allocator_origin: ImmutOrigin](
+    def destroy_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
@@ -6804,7 +6936,7 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.reset_descriptor_pool(device, descriptor_pool, flags)
 
-    def allocate_descriptor_sets[p_descriptor_sets_origin: MutOrigin](
+    def allocate_descriptor_sets[p_descriptor_sets_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         allocate_info: DescriptorSetAllocateInfo,
@@ -6820,7 +6952,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, MutUntrackedOrigin]]()[],
         )
 
-    def free_descriptor_sets[p_descriptor_sets_origin: ImmutOrigin](
+    def free_descriptor_sets[p_descriptor_sets_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
@@ -6839,7 +6971,8 @@ struct DeviceFunctionsV1_1(Copyable):
         )
 
     def update_descriptor_sets[
-        p_descriptor_writes_origin: ImmutOrigin, p_descriptor_copies_origin: ImmutOrigin
+        p_descriptor_writes_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_descriptor_copies_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -6873,7 +7006,8 @@ struct DeviceFunctionsV1_1(Copyable):
         return self._v1_0.cmd_bind_pipeline(command_buffer, pipeline_bind_point, pipeline)
 
     def cmd_bind_descriptor_sets[
-        p_descriptor_sets_origin: ImmutOrigin, p_dynamic_offsets_origin: ImmutOrigin
+        p_descriptor_sets_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_dynamic_offsets_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -6900,7 +7034,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_dynamic_offsets).bitcast[Ptr[UInt32, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_clear_color_image[p_ranges_origin: ImmutOrigin](
+    def cmd_clear_color_image[p_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
@@ -6963,10 +7097,10 @@ struct DeviceFunctionsV1_1(Copyable):
         return self._v1_0.cmd_reset_event(command_buffer, event, stage_mask)
 
     def cmd_wait_events[
-        p_events_origin: ImmutOrigin,
-        p_memory_barriers_origin: ImmutOrigin,
-        p_buffer_memory_barriers_origin: ImmutOrigin,
-        p_image_memory_barriers_origin: ImmutOrigin,
+        p_events_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -6999,7 +7133,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_image_memory_barriers).bitcast[Ptr[ImageMemoryBarrier, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_push_constants[p_values_origin: ImmutOrigin](
+    def cmd_push_constants[p_values_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         layout: PipelineLayout,
@@ -7022,9 +7156,9 @@ struct DeviceFunctionsV1_1(Copyable):
         )
 
     def create_graphics_pipelines[
-        p_create_infos_origin: ImmutOrigin,
-        p_allocator_origin: ImmutOrigin,
-        p_pipelines_origin: MutOrigin,
+        p_create_infos_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_pipelines_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -7047,7 +7181,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutUntrackedOrigin]]()[],
         )
 
-    def create_framebuffer[p_allocator_origin: ImmutOrigin](
+    def create_framebuffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: FramebufferCreateInfo,
@@ -7065,7 +7199,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=framebuffer).bitcast[Framebuffer]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_framebuffer[p_allocator_origin: ImmutOrigin](
+    def destroy_framebuffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         framebuffer: Framebuffer,
@@ -7081,7 +7215,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_render_pass[p_allocator_origin: ImmutOrigin](
+    def create_render_pass[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo,
@@ -7099,7 +7233,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=render_pass).bitcast[RenderPass]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_render_pass[p_allocator_origin: ImmutOrigin](
+    def destroy_render_pass[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         render_pass: RenderPass,
@@ -7128,7 +7262,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=granularity).bitcast[Extent2D]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def cmd_set_viewport[p_viewports_origin: ImmutOrigin](
+    def cmd_set_viewport[p_viewports_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
@@ -7146,7 +7280,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_viewports).bitcast[Ptr[Viewport, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_set_scissor[p_scissors_origin: ImmutOrigin](
+    def cmd_set_scissor[p_scissors_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         first_scissor: UInt32,
@@ -7244,7 +7378,10 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.cmd_bind_index_buffer(command_buffer, buffer, offset, index_type)
 
-    def cmd_bind_vertex_buffers[p_buffers_origin: ImmutOrigin, p_offsets_origin: ImmutOrigin](
+    def cmd_bind_vertex_buffers[
+        p_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_offsets_origin: ImmutOrigin = ImmutUntrackedOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         first_binding: UInt32,
@@ -7325,7 +7462,7 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.cmd_draw_indexed_indirect(command_buffer, buffer, offset, draw_count, stride)
 
-    def cmd_blit_image[p_regions_origin: ImmutOrigin](
+    def cmd_blit_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -7351,7 +7488,7 @@ struct DeviceFunctionsV1_1(Copyable):
             filter,
         )
 
-    def cmd_clear_depth_stencil_image[p_ranges_origin: ImmutOrigin](
+    def cmd_clear_depth_stencil_image[p_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
@@ -7373,7 +7510,10 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_ranges).bitcast[Ptr[ImageSubresourceRange, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_clear_attachments[p_attachments_origin: ImmutOrigin, p_rects_origin: ImmutOrigin](
+    def cmd_clear_attachments[
+        p_attachments_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_rects_origin: ImmutOrigin = ImmutUntrackedOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
@@ -7393,7 +7533,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_rects).bitcast[Ptr[ClearRect, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_resolve_image[p_regions_origin: ImmutOrigin](
+    def cmd_resolve_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -7447,7 +7587,7 @@ struct DeviceFunctionsV1_1(Copyable):
         """
         return self._v1_0.cmd_end_render_pass(command_buffer)
 
-    def bind_buffer_memory_2[p_bind_infos_origin: ImmutOrigin](
+    def bind_buffer_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
@@ -7463,7 +7603,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_bind_infos).bitcast[Ptr[BindBufferMemoryInfo, ImmutUntrackedOrigin]]()[],
         )
 
-    def bind_image_memory_2[p_bind_infos_origin: ImmutOrigin](
+    def bind_image_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
@@ -7538,7 +7678,9 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=memory_requirements).bitcast[MemoryRequirements2]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_image_sparse_memory_requirements_2[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         device: Device,
         info: ImageSparseMemoryRequirementsInfo2,
@@ -7556,7 +7698,9 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_sparse_memory_requirements).bitcast[Optional[Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin]]]()[],
         )
 
-    def get_image_sparse_memory_requirements_2[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, device: Device, info: ImageSparseMemoryRequirementsInfo2
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
@@ -7625,7 +7769,7 @@ struct DeviceFunctionsV1_1(Copyable):
             group_count_z,
         )
 
-    def create_descriptor_update_template[p_allocator_origin: ImmutOrigin](
+    def create_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: DescriptorUpdateTemplateCreateInfo,
@@ -7643,7 +7787,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_descriptor_update_template[p_allocator_origin: ImmutOrigin](
+    def destroy_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
@@ -7659,7 +7803,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def update_descriptor_set_with_template[p_data_origin: ImmutOrigin](
+    def update_descriptor_set_with_template[p_data_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_set: DescriptorSet,
@@ -7693,7 +7837,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=support).bitcast[DescriptorSetLayoutSupport]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def create_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin](
+    def create_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: SamplerYcbcrConversionCreateInfo,
@@ -7711,7 +7855,7 @@ struct DeviceFunctionsV1_1(Copyable):
             Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin](
+    def destroy_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
@@ -7740,7 +7884,7 @@ struct DeviceFunctionsV1_2(Copyable):
         self._v1_1 = DeviceFunctionsAdditionsV1_1(self._dlhandle, device)
         self._v1_2 = DeviceFunctionsAdditionsV1_2(self._dlhandle, device)
 
-    def get_device_proc_addr[p_name_origin: ImmutOrigin](
+    def get_device_proc_addr[p_name_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, device: Device, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
@@ -7751,7 +7895,7 @@ struct DeviceFunctionsV1_2(Copyable):
             device, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
-    def destroy_device[p_allocator_origin: ImmutOrigin](
+    def destroy_device[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, device: Device, p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]]
     ):
         """See official vulkan docs for details.
@@ -7777,7 +7921,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=queue).bitcast[Queue]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def queue_submit[p_submits_origin: ImmutOrigin](
+    def queue_submit[p_submits_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         queue: Queue,
         submit_count: UInt32,
@@ -7806,7 +7950,7 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.device_wait_idle(device)
 
-    def allocate_memory[p_allocator_origin: ImmutOrigin](
+    def allocate_memory[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         allocate_info: MemoryAllocateInfo,
@@ -7824,7 +7968,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=memory).bitcast[DeviceMemory]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def free_memory[p_allocator_origin: ImmutOrigin](
+    def free_memory[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
@@ -7840,7 +7984,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def map_memory[p_data_origin: MutOrigin](
+    def map_memory[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
@@ -7869,7 +8013,7 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.unmap_memory(device, memory)
 
-    def flush_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin](
+    def flush_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
@@ -7885,7 +8029,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_memory_ranges).bitcast[Ptr[MappedMemoryRange, ImmutUntrackedOrigin]]()[],
         )
 
-    def invalidate_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin](
+    def invalidate_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
@@ -7958,7 +8102,9 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=memory_requirements).bitcast[MemoryRequirements]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_image_sparse_memory_requirements[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         device: Device,
         image: Image,
@@ -7976,7 +8122,9 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_sparse_memory_requirements).bitcast[Optional[Ptr[SparseImageMemoryRequirements, MutUntrackedOrigin]]]()[],
         )
 
-    def get_image_sparse_memory_requirements[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, device: Device, image: Image
     ) -> List[SparseImageMemoryRequirements]:
         """See official vulkan docs for details.
@@ -8001,7 +8149,7 @@ struct DeviceFunctionsV1_2(Copyable):
         list._len = Int(count)
         return list^
 
-    def queue_bind_sparse[p_bind_info_origin: ImmutOrigin](
+    def queue_bind_sparse[p_bind_info_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         queue: Queue,
         bind_info_count: UInt32,
@@ -8019,7 +8167,7 @@ struct DeviceFunctionsV1_2(Copyable):
             fence,
         )
 
-    def create_fence[p_allocator_origin: ImmutOrigin](
+    def create_fence[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: FenceCreateInfo,
@@ -8037,7 +8185,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=fence).bitcast[Fence]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_fence[p_allocator_origin: ImmutOrigin](
+    def destroy_fence[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         fence: Fence,
@@ -8053,7 +8201,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def reset_fences[p_fences_origin: ImmutOrigin](
+    def reset_fences[p_fences_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence, p_fences_origin]
     ) -> Result:
         """See official vulkan docs for details.
@@ -8071,7 +8219,7 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.get_fence_status(device, fence)
 
-    def wait_for_fences[p_fences_origin: ImmutOrigin](
+    def wait_for_fences[p_fences_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         fence_count: UInt32,
@@ -8091,7 +8239,7 @@ struct DeviceFunctionsV1_2(Copyable):
             timeout,
         )
 
-    def create_semaphore[p_allocator_origin: ImmutOrigin](
+    def create_semaphore[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: SemaphoreCreateInfo,
@@ -8109,7 +8257,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=semaphore).bitcast[Semaphore]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_semaphore[p_allocator_origin: ImmutOrigin](
+    def destroy_semaphore[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         semaphore: Semaphore,
@@ -8125,7 +8273,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_query_pool[p_allocator_origin: ImmutOrigin](
+    def create_query_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: QueryPoolCreateInfo,
@@ -8143,7 +8291,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=query_pool).bitcast[QueryPool]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_query_pool[p_allocator_origin: ImmutOrigin](
+    def destroy_query_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
@@ -8159,7 +8307,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def get_query_pool_results[p_data_origin: MutOrigin](
+    def get_query_pool_results[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
@@ -8185,7 +8333,7 @@ struct DeviceFunctionsV1_2(Copyable):
             flags,
         )
 
-    def create_buffer[p_allocator_origin: ImmutOrigin](
+    def create_buffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: BufferCreateInfo,
@@ -8203,7 +8351,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=buffer).bitcast[Buffer]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_buffer[p_allocator_origin: ImmutOrigin](
+    def destroy_buffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         buffer: Buffer,
@@ -8219,7 +8367,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_image[p_allocator_origin: ImmutOrigin](
+    def create_image[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: ImageCreateInfo,
@@ -8237,7 +8385,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=image).bitcast[Image]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_image[p_allocator_origin: ImmutOrigin](
+    def destroy_image[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         image: Image,
@@ -8271,7 +8419,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=layout).bitcast[SubresourceLayout]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def create_image_view[p_allocator_origin: ImmutOrigin](
+    def create_image_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: ImageViewCreateInfo,
@@ -8289,7 +8437,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=view).bitcast[ImageView]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_image_view[p_allocator_origin: ImmutOrigin](
+    def destroy_image_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         image_view: ImageView,
@@ -8305,7 +8453,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_command_pool[p_allocator_origin: ImmutOrigin](
+    def create_command_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: CommandPoolCreateInfo,
@@ -8323,7 +8471,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=command_pool).bitcast[CommandPool]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_command_pool[p_allocator_origin: ImmutOrigin](
+    def destroy_command_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
@@ -8348,7 +8496,7 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.reset_command_pool(device, command_pool, flags)
 
-    def allocate_command_buffers[p_command_buffers_origin: MutOrigin](
+    def allocate_command_buffers[p_command_buffers_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         allocate_info: CommandBufferAllocateInfo,
@@ -8364,7 +8512,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, MutUntrackedOrigin]]()[],
         )
 
-    def free_command_buffers[p_command_buffers_origin: ImmutOrigin](
+    def free_command_buffers[p_command_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
@@ -8410,7 +8558,7 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.reset_command_buffer(command_buffer, flags)
 
-    def cmd_copy_buffer[p_regions_origin: ImmutOrigin](
+    def cmd_copy_buffer[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
@@ -8430,7 +8578,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[BufferCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_copy_image[p_regions_origin: ImmutOrigin](
+    def cmd_copy_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -8454,7 +8602,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[ImageCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_copy_buffer_to_image[p_regions_origin: ImmutOrigin](
+    def cmd_copy_buffer_to_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
@@ -8476,7 +8624,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_copy_image_to_buffer[p_regions_origin: ImmutOrigin](
+    def cmd_copy_image_to_buffer[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -8498,7 +8646,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_update_buffer[p_data_origin: ImmutOrigin](
+    def cmd_update_buffer[p_data_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         dst_buffer: Buffer,
@@ -8533,9 +8681,9 @@ struct DeviceFunctionsV1_2(Copyable):
         return self._v1_0.cmd_fill_buffer(command_buffer, dst_buffer, dst_offset, size, data)
 
     def cmd_pipeline_barrier[
-        p_memory_barriers_origin: ImmutOrigin,
-        p_buffer_memory_barriers_origin: ImmutOrigin,
-        p_image_memory_barriers_origin: ImmutOrigin,
+        p_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -8631,7 +8779,7 @@ struct DeviceFunctionsV1_2(Copyable):
             command_buffer, query_pool, first_query, query_count, dst_buffer, dst_offset, stride, flags
         )
 
-    def cmd_execute_commands[p_command_buffers_origin: ImmutOrigin](
+    def cmd_execute_commands[p_command_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         command_buffer_count: UInt32,
@@ -8647,7 +8795,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, ImmutUntrackedOrigin]]()[],
         )
 
-    def create_event[p_allocator_origin: ImmutOrigin](
+    def create_event[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: EventCreateInfo,
@@ -8665,7 +8813,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=event).bitcast[Event]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_event[p_allocator_origin: ImmutOrigin](
+    def destroy_event[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         event: Event,
@@ -8702,7 +8850,7 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.reset_event(device, event)
 
-    def create_buffer_view[p_allocator_origin: ImmutOrigin](
+    def create_buffer_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: BufferViewCreateInfo,
@@ -8720,7 +8868,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=view).bitcast[BufferView]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_buffer_view[p_allocator_origin: ImmutOrigin](
+    def destroy_buffer_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         buffer_view: BufferView,
@@ -8736,7 +8884,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_shader_module[p_allocator_origin: ImmutOrigin](
+    def create_shader_module[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
@@ -8754,7 +8902,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=shader_module).bitcast[ShaderModule]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_shader_module[p_allocator_origin: ImmutOrigin](
+    def destroy_shader_module[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         shader_module: ShaderModule,
@@ -8770,7 +8918,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_pipeline_cache[p_allocator_origin: ImmutOrigin](
+    def create_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: PipelineCacheCreateInfo,
@@ -8788,7 +8936,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=pipeline_cache).bitcast[PipelineCache]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_pipeline_cache[p_allocator_origin: ImmutOrigin](
+    def destroy_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
@@ -8804,7 +8952,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def get_pipeline_cache_data[p_data_origin: MutOrigin](
+    def get_pipeline_cache_data[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
@@ -8822,7 +8970,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_data).bitcast[Optional[Ptr[NoneType, MutUntrackedOrigin]]]()[],
         )
 
-    def get_pipeline_cache_data[p_data_origin: MutOrigin](
+    def get_pipeline_cache_data[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self, device: Device, pipeline_cache: PipelineCache
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
@@ -8850,7 +8998,7 @@ struct DeviceFunctionsV1_2(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def merge_pipeline_caches[p_src_caches_origin: ImmutOrigin](
+    def merge_pipeline_caches[p_src_caches_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         dst_cache: PipelineCache,
@@ -8869,9 +9017,9 @@ struct DeviceFunctionsV1_2(Copyable):
         )
 
     def create_compute_pipelines[
-        p_create_infos_origin: ImmutOrigin,
-        p_allocator_origin: ImmutOrigin,
-        p_pipelines_origin: MutOrigin,
+        p_create_infos_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_pipelines_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -8894,7 +9042,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutUntrackedOrigin]]()[],
         )
 
-    def destroy_pipeline[p_allocator_origin: ImmutOrigin](
+    def destroy_pipeline[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
@@ -8910,7 +9058,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_pipeline_layout[p_allocator_origin: ImmutOrigin](
+    def create_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: PipelineLayoutCreateInfo,
@@ -8928,7 +9076,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=pipeline_layout).bitcast[PipelineLayout]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_pipeline_layout[p_allocator_origin: ImmutOrigin](
+    def destroy_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         pipeline_layout: PipelineLayout,
@@ -8944,7 +9092,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_sampler[p_allocator_origin: ImmutOrigin](
+    def create_sampler[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: SamplerCreateInfo,
@@ -8962,7 +9110,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=sampler).bitcast[Sampler]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_sampler[p_allocator_origin: ImmutOrigin](
+    def destroy_sampler[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         sampler: Sampler,
@@ -8978,7 +9126,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_descriptor_set_layout[p_allocator_origin: ImmutOrigin](
+    def create_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
@@ -8996,7 +9144,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=set_layout).bitcast[DescriptorSetLayout]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_descriptor_set_layout[p_allocator_origin: ImmutOrigin](
+    def destroy_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_set_layout: DescriptorSetLayout,
@@ -9012,7 +9160,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_descriptor_pool[p_allocator_origin: ImmutOrigin](
+    def create_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: DescriptorPoolCreateInfo,
@@ -9030,7 +9178,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=descriptor_pool).bitcast[DescriptorPool]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_descriptor_pool[p_allocator_origin: ImmutOrigin](
+    def destroy_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
@@ -9055,7 +9203,7 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.reset_descriptor_pool(device, descriptor_pool, flags)
 
-    def allocate_descriptor_sets[p_descriptor_sets_origin: MutOrigin](
+    def allocate_descriptor_sets[p_descriptor_sets_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         allocate_info: DescriptorSetAllocateInfo,
@@ -9071,7 +9219,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, MutUntrackedOrigin]]()[],
         )
 
-    def free_descriptor_sets[p_descriptor_sets_origin: ImmutOrigin](
+    def free_descriptor_sets[p_descriptor_sets_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
@@ -9090,7 +9238,8 @@ struct DeviceFunctionsV1_2(Copyable):
         )
 
     def update_descriptor_sets[
-        p_descriptor_writes_origin: ImmutOrigin, p_descriptor_copies_origin: ImmutOrigin
+        p_descriptor_writes_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_descriptor_copies_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -9124,7 +9273,8 @@ struct DeviceFunctionsV1_2(Copyable):
         return self._v1_0.cmd_bind_pipeline(command_buffer, pipeline_bind_point, pipeline)
 
     def cmd_bind_descriptor_sets[
-        p_descriptor_sets_origin: ImmutOrigin, p_dynamic_offsets_origin: ImmutOrigin
+        p_descriptor_sets_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_dynamic_offsets_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -9151,7 +9301,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_dynamic_offsets).bitcast[Ptr[UInt32, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_clear_color_image[p_ranges_origin: ImmutOrigin](
+    def cmd_clear_color_image[p_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
@@ -9214,10 +9364,10 @@ struct DeviceFunctionsV1_2(Copyable):
         return self._v1_0.cmd_reset_event(command_buffer, event, stage_mask)
 
     def cmd_wait_events[
-        p_events_origin: ImmutOrigin,
-        p_memory_barriers_origin: ImmutOrigin,
-        p_buffer_memory_barriers_origin: ImmutOrigin,
-        p_image_memory_barriers_origin: ImmutOrigin,
+        p_events_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -9250,7 +9400,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_image_memory_barriers).bitcast[Ptr[ImageMemoryBarrier, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_push_constants[p_values_origin: ImmutOrigin](
+    def cmd_push_constants[p_values_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         layout: PipelineLayout,
@@ -9273,9 +9423,9 @@ struct DeviceFunctionsV1_2(Copyable):
         )
 
     def create_graphics_pipelines[
-        p_create_infos_origin: ImmutOrigin,
-        p_allocator_origin: ImmutOrigin,
-        p_pipelines_origin: MutOrigin,
+        p_create_infos_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_pipelines_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -9298,7 +9448,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutUntrackedOrigin]]()[],
         )
 
-    def create_framebuffer[p_allocator_origin: ImmutOrigin](
+    def create_framebuffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: FramebufferCreateInfo,
@@ -9316,7 +9466,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=framebuffer).bitcast[Framebuffer]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_framebuffer[p_allocator_origin: ImmutOrigin](
+    def destroy_framebuffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         framebuffer: Framebuffer,
@@ -9332,7 +9482,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_render_pass[p_allocator_origin: ImmutOrigin](
+    def create_render_pass[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo,
@@ -9350,7 +9500,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=render_pass).bitcast[RenderPass]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_render_pass[p_allocator_origin: ImmutOrigin](
+    def destroy_render_pass[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         render_pass: RenderPass,
@@ -9379,7 +9529,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=granularity).bitcast[Extent2D]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def cmd_set_viewport[p_viewports_origin: ImmutOrigin](
+    def cmd_set_viewport[p_viewports_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
@@ -9397,7 +9547,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_viewports).bitcast[Ptr[Viewport, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_set_scissor[p_scissors_origin: ImmutOrigin](
+    def cmd_set_scissor[p_scissors_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         first_scissor: UInt32,
@@ -9495,7 +9645,10 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.cmd_bind_index_buffer(command_buffer, buffer, offset, index_type)
 
-    def cmd_bind_vertex_buffers[p_buffers_origin: ImmutOrigin, p_offsets_origin: ImmutOrigin](
+    def cmd_bind_vertex_buffers[
+        p_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_offsets_origin: ImmutOrigin = ImmutUntrackedOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         first_binding: UInt32,
@@ -9576,7 +9729,7 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.cmd_draw_indexed_indirect(command_buffer, buffer, offset, draw_count, stride)
 
-    def cmd_blit_image[p_regions_origin: ImmutOrigin](
+    def cmd_blit_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -9602,7 +9755,7 @@ struct DeviceFunctionsV1_2(Copyable):
             filter,
         )
 
-    def cmd_clear_depth_stencil_image[p_ranges_origin: ImmutOrigin](
+    def cmd_clear_depth_stencil_image[p_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
@@ -9624,7 +9777,10 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_ranges).bitcast[Ptr[ImageSubresourceRange, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_clear_attachments[p_attachments_origin: ImmutOrigin, p_rects_origin: ImmutOrigin](
+    def cmd_clear_attachments[
+        p_attachments_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_rects_origin: ImmutOrigin = ImmutUntrackedOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
@@ -9644,7 +9800,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_rects).bitcast[Ptr[ClearRect, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_resolve_image[p_regions_origin: ImmutOrigin](
+    def cmd_resolve_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -9698,7 +9854,7 @@ struct DeviceFunctionsV1_2(Copyable):
         """
         return self._v1_0.cmd_end_render_pass(command_buffer)
 
-    def bind_buffer_memory_2[p_bind_infos_origin: ImmutOrigin](
+    def bind_buffer_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
@@ -9714,7 +9870,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_bind_infos).bitcast[Ptr[BindBufferMemoryInfo, ImmutUntrackedOrigin]]()[],
         )
 
-    def bind_image_memory_2[p_bind_infos_origin: ImmutOrigin](
+    def bind_image_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
@@ -9789,7 +9945,9 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=memory_requirements).bitcast[MemoryRequirements2]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_image_sparse_memory_requirements_2[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         device: Device,
         info: ImageSparseMemoryRequirementsInfo2,
@@ -9807,7 +9965,9 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_sparse_memory_requirements).bitcast[Optional[Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin]]]()[],
         )
 
-    def get_image_sparse_memory_requirements_2[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, device: Device, info: ImageSparseMemoryRequirementsInfo2
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
@@ -9876,7 +10036,7 @@ struct DeviceFunctionsV1_2(Copyable):
             group_count_z,
         )
 
-    def create_descriptor_update_template[p_allocator_origin: ImmutOrigin](
+    def create_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: DescriptorUpdateTemplateCreateInfo,
@@ -9894,7 +10054,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_descriptor_update_template[p_allocator_origin: ImmutOrigin](
+    def destroy_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
@@ -9910,7 +10070,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def update_descriptor_set_with_template[p_data_origin: ImmutOrigin](
+    def update_descriptor_set_with_template[p_data_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_set: DescriptorSet,
@@ -9944,7 +10104,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=support).bitcast[DescriptorSetLayoutSupport]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def create_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin](
+    def create_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: SamplerYcbcrConversionCreateInfo,
@@ -9962,7 +10122,7 @@ struct DeviceFunctionsV1_2(Copyable):
             Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin](
+    def destroy_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
@@ -10093,7 +10253,7 @@ struct DeviceFunctionsV1_2(Copyable):
             command_buffer, buffer, offset, count_buffer, count_buffer_offset, max_draw_count, stride
         )
 
-    def create_render_pass_2[p_allocator_origin: ImmutOrigin](
+    def create_render_pass_2[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo2,
@@ -10170,7 +10330,7 @@ struct DeviceFunctionsV1_3(Copyable):
         self._v1_2 = DeviceFunctionsAdditionsV1_2(self._dlhandle, device)
         self._v1_3 = DeviceFunctionsAdditionsV1_3(self._dlhandle, device)
 
-    def get_device_proc_addr[p_name_origin: ImmutOrigin](
+    def get_device_proc_addr[p_name_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, device: Device, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
@@ -10181,7 +10341,7 @@ struct DeviceFunctionsV1_3(Copyable):
             device, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
-    def destroy_device[p_allocator_origin: ImmutOrigin](
+    def destroy_device[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, device: Device, p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]]
     ):
         """See official vulkan docs for details.
@@ -10207,7 +10367,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=queue).bitcast[Queue]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def queue_submit[p_submits_origin: ImmutOrigin](
+    def queue_submit[p_submits_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         queue: Queue,
         submit_count: UInt32,
@@ -10236,7 +10396,7 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.device_wait_idle(device)
 
-    def allocate_memory[p_allocator_origin: ImmutOrigin](
+    def allocate_memory[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         allocate_info: MemoryAllocateInfo,
@@ -10254,7 +10414,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=memory).bitcast[DeviceMemory]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def free_memory[p_allocator_origin: ImmutOrigin](
+    def free_memory[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
@@ -10270,7 +10430,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def map_memory[p_data_origin: MutOrigin](
+    def map_memory[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
@@ -10299,7 +10459,7 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.unmap_memory(device, memory)
 
-    def flush_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin](
+    def flush_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
@@ -10315,7 +10475,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_memory_ranges).bitcast[Ptr[MappedMemoryRange, ImmutUntrackedOrigin]]()[],
         )
 
-    def invalidate_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin](
+    def invalidate_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
@@ -10388,7 +10548,9 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=memory_requirements).bitcast[MemoryRequirements]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_image_sparse_memory_requirements[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         device: Device,
         image: Image,
@@ -10406,7 +10568,9 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_sparse_memory_requirements).bitcast[Optional[Ptr[SparseImageMemoryRequirements, MutUntrackedOrigin]]]()[],
         )
 
-    def get_image_sparse_memory_requirements[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, device: Device, image: Image
     ) -> List[SparseImageMemoryRequirements]:
         """See official vulkan docs for details.
@@ -10431,7 +10595,7 @@ struct DeviceFunctionsV1_3(Copyable):
         list._len = Int(count)
         return list^
 
-    def queue_bind_sparse[p_bind_info_origin: ImmutOrigin](
+    def queue_bind_sparse[p_bind_info_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         queue: Queue,
         bind_info_count: UInt32,
@@ -10449,7 +10613,7 @@ struct DeviceFunctionsV1_3(Copyable):
             fence,
         )
 
-    def create_fence[p_allocator_origin: ImmutOrigin](
+    def create_fence[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: FenceCreateInfo,
@@ -10467,7 +10631,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=fence).bitcast[Fence]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_fence[p_allocator_origin: ImmutOrigin](
+    def destroy_fence[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         fence: Fence,
@@ -10483,7 +10647,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def reset_fences[p_fences_origin: ImmutOrigin](
+    def reset_fences[p_fences_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence, p_fences_origin]
     ) -> Result:
         """See official vulkan docs for details.
@@ -10501,7 +10665,7 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.get_fence_status(device, fence)
 
-    def wait_for_fences[p_fences_origin: ImmutOrigin](
+    def wait_for_fences[p_fences_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         fence_count: UInt32,
@@ -10521,7 +10685,7 @@ struct DeviceFunctionsV1_3(Copyable):
             timeout,
         )
 
-    def create_semaphore[p_allocator_origin: ImmutOrigin](
+    def create_semaphore[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: SemaphoreCreateInfo,
@@ -10539,7 +10703,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=semaphore).bitcast[Semaphore]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_semaphore[p_allocator_origin: ImmutOrigin](
+    def destroy_semaphore[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         semaphore: Semaphore,
@@ -10555,7 +10719,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_query_pool[p_allocator_origin: ImmutOrigin](
+    def create_query_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: QueryPoolCreateInfo,
@@ -10573,7 +10737,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=query_pool).bitcast[QueryPool]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_query_pool[p_allocator_origin: ImmutOrigin](
+    def destroy_query_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
@@ -10589,7 +10753,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def get_query_pool_results[p_data_origin: MutOrigin](
+    def get_query_pool_results[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
@@ -10615,7 +10779,7 @@ struct DeviceFunctionsV1_3(Copyable):
             flags,
         )
 
-    def create_buffer[p_allocator_origin: ImmutOrigin](
+    def create_buffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: BufferCreateInfo,
@@ -10633,7 +10797,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=buffer).bitcast[Buffer]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_buffer[p_allocator_origin: ImmutOrigin](
+    def destroy_buffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         buffer: Buffer,
@@ -10649,7 +10813,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_image[p_allocator_origin: ImmutOrigin](
+    def create_image[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: ImageCreateInfo,
@@ -10667,7 +10831,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=image).bitcast[Image]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_image[p_allocator_origin: ImmutOrigin](
+    def destroy_image[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         image: Image,
@@ -10701,7 +10865,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=layout).bitcast[SubresourceLayout]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def create_image_view[p_allocator_origin: ImmutOrigin](
+    def create_image_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: ImageViewCreateInfo,
@@ -10719,7 +10883,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=view).bitcast[ImageView]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_image_view[p_allocator_origin: ImmutOrigin](
+    def destroy_image_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         image_view: ImageView,
@@ -10735,7 +10899,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_command_pool[p_allocator_origin: ImmutOrigin](
+    def create_command_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: CommandPoolCreateInfo,
@@ -10753,7 +10917,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=command_pool).bitcast[CommandPool]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_command_pool[p_allocator_origin: ImmutOrigin](
+    def destroy_command_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
@@ -10778,7 +10942,7 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.reset_command_pool(device, command_pool, flags)
 
-    def allocate_command_buffers[p_command_buffers_origin: MutOrigin](
+    def allocate_command_buffers[p_command_buffers_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         allocate_info: CommandBufferAllocateInfo,
@@ -10794,7 +10958,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, MutUntrackedOrigin]]()[],
         )
 
-    def free_command_buffers[p_command_buffers_origin: ImmutOrigin](
+    def free_command_buffers[p_command_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
@@ -10840,7 +11004,7 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.reset_command_buffer(command_buffer, flags)
 
-    def cmd_copy_buffer[p_regions_origin: ImmutOrigin](
+    def cmd_copy_buffer[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
@@ -10860,7 +11024,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[BufferCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_copy_image[p_regions_origin: ImmutOrigin](
+    def cmd_copy_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -10884,7 +11048,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[ImageCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_copy_buffer_to_image[p_regions_origin: ImmutOrigin](
+    def cmd_copy_buffer_to_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
@@ -10906,7 +11070,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_copy_image_to_buffer[p_regions_origin: ImmutOrigin](
+    def cmd_copy_image_to_buffer[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -10928,7 +11092,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_update_buffer[p_data_origin: ImmutOrigin](
+    def cmd_update_buffer[p_data_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         dst_buffer: Buffer,
@@ -10963,9 +11127,9 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_0.cmd_fill_buffer(command_buffer, dst_buffer, dst_offset, size, data)
 
     def cmd_pipeline_barrier[
-        p_memory_barriers_origin: ImmutOrigin,
-        p_buffer_memory_barriers_origin: ImmutOrigin,
-        p_image_memory_barriers_origin: ImmutOrigin,
+        p_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -11061,7 +11225,7 @@ struct DeviceFunctionsV1_3(Copyable):
             command_buffer, query_pool, first_query, query_count, dst_buffer, dst_offset, stride, flags
         )
 
-    def cmd_execute_commands[p_command_buffers_origin: ImmutOrigin](
+    def cmd_execute_commands[p_command_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         command_buffer_count: UInt32,
@@ -11077,7 +11241,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, ImmutUntrackedOrigin]]()[],
         )
 
-    def create_event[p_allocator_origin: ImmutOrigin](
+    def create_event[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: EventCreateInfo,
@@ -11095,7 +11259,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=event).bitcast[Event]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_event[p_allocator_origin: ImmutOrigin](
+    def destroy_event[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         event: Event,
@@ -11132,7 +11296,7 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.reset_event(device, event)
 
-    def create_buffer_view[p_allocator_origin: ImmutOrigin](
+    def create_buffer_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: BufferViewCreateInfo,
@@ -11150,7 +11314,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=view).bitcast[BufferView]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_buffer_view[p_allocator_origin: ImmutOrigin](
+    def destroy_buffer_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         buffer_view: BufferView,
@@ -11166,7 +11330,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_shader_module[p_allocator_origin: ImmutOrigin](
+    def create_shader_module[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
@@ -11184,7 +11348,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=shader_module).bitcast[ShaderModule]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_shader_module[p_allocator_origin: ImmutOrigin](
+    def destroy_shader_module[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         shader_module: ShaderModule,
@@ -11200,7 +11364,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_pipeline_cache[p_allocator_origin: ImmutOrigin](
+    def create_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: PipelineCacheCreateInfo,
@@ -11218,7 +11382,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=pipeline_cache).bitcast[PipelineCache]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_pipeline_cache[p_allocator_origin: ImmutOrigin](
+    def destroy_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
@@ -11234,7 +11398,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def get_pipeline_cache_data[p_data_origin: MutOrigin](
+    def get_pipeline_cache_data[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
@@ -11252,7 +11416,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_data).bitcast[Optional[Ptr[NoneType, MutUntrackedOrigin]]]()[],
         )
 
-    def get_pipeline_cache_data[p_data_origin: MutOrigin](
+    def get_pipeline_cache_data[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self, device: Device, pipeline_cache: PipelineCache
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
@@ -11280,7 +11444,7 @@ struct DeviceFunctionsV1_3(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def merge_pipeline_caches[p_src_caches_origin: ImmutOrigin](
+    def merge_pipeline_caches[p_src_caches_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         dst_cache: PipelineCache,
@@ -11299,9 +11463,9 @@ struct DeviceFunctionsV1_3(Copyable):
         )
 
     def create_compute_pipelines[
-        p_create_infos_origin: ImmutOrigin,
-        p_allocator_origin: ImmutOrigin,
-        p_pipelines_origin: MutOrigin,
+        p_create_infos_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_pipelines_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -11324,7 +11488,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutUntrackedOrigin]]()[],
         )
 
-    def destroy_pipeline[p_allocator_origin: ImmutOrigin](
+    def destroy_pipeline[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
@@ -11340,7 +11504,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_pipeline_layout[p_allocator_origin: ImmutOrigin](
+    def create_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: PipelineLayoutCreateInfo,
@@ -11358,7 +11522,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=pipeline_layout).bitcast[PipelineLayout]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_pipeline_layout[p_allocator_origin: ImmutOrigin](
+    def destroy_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         pipeline_layout: PipelineLayout,
@@ -11374,7 +11538,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_sampler[p_allocator_origin: ImmutOrigin](
+    def create_sampler[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: SamplerCreateInfo,
@@ -11392,7 +11556,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=sampler).bitcast[Sampler]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_sampler[p_allocator_origin: ImmutOrigin](
+    def destroy_sampler[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         sampler: Sampler,
@@ -11408,7 +11572,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_descriptor_set_layout[p_allocator_origin: ImmutOrigin](
+    def create_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
@@ -11426,7 +11590,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=set_layout).bitcast[DescriptorSetLayout]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_descriptor_set_layout[p_allocator_origin: ImmutOrigin](
+    def destroy_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_set_layout: DescriptorSetLayout,
@@ -11442,7 +11606,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_descriptor_pool[p_allocator_origin: ImmutOrigin](
+    def create_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: DescriptorPoolCreateInfo,
@@ -11460,7 +11624,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=descriptor_pool).bitcast[DescriptorPool]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_descriptor_pool[p_allocator_origin: ImmutOrigin](
+    def destroy_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
@@ -11485,7 +11649,7 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.reset_descriptor_pool(device, descriptor_pool, flags)
 
-    def allocate_descriptor_sets[p_descriptor_sets_origin: MutOrigin](
+    def allocate_descriptor_sets[p_descriptor_sets_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         allocate_info: DescriptorSetAllocateInfo,
@@ -11501,7 +11665,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, MutUntrackedOrigin]]()[],
         )
 
-    def free_descriptor_sets[p_descriptor_sets_origin: ImmutOrigin](
+    def free_descriptor_sets[p_descriptor_sets_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
@@ -11520,7 +11684,8 @@ struct DeviceFunctionsV1_3(Copyable):
         )
 
     def update_descriptor_sets[
-        p_descriptor_writes_origin: ImmutOrigin, p_descriptor_copies_origin: ImmutOrigin
+        p_descriptor_writes_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_descriptor_copies_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -11554,7 +11719,8 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_0.cmd_bind_pipeline(command_buffer, pipeline_bind_point, pipeline)
 
     def cmd_bind_descriptor_sets[
-        p_descriptor_sets_origin: ImmutOrigin, p_dynamic_offsets_origin: ImmutOrigin
+        p_descriptor_sets_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_dynamic_offsets_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -11581,7 +11747,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_dynamic_offsets).bitcast[Ptr[UInt32, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_clear_color_image[p_ranges_origin: ImmutOrigin](
+    def cmd_clear_color_image[p_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
@@ -11644,10 +11810,10 @@ struct DeviceFunctionsV1_3(Copyable):
         return self._v1_0.cmd_reset_event(command_buffer, event, stage_mask)
 
     def cmd_wait_events[
-        p_events_origin: ImmutOrigin,
-        p_memory_barriers_origin: ImmutOrigin,
-        p_buffer_memory_barriers_origin: ImmutOrigin,
-        p_image_memory_barriers_origin: ImmutOrigin,
+        p_events_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -11680,7 +11846,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_image_memory_barriers).bitcast[Ptr[ImageMemoryBarrier, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_push_constants[p_values_origin: ImmutOrigin](
+    def cmd_push_constants[p_values_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         layout: PipelineLayout,
@@ -11703,9 +11869,9 @@ struct DeviceFunctionsV1_3(Copyable):
         )
 
     def create_graphics_pipelines[
-        p_create_infos_origin: ImmutOrigin,
-        p_allocator_origin: ImmutOrigin,
-        p_pipelines_origin: MutOrigin,
+        p_create_infos_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_pipelines_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -11728,7 +11894,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutUntrackedOrigin]]()[],
         )
 
-    def create_framebuffer[p_allocator_origin: ImmutOrigin](
+    def create_framebuffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: FramebufferCreateInfo,
@@ -11746,7 +11912,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=framebuffer).bitcast[Framebuffer]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_framebuffer[p_allocator_origin: ImmutOrigin](
+    def destroy_framebuffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         framebuffer: Framebuffer,
@@ -11762,7 +11928,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_render_pass[p_allocator_origin: ImmutOrigin](
+    def create_render_pass[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo,
@@ -11780,7 +11946,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=render_pass).bitcast[RenderPass]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_render_pass[p_allocator_origin: ImmutOrigin](
+    def destroy_render_pass[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         render_pass: RenderPass,
@@ -11809,7 +11975,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=granularity).bitcast[Extent2D]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def cmd_set_viewport[p_viewports_origin: ImmutOrigin](
+    def cmd_set_viewport[p_viewports_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
@@ -11827,7 +11993,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_viewports).bitcast[Ptr[Viewport, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_set_scissor[p_scissors_origin: ImmutOrigin](
+    def cmd_set_scissor[p_scissors_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         first_scissor: UInt32,
@@ -11925,7 +12091,10 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.cmd_bind_index_buffer(command_buffer, buffer, offset, index_type)
 
-    def cmd_bind_vertex_buffers[p_buffers_origin: ImmutOrigin, p_offsets_origin: ImmutOrigin](
+    def cmd_bind_vertex_buffers[
+        p_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_offsets_origin: ImmutOrigin = ImmutUntrackedOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         first_binding: UInt32,
@@ -12006,7 +12175,7 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.cmd_draw_indexed_indirect(command_buffer, buffer, offset, draw_count, stride)
 
-    def cmd_blit_image[p_regions_origin: ImmutOrigin](
+    def cmd_blit_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -12032,7 +12201,7 @@ struct DeviceFunctionsV1_3(Copyable):
             filter,
         )
 
-    def cmd_clear_depth_stencil_image[p_ranges_origin: ImmutOrigin](
+    def cmd_clear_depth_stencil_image[p_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
@@ -12054,7 +12223,10 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_ranges).bitcast[Ptr[ImageSubresourceRange, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_clear_attachments[p_attachments_origin: ImmutOrigin, p_rects_origin: ImmutOrigin](
+    def cmd_clear_attachments[
+        p_attachments_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_rects_origin: ImmutOrigin = ImmutUntrackedOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
@@ -12074,7 +12246,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_rects).bitcast[Ptr[ClearRect, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_resolve_image[p_regions_origin: ImmutOrigin](
+    def cmd_resolve_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -12128,7 +12300,7 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_0.cmd_end_render_pass(command_buffer)
 
-    def bind_buffer_memory_2[p_bind_infos_origin: ImmutOrigin](
+    def bind_buffer_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
@@ -12144,7 +12316,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_bind_infos).bitcast[Ptr[BindBufferMemoryInfo, ImmutUntrackedOrigin]]()[],
         )
 
-    def bind_image_memory_2[p_bind_infos_origin: ImmutOrigin](
+    def bind_image_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
@@ -12219,7 +12391,9 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=memory_requirements).bitcast[MemoryRequirements2]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_image_sparse_memory_requirements_2[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         device: Device,
         info: ImageSparseMemoryRequirementsInfo2,
@@ -12237,7 +12411,9 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_sparse_memory_requirements).bitcast[Optional[Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin]]]()[],
         )
 
-    def get_image_sparse_memory_requirements_2[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, device: Device, info: ImageSparseMemoryRequirementsInfo2
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
@@ -12306,7 +12482,7 @@ struct DeviceFunctionsV1_3(Copyable):
             group_count_z,
         )
 
-    def create_descriptor_update_template[p_allocator_origin: ImmutOrigin](
+    def create_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: DescriptorUpdateTemplateCreateInfo,
@@ -12324,7 +12500,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_descriptor_update_template[p_allocator_origin: ImmutOrigin](
+    def destroy_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
@@ -12340,7 +12516,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def update_descriptor_set_with_template[p_data_origin: ImmutOrigin](
+    def update_descriptor_set_with_template[p_data_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_set: DescriptorSet,
@@ -12374,7 +12550,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=support).bitcast[DescriptorSetLayoutSupport]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def create_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin](
+    def create_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: SamplerYcbcrConversionCreateInfo,
@@ -12392,7 +12568,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin](
+    def destroy_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
@@ -12523,7 +12699,7 @@ struct DeviceFunctionsV1_3(Copyable):
             command_buffer, buffer, offset, count_buffer, count_buffer_offset, max_draw_count, stride
         )
 
-    def create_render_pass_2[p_allocator_origin: ImmutOrigin](
+    def create_render_pass_2[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo2,
@@ -12585,7 +12761,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=subpass_end_info).bitcast[SubpassEndInfo]().unsafe_origin_cast[ImmutUntrackedOrigin](),
         )
 
-    def create_private_data_slot[p_allocator_origin: ImmutOrigin](
+    def create_private_data_slot[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: PrivateDataSlotCreateInfo,
@@ -12603,7 +12779,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=private_data_slot).bitcast[PrivateDataSlot]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_private_data_slot[p_allocator_origin: ImmutOrigin](
+    def destroy_private_data_slot[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         private_data_slot: PrivateDataSlot,
@@ -12678,7 +12854,7 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_3.cmd_write_timestamp_2(command_buffer, stage, query_pool, query)
 
-    def queue_submit_2[p_submits_origin: ImmutOrigin](
+    def queue_submit_2[p_submits_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         queue: Queue,
         submit_count: UInt32,
@@ -12772,7 +12948,9 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=memory_requirements).bitcast[MemoryRequirements2]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_device_image_sparse_memory_requirements[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_device_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         device: Device,
         info: DeviceImageMemoryRequirements,
@@ -12790,7 +12968,9 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_sparse_memory_requirements).bitcast[Optional[Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin]]]()[],
         )
 
-    def get_device_image_sparse_memory_requirements[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_device_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, device: Device, info: DeviceImageMemoryRequirements
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
@@ -12837,7 +13017,10 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_3.cmd_reset_event_2(command_buffer, event, stage_mask)
 
-    def cmd_wait_events_2[p_events_origin: ImmutOrigin, p_dependency_infos_origin: ImmutOrigin](
+    def cmd_wait_events_2[
+        p_events_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_dependency_infos_origin: ImmutOrigin = ImmutUntrackedOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
@@ -12917,7 +13100,7 @@ struct DeviceFunctionsV1_3(Copyable):
         """
         return self._v1_3.cmd_set_primitive_topology(command_buffer, primitive_topology)
 
-    def cmd_set_viewport_with_count[p_viewports_origin: ImmutOrigin](
+    def cmd_set_viewport_with_count[p_viewports_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         viewport_count: UInt32,
@@ -12933,7 +13116,7 @@ struct DeviceFunctionsV1_3(Copyable):
             Ptr(to=p_viewports).bitcast[Ptr[Viewport, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_set_scissor_with_count[p_scissors_origin: ImmutOrigin](
+    def cmd_set_scissor_with_count[p_scissors_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         scissor_count: UInt32,
@@ -12948,10 +13131,10 @@ struct DeviceFunctionsV1_3(Copyable):
         )
 
     def cmd_bind_vertex_buffers_2[
-        p_buffers_origin: ImmutOrigin,
-        p_offsets_origin: ImmutOrigin,
-        p_sizes_origin: ImmutOrigin,
-        p_strides_origin: ImmutOrigin,
+        p_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_offsets_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_sizes_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_strides_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -13076,7 +13259,7 @@ struct DeviceFunctionsV1_4(Copyable):
         self._v1_3 = DeviceFunctionsAdditionsV1_3(self._dlhandle, device)
         self._v1_4 = DeviceFunctionsAdditionsV1_4(self._dlhandle, device)
 
-    def get_device_proc_addr[p_name_origin: ImmutOrigin](
+    def get_device_proc_addr[p_name_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, device: Device, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
@@ -13087,7 +13270,7 @@ struct DeviceFunctionsV1_4(Copyable):
             device, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
-    def destroy_device[p_allocator_origin: ImmutOrigin](
+    def destroy_device[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, device: Device, p_allocator: Optional[Ptr[AllocationCallbacks, p_allocator_origin]]
     ):
         """See official vulkan docs for details.
@@ -13113,7 +13296,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=queue).bitcast[Queue]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def queue_submit[p_submits_origin: ImmutOrigin](
+    def queue_submit[p_submits_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         queue: Queue,
         submit_count: UInt32,
@@ -13142,7 +13325,7 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.device_wait_idle(device)
 
-    def allocate_memory[p_allocator_origin: ImmutOrigin](
+    def allocate_memory[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         allocate_info: MemoryAllocateInfo,
@@ -13160,7 +13343,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=memory).bitcast[DeviceMemory]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def free_memory[p_allocator_origin: ImmutOrigin](
+    def free_memory[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
@@ -13176,7 +13359,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def map_memory[p_data_origin: MutOrigin](
+    def map_memory[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         memory: DeviceMemory,
@@ -13205,7 +13388,7 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.unmap_memory(device, memory)
 
-    def flush_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin](
+    def flush_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
@@ -13221,7 +13404,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_memory_ranges).bitcast[Ptr[MappedMemoryRange, ImmutUntrackedOrigin]]()[],
         )
 
-    def invalidate_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin](
+    def invalidate_mapped_memory_ranges[p_memory_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         memory_range_count: UInt32,
@@ -13294,7 +13477,9 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=memory_requirements).bitcast[MemoryRequirements]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_image_sparse_memory_requirements[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         device: Device,
         image: Image,
@@ -13312,7 +13497,9 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_sparse_memory_requirements).bitcast[Optional[Ptr[SparseImageMemoryRequirements, MutUntrackedOrigin]]]()[],
         )
 
-    def get_image_sparse_memory_requirements[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, device: Device, image: Image
     ) -> List[SparseImageMemoryRequirements]:
         """See official vulkan docs for details.
@@ -13337,7 +13524,7 @@ struct DeviceFunctionsV1_4(Copyable):
         list._len = Int(count)
         return list^
 
-    def queue_bind_sparse[p_bind_info_origin: ImmutOrigin](
+    def queue_bind_sparse[p_bind_info_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         queue: Queue,
         bind_info_count: UInt32,
@@ -13355,7 +13542,7 @@ struct DeviceFunctionsV1_4(Copyable):
             fence,
         )
 
-    def create_fence[p_allocator_origin: ImmutOrigin](
+    def create_fence[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: FenceCreateInfo,
@@ -13373,7 +13560,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=fence).bitcast[Fence]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_fence[p_allocator_origin: ImmutOrigin](
+    def destroy_fence[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         fence: Fence,
@@ -13389,7 +13576,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def reset_fences[p_fences_origin: ImmutOrigin](
+    def reset_fences[p_fences_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self, device: Device, fence_count: UInt32, p_fences: Ptr[Fence, p_fences_origin]
     ) -> Result:
         """See official vulkan docs for details.
@@ -13407,7 +13594,7 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.get_fence_status(device, fence)
 
-    def wait_for_fences[p_fences_origin: ImmutOrigin](
+    def wait_for_fences[p_fences_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         fence_count: UInt32,
@@ -13427,7 +13614,7 @@ struct DeviceFunctionsV1_4(Copyable):
             timeout,
         )
 
-    def create_semaphore[p_allocator_origin: ImmutOrigin](
+    def create_semaphore[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: SemaphoreCreateInfo,
@@ -13445,7 +13632,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=semaphore).bitcast[Semaphore]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_semaphore[p_allocator_origin: ImmutOrigin](
+    def destroy_semaphore[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         semaphore: Semaphore,
@@ -13461,7 +13648,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_query_pool[p_allocator_origin: ImmutOrigin](
+    def create_query_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: QueryPoolCreateInfo,
@@ -13479,7 +13666,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=query_pool).bitcast[QueryPool]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_query_pool[p_allocator_origin: ImmutOrigin](
+    def destroy_query_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
@@ -13495,7 +13682,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def get_query_pool_results[p_data_origin: MutOrigin](
+    def get_query_pool_results[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         query_pool: QueryPool,
@@ -13521,7 +13708,7 @@ struct DeviceFunctionsV1_4(Copyable):
             flags,
         )
 
-    def create_buffer[p_allocator_origin: ImmutOrigin](
+    def create_buffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: BufferCreateInfo,
@@ -13539,7 +13726,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=buffer).bitcast[Buffer]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_buffer[p_allocator_origin: ImmutOrigin](
+    def destroy_buffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         buffer: Buffer,
@@ -13555,7 +13742,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_image[p_allocator_origin: ImmutOrigin](
+    def create_image[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: ImageCreateInfo,
@@ -13573,7 +13760,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=image).bitcast[Image]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_image[p_allocator_origin: ImmutOrigin](
+    def destroy_image[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         image: Image,
@@ -13607,7 +13794,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=layout).bitcast[SubresourceLayout]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def create_image_view[p_allocator_origin: ImmutOrigin](
+    def create_image_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: ImageViewCreateInfo,
@@ -13625,7 +13812,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=view).bitcast[ImageView]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_image_view[p_allocator_origin: ImmutOrigin](
+    def destroy_image_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         image_view: ImageView,
@@ -13641,7 +13828,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_command_pool[p_allocator_origin: ImmutOrigin](
+    def create_command_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: CommandPoolCreateInfo,
@@ -13659,7 +13846,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=command_pool).bitcast[CommandPool]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_command_pool[p_allocator_origin: ImmutOrigin](
+    def destroy_command_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
@@ -13684,7 +13871,7 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.reset_command_pool(device, command_pool, flags)
 
-    def allocate_command_buffers[p_command_buffers_origin: MutOrigin](
+    def allocate_command_buffers[p_command_buffers_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         allocate_info: CommandBufferAllocateInfo,
@@ -13700,7 +13887,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, MutUntrackedOrigin]]()[],
         )
 
-    def free_command_buffers[p_command_buffers_origin: ImmutOrigin](
+    def free_command_buffers[p_command_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         command_pool: CommandPool,
@@ -13746,7 +13933,7 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.reset_command_buffer(command_buffer, flags)
 
-    def cmd_copy_buffer[p_regions_origin: ImmutOrigin](
+    def cmd_copy_buffer[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
@@ -13766,7 +13953,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[BufferCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_copy_image[p_regions_origin: ImmutOrigin](
+    def cmd_copy_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -13790,7 +13977,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[ImageCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_copy_buffer_to_image[p_regions_origin: ImmutOrigin](
+    def cmd_copy_buffer_to_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_buffer: Buffer,
@@ -13812,7 +13999,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_copy_image_to_buffer[p_regions_origin: ImmutOrigin](
+    def cmd_copy_image_to_buffer[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -13834,7 +14021,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_regions).bitcast[Ptr[BufferImageCopy, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_update_buffer[p_data_origin: ImmutOrigin](
+    def cmd_update_buffer[p_data_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         dst_buffer: Buffer,
@@ -13869,9 +14056,9 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_0.cmd_fill_buffer(command_buffer, dst_buffer, dst_offset, size, data)
 
     def cmd_pipeline_barrier[
-        p_memory_barriers_origin: ImmutOrigin,
-        p_buffer_memory_barriers_origin: ImmutOrigin,
-        p_image_memory_barriers_origin: ImmutOrigin,
+        p_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -13967,7 +14154,7 @@ struct DeviceFunctionsV1_4(Copyable):
             command_buffer, query_pool, first_query, query_count, dst_buffer, dst_offset, stride, flags
         )
 
-    def cmd_execute_commands[p_command_buffers_origin: ImmutOrigin](
+    def cmd_execute_commands[p_command_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         command_buffer_count: UInt32,
@@ -13983,7 +14170,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_command_buffers).bitcast[Ptr[CommandBuffer, ImmutUntrackedOrigin]]()[],
         )
 
-    def create_event[p_allocator_origin: ImmutOrigin](
+    def create_event[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: EventCreateInfo,
@@ -14001,7 +14188,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=event).bitcast[Event]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_event[p_allocator_origin: ImmutOrigin](
+    def destroy_event[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         event: Event,
@@ -14038,7 +14225,7 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.reset_event(device, event)
 
-    def create_buffer_view[p_allocator_origin: ImmutOrigin](
+    def create_buffer_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: BufferViewCreateInfo,
@@ -14056,7 +14243,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=view).bitcast[BufferView]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_buffer_view[p_allocator_origin: ImmutOrigin](
+    def destroy_buffer_view[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         buffer_view: BufferView,
@@ -14072,7 +14259,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_shader_module[p_allocator_origin: ImmutOrigin](
+    def create_shader_module[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: ShaderModuleCreateInfo,
@@ -14090,7 +14277,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=shader_module).bitcast[ShaderModule]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_shader_module[p_allocator_origin: ImmutOrigin](
+    def destroy_shader_module[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         shader_module: ShaderModule,
@@ -14106,7 +14293,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_pipeline_cache[p_allocator_origin: ImmutOrigin](
+    def create_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: PipelineCacheCreateInfo,
@@ -14124,7 +14311,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=pipeline_cache).bitcast[PipelineCache]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_pipeline_cache[p_allocator_origin: ImmutOrigin](
+    def destroy_pipeline_cache[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
@@ -14140,7 +14327,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def get_pipeline_cache_data[p_data_origin: MutOrigin](
+    def get_pipeline_cache_data[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         pipeline_cache: PipelineCache,
@@ -14158,7 +14345,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_data).bitcast[Optional[Ptr[NoneType, MutUntrackedOrigin]]]()[],
         )
 
-    def get_pipeline_cache_data[p_data_origin: MutOrigin](
+    def get_pipeline_cache_data[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self, device: Device, pipeline_cache: PipelineCache
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
@@ -14186,7 +14373,7 @@ struct DeviceFunctionsV1_4(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def merge_pipeline_caches[p_src_caches_origin: ImmutOrigin](
+    def merge_pipeline_caches[p_src_caches_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         dst_cache: PipelineCache,
@@ -14205,9 +14392,9 @@ struct DeviceFunctionsV1_4(Copyable):
         )
 
     def create_compute_pipelines[
-        p_create_infos_origin: ImmutOrigin,
-        p_allocator_origin: ImmutOrigin,
-        p_pipelines_origin: MutOrigin,
+        p_create_infos_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_pipelines_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -14230,7 +14417,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutUntrackedOrigin]]()[],
         )
 
-    def destroy_pipeline[p_allocator_origin: ImmutOrigin](
+    def destroy_pipeline[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
@@ -14246,7 +14433,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_pipeline_layout[p_allocator_origin: ImmutOrigin](
+    def create_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: PipelineLayoutCreateInfo,
@@ -14264,7 +14451,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=pipeline_layout).bitcast[PipelineLayout]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_pipeline_layout[p_allocator_origin: ImmutOrigin](
+    def destroy_pipeline_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         pipeline_layout: PipelineLayout,
@@ -14280,7 +14467,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_sampler[p_allocator_origin: ImmutOrigin](
+    def create_sampler[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: SamplerCreateInfo,
@@ -14298,7 +14485,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=sampler).bitcast[Sampler]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_sampler[p_allocator_origin: ImmutOrigin](
+    def destroy_sampler[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         sampler: Sampler,
@@ -14314,7 +14501,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_descriptor_set_layout[p_allocator_origin: ImmutOrigin](
+    def create_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: DescriptorSetLayoutCreateInfo,
@@ -14332,7 +14519,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=set_layout).bitcast[DescriptorSetLayout]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_descriptor_set_layout[p_allocator_origin: ImmutOrigin](
+    def destroy_descriptor_set_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_set_layout: DescriptorSetLayout,
@@ -14348,7 +14535,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_descriptor_pool[p_allocator_origin: ImmutOrigin](
+    def create_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: DescriptorPoolCreateInfo,
@@ -14366,7 +14553,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=descriptor_pool).bitcast[DescriptorPool]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_descriptor_pool[p_allocator_origin: ImmutOrigin](
+    def destroy_descriptor_pool[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
@@ -14391,7 +14578,7 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.reset_descriptor_pool(device, descriptor_pool, flags)
 
-    def allocate_descriptor_sets[p_descriptor_sets_origin: MutOrigin](
+    def allocate_descriptor_sets[p_descriptor_sets_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         allocate_info: DescriptorSetAllocateInfo,
@@ -14407,7 +14594,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_descriptor_sets).bitcast[Ptr[DescriptorSet, MutUntrackedOrigin]]()[],
         )
 
-    def free_descriptor_sets[p_descriptor_sets_origin: ImmutOrigin](
+    def free_descriptor_sets[p_descriptor_sets_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_pool: DescriptorPool,
@@ -14426,7 +14613,8 @@ struct DeviceFunctionsV1_4(Copyable):
         )
 
     def update_descriptor_sets[
-        p_descriptor_writes_origin: ImmutOrigin, p_descriptor_copies_origin: ImmutOrigin
+        p_descriptor_writes_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_descriptor_copies_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -14460,7 +14648,8 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_0.cmd_bind_pipeline(command_buffer, pipeline_bind_point, pipeline)
 
     def cmd_bind_descriptor_sets[
-        p_descriptor_sets_origin: ImmutOrigin, p_dynamic_offsets_origin: ImmutOrigin
+        p_descriptor_sets_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_dynamic_offsets_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -14487,7 +14676,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_dynamic_offsets).bitcast[Ptr[UInt32, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_clear_color_image[p_ranges_origin: ImmutOrigin](
+    def cmd_clear_color_image[p_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
@@ -14550,10 +14739,10 @@ struct DeviceFunctionsV1_4(Copyable):
         return self._v1_0.cmd_reset_event(command_buffer, event, stage_mask)
 
     def cmd_wait_events[
-        p_events_origin: ImmutOrigin,
-        p_memory_barriers_origin: ImmutOrigin,
-        p_buffer_memory_barriers_origin: ImmutOrigin,
-        p_image_memory_barriers_origin: ImmutOrigin,
+        p_events_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_buffer_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_image_memory_barriers_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -14586,7 +14775,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_image_memory_barriers).bitcast[Ptr[ImageMemoryBarrier, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_push_constants[p_values_origin: ImmutOrigin](
+    def cmd_push_constants[p_values_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         layout: PipelineLayout,
@@ -14609,9 +14798,9 @@ struct DeviceFunctionsV1_4(Copyable):
         )
 
     def create_graphics_pipelines[
-        p_create_infos_origin: ImmutOrigin,
-        p_allocator_origin: ImmutOrigin,
-        p_pipelines_origin: MutOrigin,
+        p_create_infos_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_pipelines_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -14634,7 +14823,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutUntrackedOrigin]]()[],
         )
 
-    def create_framebuffer[p_allocator_origin: ImmutOrigin](
+    def create_framebuffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: FramebufferCreateInfo,
@@ -14652,7 +14841,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=framebuffer).bitcast[Framebuffer]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_framebuffer[p_allocator_origin: ImmutOrigin](
+    def destroy_framebuffer[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         framebuffer: Framebuffer,
@@ -14668,7 +14857,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def create_render_pass[p_allocator_origin: ImmutOrigin](
+    def create_render_pass[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo,
@@ -14686,7 +14875,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=render_pass).bitcast[RenderPass]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_render_pass[p_allocator_origin: ImmutOrigin](
+    def destroy_render_pass[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         render_pass: RenderPass,
@@ -14715,7 +14904,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=granularity).bitcast[Extent2D]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def cmd_set_viewport[p_viewports_origin: ImmutOrigin](
+    def cmd_set_viewport[p_viewports_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
@@ -14733,7 +14922,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_viewports).bitcast[Ptr[Viewport, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_set_scissor[p_scissors_origin: ImmutOrigin](
+    def cmd_set_scissor[p_scissors_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         first_scissor: UInt32,
@@ -14831,7 +15020,10 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.cmd_bind_index_buffer(command_buffer, buffer, offset, index_type)
 
-    def cmd_bind_vertex_buffers[p_buffers_origin: ImmutOrigin, p_offsets_origin: ImmutOrigin](
+    def cmd_bind_vertex_buffers[
+        p_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_offsets_origin: ImmutOrigin = ImmutUntrackedOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         first_binding: UInt32,
@@ -14912,7 +15104,7 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.cmd_draw_indexed_indirect(command_buffer, buffer, offset, draw_count, stride)
 
-    def cmd_blit_image[p_regions_origin: ImmutOrigin](
+    def cmd_blit_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -14938,7 +15130,7 @@ struct DeviceFunctionsV1_4(Copyable):
             filter,
         )
 
-    def cmd_clear_depth_stencil_image[p_ranges_origin: ImmutOrigin](
+    def cmd_clear_depth_stencil_image[p_ranges_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         image: Image,
@@ -14960,7 +15152,10 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_ranges).bitcast[Ptr[ImageSubresourceRange, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_clear_attachments[p_attachments_origin: ImmutOrigin, p_rects_origin: ImmutOrigin](
+    def cmd_clear_attachments[
+        p_attachments_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_rects_origin: ImmutOrigin = ImmutUntrackedOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         attachment_count: UInt32,
@@ -14980,7 +15175,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_rects).bitcast[Ptr[ClearRect, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_resolve_image[p_regions_origin: ImmutOrigin](
+    def cmd_resolve_image[p_regions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         src_image: Image,
@@ -15034,7 +15229,7 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_0.cmd_end_render_pass(command_buffer)
 
-    def bind_buffer_memory_2[p_bind_infos_origin: ImmutOrigin](
+    def bind_buffer_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
@@ -15050,7 +15245,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_bind_infos).bitcast[Ptr[BindBufferMemoryInfo, ImmutUntrackedOrigin]]()[],
         )
 
-    def bind_image_memory_2[p_bind_infos_origin: ImmutOrigin](
+    def bind_image_memory_2[p_bind_infos_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
@@ -15125,7 +15320,9 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=memory_requirements).bitcast[MemoryRequirements2]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_image_sparse_memory_requirements_2[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         device: Device,
         info: ImageSparseMemoryRequirementsInfo2,
@@ -15143,7 +15340,9 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_sparse_memory_requirements).bitcast[Optional[Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin]]]()[],
         )
 
-    def get_image_sparse_memory_requirements_2[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_image_sparse_memory_requirements_2[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, device: Device, info: ImageSparseMemoryRequirementsInfo2
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
@@ -15212,7 +15411,7 @@ struct DeviceFunctionsV1_4(Copyable):
             group_count_z,
         )
 
-    def create_descriptor_update_template[p_allocator_origin: ImmutOrigin](
+    def create_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: DescriptorUpdateTemplateCreateInfo,
@@ -15230,7 +15429,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=descriptor_update_template).bitcast[DescriptorUpdateTemplate]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_descriptor_update_template[p_allocator_origin: ImmutOrigin](
+    def destroy_descriptor_update_template[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_update_template: DescriptorUpdateTemplate,
@@ -15246,7 +15445,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def update_descriptor_set_with_template[p_data_origin: ImmutOrigin](
+    def update_descriptor_set_with_template[p_data_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         descriptor_set: DescriptorSet,
@@ -15280,7 +15479,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=support).bitcast[DescriptorSetLayoutSupport]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def create_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin](
+    def create_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: SamplerYcbcrConversionCreateInfo,
@@ -15298,7 +15497,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=ycbcr_conversion).bitcast[SamplerYcbcrConversion]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin](
+    def destroy_sampler_ycbcr_conversion[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         ycbcr_conversion: SamplerYcbcrConversion,
@@ -15429,7 +15628,7 @@ struct DeviceFunctionsV1_4(Copyable):
             command_buffer, buffer, offset, count_buffer, count_buffer_offset, max_draw_count, stride
         )
 
-    def create_render_pass_2[p_allocator_origin: ImmutOrigin](
+    def create_render_pass_2[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: RenderPassCreateInfo2,
@@ -15491,7 +15690,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=subpass_end_info).bitcast[SubpassEndInfo]().unsafe_origin_cast[ImmutUntrackedOrigin](),
         )
 
-    def create_private_data_slot[p_allocator_origin: ImmutOrigin](
+    def create_private_data_slot[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: PrivateDataSlotCreateInfo,
@@ -15509,7 +15708,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=private_data_slot).bitcast[PrivateDataSlot]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_private_data_slot[p_allocator_origin: ImmutOrigin](
+    def destroy_private_data_slot[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         private_data_slot: PrivateDataSlot,
@@ -15584,7 +15783,7 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_3.cmd_write_timestamp_2(command_buffer, stage, query_pool, query)
 
-    def queue_submit_2[p_submits_origin: ImmutOrigin](
+    def queue_submit_2[p_submits_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         queue: Queue,
         submit_count: UInt32,
@@ -15678,7 +15877,9 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=memory_requirements).bitcast[MemoryRequirements2]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_device_image_sparse_memory_requirements[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_device_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         device: Device,
         info: DeviceImageMemoryRequirements,
@@ -15696,7 +15897,9 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_sparse_memory_requirements).bitcast[Optional[Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin]]]()[],
         )
 
-    def get_device_image_sparse_memory_requirements[p_sparse_memory_requirements_origin: MutOrigin](
+    def get_device_image_sparse_memory_requirements[
+        p_sparse_memory_requirements_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, device: Device, info: DeviceImageMemoryRequirements
     ) -> List[SparseImageMemoryRequirements2]:
         """See official vulkan docs for details.
@@ -15743,7 +15946,10 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_3.cmd_reset_event_2(command_buffer, event, stage_mask)
 
-    def cmd_wait_events_2[p_events_origin: ImmutOrigin, p_dependency_infos_origin: ImmutOrigin](
+    def cmd_wait_events_2[
+        p_events_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_dependency_infos_origin: ImmutOrigin = ImmutUntrackedOrigin,
+    ](
         self,
         command_buffer: CommandBuffer,
         event_count: UInt32,
@@ -15823,7 +16029,7 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_3.cmd_set_primitive_topology(command_buffer, primitive_topology)
 
-    def cmd_set_viewport_with_count[p_viewports_origin: ImmutOrigin](
+    def cmd_set_viewport_with_count[p_viewports_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         viewport_count: UInt32,
@@ -15839,7 +16045,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_viewports).bitcast[Ptr[Viewport, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_set_scissor_with_count[p_scissors_origin: ImmutOrigin](
+    def cmd_set_scissor_with_count[p_scissors_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         scissor_count: UInt32,
@@ -15854,10 +16060,10 @@ struct DeviceFunctionsV1_4(Copyable):
         )
 
     def cmd_bind_vertex_buffers_2[
-        p_buffers_origin: ImmutOrigin,
-        p_offsets_origin: ImmutOrigin,
-        p_sizes_origin: ImmutOrigin,
-        p_strides_origin: ImmutOrigin,
+        p_buffers_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_offsets_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_sizes_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_strides_origin: ImmutOrigin = ImmutUntrackedOrigin,
     ](
         self,
         command_buffer: CommandBuffer,
@@ -15965,7 +16171,7 @@ struct DeviceFunctionsV1_4(Copyable):
         """
         return self._v1_3.cmd_set_primitive_restart_enable(command_buffer, primitive_restart_enable)
 
-    def map_memory_2[p_data_origin: MutOrigin](
+    def map_memory_2[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         memory_map_info: MemoryMapInfo,
@@ -16058,7 +16264,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=copy_image_to_image_info).bitcast[CopyImageToImageInfo]().unsafe_origin_cast[ImmutUntrackedOrigin](),
         )
 
-    def transition_image_layout[p_transitions_origin: ImmutOrigin](
+    def transition_image_layout[p_transitions_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         transition_count: UInt32,
@@ -16074,7 +16280,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_transitions).bitcast[Ptr[HostImageLayoutTransitionInfo, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_push_descriptor_set[p_descriptor_writes_origin: ImmutOrigin](
+    def cmd_push_descriptor_set[p_descriptor_writes_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         pipeline_bind_point: PipelineBindPoint,
@@ -16096,7 +16302,7 @@ struct DeviceFunctionsV1_4(Copyable):
             Ptr(to=p_descriptor_writes).bitcast[Ptr[WriteDescriptorSet, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_push_descriptor_set_with_template[p_data_origin: ImmutOrigin](
+    def cmd_push_descriptor_set_with_template[p_data_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         descriptor_update_template: DescriptorUpdateTemplate,

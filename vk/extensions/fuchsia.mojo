@@ -21,7 +21,7 @@ struct ImagepipeSurface(Copyable):
             instance, "vkCreateImagePipeSurfaceFUCHSIA".as_c_string_slice()
         )).bitcast[type_of(self._create_image_pipe_surface)]()[]
 
-    def create_image_pipe_surface[p_allocator_origin: ImmutOrigin](
+    def create_image_pipe_surface[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         instance: Instance,
         create_info: ImagePipeSurfaceCreateInfoFUCHSIA,
@@ -206,7 +206,7 @@ struct BufferCollection(Copyable):
             device, "vkGetBufferCollectionPropertiesFUCHSIA".as_c_string_slice()
         )).bitcast[type_of(self._get_buffer_collection_properties)]()[]
 
-    def create_buffer_collection[p_allocator_origin: ImmutOrigin](
+    def create_buffer_collection[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: BufferCollectionCreateInfoFUCHSIA,
@@ -256,7 +256,7 @@ struct BufferCollection(Copyable):
             Ptr(to=buffer_constraints_info).bitcast[BufferConstraintsInfoFUCHSIA]().unsafe_origin_cast[ImmutUntrackedOrigin](),
         )
 
-    def destroy_buffer_collection[p_allocator_origin: ImmutOrigin](
+    def destroy_buffer_collection[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         collection: BufferCollectionFUCHSIA,

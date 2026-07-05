@@ -107,7 +107,9 @@ struct ClipSpaceWScaling(Copyable):
             device, "vkCmdSetViewportWScalingNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_viewport_w_scaling)]()[]
 
-    def cmd_set_viewport_w_scaling[p_viewport_w_scalings_origin: ImmutOrigin](
+    def cmd_set_viewport_w_scaling[
+        p_viewport_w_scalings_origin: ImmutOrigin = ImmutUntrackedOrigin
+    ](
         self,
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
@@ -168,7 +170,9 @@ struct ShadingRateImage(Copyable):
         """
         return self._cmd_bind_shading_rate_image(command_buffer, image_view, image_layout)
 
-    def cmd_set_viewport_shading_rate_palette[p_shading_rate_palettes_origin: ImmutOrigin](
+    def cmd_set_viewport_shading_rate_palette[
+        p_shading_rate_palettes_origin: ImmutOrigin = ImmutUntrackedOrigin
+    ](
         self,
         command_buffer: CommandBuffer,
         first_viewport: UInt32,
@@ -186,7 +190,9 @@ struct ShadingRateImage(Copyable):
             Ptr(to=p_shading_rate_palettes).bitcast[Ptr[ShadingRatePaletteNV, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_set_coarse_sample_order[p_custom_sample_orders_origin: ImmutOrigin](
+    def cmd_set_coarse_sample_order[
+        p_custom_sample_orders_origin: ImmutOrigin = ImmutUntrackedOrigin
+    ](
         self,
         command_buffer: CommandBuffer,
         sample_order_type: CoarseSampleOrderTypeNV,
@@ -338,7 +344,7 @@ struct RayTracing(Copyable):
             device, "vkCompileDeferredNV".as_c_string_slice()
         )).bitcast[type_of(self._compile_deferred)]()[]
 
-    def create_acceleration_structure[p_allocator_origin: ImmutOrigin](
+    def create_acceleration_structure[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: AccelerationStructureCreateInfoNV,
@@ -356,7 +362,7 @@ struct RayTracing(Copyable):
             Ptr(to=acceleration_structure).bitcast[AccelerationStructureNV]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_acceleration_structure[p_allocator_origin: ImmutOrigin](
+    def destroy_acceleration_structure[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         acceleration_structure: AccelerationStructureNV,
@@ -388,7 +394,7 @@ struct RayTracing(Copyable):
             Ptr(to=memory_requirements).bitcast[MemoryRequirements2KHR]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def bind_acceleration_structure_memory[p_bind_infos_origin: ImmutOrigin](
+    def bind_acceleration_structure_memory[p_bind_infos_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         bind_info_count: UInt32,
@@ -486,9 +492,9 @@ struct RayTracing(Copyable):
         )
 
     def create_ray_tracing_pipelines[
-        p_create_infos_origin: ImmutOrigin,
-        p_allocator_origin: ImmutOrigin,
-        p_pipelines_origin: MutOrigin,
+        p_create_infos_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin,
+        p_pipelines_origin: MutOrigin = MutUntrackedOrigin,
     ](
         self,
         device: Device,
@@ -511,7 +517,7 @@ struct RayTracing(Copyable):
             Ptr(to=p_pipelines).bitcast[Ptr[Pipeline, MutUntrackedOrigin]]()[],
         )
 
-    def get_ray_tracing_shader_group_handles[p_data_origin: MutOrigin](
+    def get_ray_tracing_shader_group_handles[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         pipeline: Pipeline,
@@ -533,7 +539,7 @@ struct RayTracing(Copyable):
             Ptr(to=p_data).bitcast[Ptr[NoneType, MutUntrackedOrigin]]()[],
         )
 
-    def get_acceleration_structure_handle[p_data_origin: MutOrigin](
+    def get_acceleration_structure_handle[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         acceleration_structure: AccelerationStructureNV,
@@ -551,7 +557,9 @@ struct RayTracing(Copyable):
             Ptr(to=p_data).bitcast[Ptr[NoneType, MutUntrackedOrigin]]()[],
         )
 
-    def cmd_write_acceleration_structures_properties[p_acceleration_structures_origin: ImmutOrigin](
+    def cmd_write_acceleration_structures_properties[
+        p_acceleration_structures_origin: ImmutOrigin = ImmutUntrackedOrigin
+    ](
         self,
         command_buffer: CommandBuffer,
         acceleration_structure_count: UInt32,
@@ -687,7 +695,9 @@ struct ScissorExclusive(Copyable):
             device, "vkCmdSetExclusiveScissorNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_exclusive_scissor)]()[]
 
-    def cmd_set_exclusive_scissor_enable[p_exclusive_scissor_enables_origin: ImmutOrigin](
+    def cmd_set_exclusive_scissor_enable[
+        p_exclusive_scissor_enables_origin: ImmutOrigin = ImmutUntrackedOrigin
+    ](
         self,
         command_buffer: CommandBuffer,
         first_exclusive_scissor: UInt32,
@@ -705,7 +715,7 @@ struct ScissorExclusive(Copyable):
             Ptr(to=p_exclusive_scissor_enables).bitcast[Ptr[Bool32, ImmutUntrackedOrigin]]()[],
         )
 
-    def cmd_set_exclusive_scissor[p_exclusive_scissors_origin: ImmutOrigin](
+    def cmd_set_exclusive_scissor[p_exclusive_scissors_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         first_exclusive_scissor: UInt32,
@@ -755,7 +765,7 @@ struct DeviceDiagnosticCheckpoints(Copyable):
             device, "vkGetQueueCheckpointData2NV".as_c_string_slice()
         )).bitcast[type_of(self._get_queue_checkpoint_data_2)]()[]
 
-    def cmd_set_checkpoint[p_checkpoint_marker_origin: ImmutOrigin](
+    def cmd_set_checkpoint[p_checkpoint_marker_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         p_checkpoint_marker: Ptr[NoneType, p_checkpoint_marker_origin],
@@ -768,7 +778,7 @@ struct DeviceDiagnosticCheckpoints(Copyable):
             command_buffer, Ptr(to=p_checkpoint_marker).bitcast[Ptr[NoneType, ImmutUntrackedOrigin]]()[]
         )
 
-    def get_queue_checkpoint_data[p_checkpoint_data_origin: MutOrigin](
+    def get_queue_checkpoint_data[p_checkpoint_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         queue: Queue,
         mut checkpoint_data_count: UInt32,
@@ -784,7 +794,7 @@ struct DeviceDiagnosticCheckpoints(Copyable):
             Ptr(to=p_checkpoint_data).bitcast[Optional[Ptr[CheckpointDataNV, MutUntrackedOrigin]]]()[],
         )
 
-    def get_queue_checkpoint_data[p_checkpoint_data_origin: MutOrigin](
+    def get_queue_checkpoint_data[p_checkpoint_data_origin: MutOrigin = MutUntrackedOrigin](
         self, queue: Queue
     ) -> List[CheckpointDataNV]:
         """See official vulkan docs for details.
@@ -807,7 +817,7 @@ struct DeviceDiagnosticCheckpoints(Copyable):
         list._len = Int(count)
         return list^
 
-    def get_queue_checkpoint_data_2[p_checkpoint_data_origin: MutOrigin](
+    def get_queue_checkpoint_data_2[p_checkpoint_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         queue: Queue,
         mut checkpoint_data_count: UInt32,
@@ -823,7 +833,7 @@ struct DeviceDiagnosticCheckpoints(Copyable):
             Ptr(to=p_checkpoint_data).bitcast[Optional[Ptr[CheckpointData2NV, MutUntrackedOrigin]]]()[],
         )
 
-    def get_queue_checkpoint_data_2[p_checkpoint_data_origin: MutOrigin](
+    def get_queue_checkpoint_data_2[p_checkpoint_data_origin: MutOrigin = MutUntrackedOrigin](
         self, queue: Queue
     ) -> List[CheckpointData2NV]:
         """See official vulkan docs for details.
@@ -864,7 +874,9 @@ struct CooperativeMatrix(Copyable):
             device, "vkGetPhysicalDeviceCooperativeMatrixPropertiesNV".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_cooperative_matrix_properties)]()[]
 
-    def get_physical_device_cooperative_matrix_properties[p_properties_origin: MutOrigin](
+    def get_physical_device_cooperative_matrix_properties[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
@@ -880,7 +892,9 @@ struct CooperativeMatrix(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[CooperativeMatrixPropertiesNV, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_cooperative_matrix_properties[p_properties_origin: MutOrigin](
+    def get_physical_device_cooperative_matrix_properties[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> ListResult[CooperativeMatrixPropertiesNV]:
         """See official vulkan docs for details.
@@ -925,7 +939,7 @@ struct CoverageReductionMode(Copyable):
         )).bitcast[type_of(self._get_physical_device_supported_framebuffer_mixed_samples_combinations)]()[]
 
     def get_physical_device_supported_framebuffer_mixed_samples_combinations[
-        p_combinations_origin: MutOrigin
+        p_combinations_origin: MutOrigin = MutUntrackedOrigin
     ](
         self,
         physical_device: PhysicalDevice,
@@ -943,7 +957,7 @@ struct CoverageReductionMode(Copyable):
         )
 
     def get_physical_device_supported_framebuffer_mixed_samples_combinations[
-        p_combinations_origin: MutOrigin
+        p_combinations_origin: MutOrigin = MutUntrackedOrigin
     ](
         self, physical_device: PhysicalDevice
     ) -> ListResult[FramebufferMixedSamplesCombinationNV]:
@@ -1088,7 +1102,7 @@ struct DeviceGeneratedCommands(Copyable):
             command_buffer, pipeline_bind_point, pipeline, group_index
         )
 
-    def create_indirect_commands_layout[p_allocator_origin: ImmutOrigin](
+    def create_indirect_commands_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: IndirectCommandsLayoutCreateInfoNV,
@@ -1106,7 +1120,7 @@ struct DeviceGeneratedCommands(Copyable):
             Ptr(to=indirect_commands_layout).bitcast[IndirectCommandsLayoutNV]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_indirect_commands_layout[p_allocator_origin: ImmutOrigin](
+    def destroy_indirect_commands_layout[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         indirect_commands_layout: IndirectCommandsLayoutNV,
@@ -1181,7 +1195,7 @@ struct CudaKernelLaunch(Copyable):
             device, "vkCmdCudaLaunchKernelNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_cuda_launch_kernel)]()[]
 
-    def create_cuda_module[p_allocator_origin: ImmutOrigin](
+    def create_cuda_module[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: CudaModuleCreateInfoNV,
@@ -1199,7 +1213,7 @@ struct CudaKernelLaunch(Copyable):
             Ptr(to=module).bitcast[CudaModuleNV]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def get_cuda_module_cache[p_cache_data_origin: MutOrigin](
+    def get_cuda_module_cache[p_cache_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         device: Device,
         module: CudaModuleNV,
@@ -1217,7 +1231,7 @@ struct CudaKernelLaunch(Copyable):
             Ptr(to=p_cache_data).bitcast[Optional[Ptr[NoneType, MutUntrackedOrigin]]]()[],
         )
 
-    def get_cuda_module_cache[p_cache_data_origin: MutOrigin](
+    def get_cuda_module_cache[p_cache_data_origin: MutOrigin = MutUntrackedOrigin](
         self, device: Device, module: CudaModuleNV
     ) -> ListResult[UInt8]:
         """See official vulkan docs for details.
@@ -1245,7 +1259,7 @@ struct CudaKernelLaunch(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def create_cuda_function[p_allocator_origin: ImmutOrigin](
+    def create_cuda_function[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: CudaFunctionCreateInfoNV,
@@ -1263,7 +1277,7 @@ struct CudaKernelLaunch(Copyable):
             Ptr(to=function).bitcast[CudaFunctionNV]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_cuda_module[p_allocator_origin: ImmutOrigin](
+    def destroy_cuda_module[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         module: CudaModuleNV,
@@ -1279,7 +1293,7 @@ struct CudaKernelLaunch(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def destroy_cuda_function[p_allocator_origin: ImmutOrigin](
+    def destroy_cuda_function[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         function: CudaFunctionNV,
@@ -1459,7 +1473,9 @@ struct CopyMemoryIndirect(Copyable):
         """
         return self._cmd_copy_memory_indirect(command_buffer, copy_buffer_address, copy_count, stride)
 
-    def cmd_copy_memory_to_image_indirect[p_image_subresources_origin: ImmutOrigin](
+    def cmd_copy_memory_to_image_indirect[
+        p_image_subresources_origin: ImmutOrigin = ImmutUntrackedOrigin
+    ](
         self,
         command_buffer: CommandBuffer,
         copy_buffer_address: DeviceAddress,
@@ -1510,7 +1526,9 @@ struct MemoryDecompression(Copyable):
             device, "vkCmdDecompressMemoryIndirectCountNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_decompress_memory_indirect_count)]()[]
 
-    def cmd_decompress_memory[p_decompress_memory_regions_origin: ImmutOrigin](
+    def cmd_decompress_memory[
+        p_decompress_memory_regions_origin: ImmutOrigin = ImmutUntrackedOrigin
+    ](
         self,
         command_buffer: CommandBuffer,
         decompress_region_count: UInt32,
@@ -1665,7 +1683,9 @@ struct OpticalFlow(Copyable):
             device, "vkCmdOpticalFlowExecuteNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_optical_flow_execute)]()[]
 
-    def get_physical_device_optical_flow_image_formats[p_image_format_properties_origin: MutOrigin](
+    def get_physical_device_optical_flow_image_formats[
+        p_image_format_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         optical_flow_image_format_info: OpticalFlowImageFormatInfoNV,
@@ -1683,7 +1703,9 @@ struct OpticalFlow(Copyable):
             Ptr(to=p_image_format_properties).bitcast[Optional[Ptr[OpticalFlowImageFormatPropertiesNV, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_optical_flow_image_formats[p_image_format_properties_origin: MutOrigin](
+    def get_physical_device_optical_flow_image_formats[
+        p_image_format_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         optical_flow_image_format_info: OpticalFlowImageFormatInfoNV,
@@ -1713,7 +1735,7 @@ struct OpticalFlow(Copyable):
         list._len = Int(count)
         return ListResult(list^, result)
 
-    def create_optical_flow_session[p_allocator_origin: ImmutOrigin](
+    def create_optical_flow_session[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: OpticalFlowSessionCreateInfoNV,
@@ -1731,7 +1753,7 @@ struct OpticalFlow(Copyable):
             Ptr(to=session).bitcast[OpticalFlowSessionNV]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_optical_flow_session[p_allocator_origin: ImmutOrigin](
+    def destroy_optical_flow_session[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         session: OpticalFlowSessionNV,
@@ -1809,7 +1831,9 @@ struct CooperativeVector(Copyable):
             device, "vkCmdConvertCooperativeVectorMatrixNV".as_c_string_slice()
         )).bitcast[type_of(self._cmd_convert_cooperative_vector_matrix)]()[]
 
-    def get_physical_device_cooperative_vector_properties[p_properties_origin: MutOrigin](
+    def get_physical_device_cooperative_vector_properties[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self,
         physical_device: PhysicalDevice,
         mut property_count: UInt32,
@@ -1825,7 +1849,9 @@ struct CooperativeVector(Copyable):
             Ptr(to=p_properties).bitcast[Optional[Ptr[CooperativeVectorPropertiesNV, MutUntrackedOrigin]]]()[],
         )
 
-    def get_physical_device_cooperative_vector_properties[p_properties_origin: MutOrigin](
+    def get_physical_device_cooperative_vector_properties[
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
+    ](
         self, physical_device: PhysicalDevice
     ) -> ListResult[CooperativeVectorPropertiesNV]:
         """See official vulkan docs for details.
@@ -1863,7 +1889,7 @@ struct CooperativeVector(Copyable):
             Ptr(to=info).bitcast[ConvertCooperativeVectorMatrixInfoNV]().unsafe_origin_cast[ImmutUntrackedOrigin](),
         )
 
-    def cmd_convert_cooperative_vector_matrix[p_infos_origin: ImmutOrigin](
+    def cmd_convert_cooperative_vector_matrix[p_infos_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         command_buffer: CommandBuffer,
         info_count: UInt32,
@@ -2027,7 +2053,7 @@ struct ExternalComputeQueue(Copyable):
             device, "vkGetExternalComputeQueueDataNV".as_c_string_slice()
         )).bitcast[type_of(self._get_external_compute_queue_data)]()[]
 
-    def create_external_compute_queue[p_allocator_origin: ImmutOrigin](
+    def create_external_compute_queue[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         create_info: ExternalComputeQueueCreateInfoNV,
@@ -2045,7 +2071,7 @@ struct ExternalComputeQueue(Copyable):
             Ptr(to=external_queue).bitcast[ExternalComputeQueueNV]().unsafe_origin_cast[MutUntrackedOrigin](),
         )
 
-    def destroy_external_compute_queue[p_allocator_origin: ImmutOrigin](
+    def destroy_external_compute_queue[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
         self,
         device: Device,
         external_queue: ExternalComputeQueueNV,
@@ -2061,7 +2087,7 @@ struct ExternalComputeQueue(Copyable):
             Ptr(to=p_allocator).bitcast[Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]]()[],
         )
 
-    def get_external_compute_queue_data[p_data_origin: MutOrigin](
+    def get_external_compute_queue_data[p_data_origin: MutOrigin = MutUntrackedOrigin](
         self,
         external_queue: ExternalComputeQueueNV,
         mut params: ExternalComputeQueueDataParamsNV,
@@ -2204,7 +2230,7 @@ struct CooperativeMatrix2(Copyable):
         )).bitcast[type_of(self._get_physical_device_cooperative_matrix_flexible_dimensions_properties)]()[]
 
     def get_physical_device_cooperative_matrix_flexible_dimensions_properties[
-        p_properties_origin: MutOrigin
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
     ](
         self,
         physical_device: PhysicalDevice,
@@ -2222,7 +2248,7 @@ struct CooperativeMatrix2(Copyable):
         )
 
     def get_physical_device_cooperative_matrix_flexible_dimensions_properties[
-        p_properties_origin: MutOrigin
+        p_properties_origin: MutOrigin = MutUntrackedOrigin
     ](
         self, physical_device: PhysicalDevice
     ) -> ListResult[CooperativeMatrixFlexibleDimensionsPropertiesNV]:
