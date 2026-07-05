@@ -1455,6 +1455,10 @@ class MojoEnum:
             "        if self.is_error():\n"
             '            raise String(self)\n'
             "\n"
+            "    def abort_on_error(self):\n"
+            "        if self.is_error():\n"
+            "            abort(String(self))\n"
+            "\n"
             "    def __str__(self) -> String:\n"
             "        return String.write(self)\n"
             "\n"

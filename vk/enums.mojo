@@ -2225,6 +2225,10 @@ struct Result(TrivialRegisterPassable, Equatable, Hashable, Writable):
         if self.is_error():
             raise String(self)
 
+    def abort_on_error(self):
+        if self.is_error():
+            abort(String(self))
+
     def __str__(self) -> String:
         return String.write(self)
 
