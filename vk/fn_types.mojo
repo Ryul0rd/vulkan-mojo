@@ -47,8 +47,8 @@ comptime PFN_vkDebugReportCallbackEXT = def(
     object: UInt64,
     location: UInt,
     message_code: Int32,
-    p_layer_prefix: Ptr[c_char, ImmutUntrackedOrigin],
-    p_message: Ptr[c_char, ImmutUntrackedOrigin],
+    p_layer_prefix: CStringSlice[ImmutUntrackedOrigin],
+    p_message: CStringSlice[ImmutUntrackedOrigin],
     p_user_data: Ptr[NoneType, MutUntrackedOrigin],
 ) thin abi("C") -> Bool32
 
@@ -73,5 +73,5 @@ comptime PFN_vkDeviceMemoryReportCallbackEXT = def(
 
 
 comptime PFN_vkGetInstanceProcAddrLUNARG = def(
-    instance: Instance, p_name: Ptr[c_char, ImmutUntrackedOrigin]
+    instance: Instance, p_name: CStringSlice[ImmutUntrackedOrigin]
 ) thin abi("C") -> PFN_vkVoidFunction

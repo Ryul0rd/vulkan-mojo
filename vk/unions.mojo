@@ -183,7 +183,7 @@ struct PerformanceValueDataINTEL(ImplicitlyCopyable):
         size_of[UInt64](),
         size_of[Float32](),
         size_of[Bool32](),
-        size_of[Ptr[c_char, ImmutUntrackedOrigin]](),
+        size_of[CStringSlice[ImmutUntrackedOrigin]](),
     )
     comptime _AlignType = UInt64
     comptime _InnerType = InlineArray[Self._AlignType, ceildiv(Self._size, size_of[Self._AlignType]())]
@@ -221,12 +221,12 @@ struct PerformanceValueDataINTEL(ImplicitlyCopyable):
             count = size_of[Bool32](),
         )
 
-    def __init__(out self, value: Ptr[c_char, ImmutUntrackedOrigin]):
+    def __init__(out self, value: CStringSlice[ImmutUntrackedOrigin]):
         self._value = zero_init[Self._InnerType]()
         memcpy(
             dest = Ptr(to=self._value).bitcast[Byte](),
             src = Ptr(to=value).bitcast[Byte](),
-            count = size_of[Ptr[c_char, ImmutUntrackedOrigin]](),
+            count = size_of[CStringSlice[ImmutUntrackedOrigin]](),
         )
 
     def __init__(out self, *, copy: Self):

@@ -23,8 +23,8 @@ struct DebugReport(Copyable):
         object: UInt64,
         location: UInt,
         message_code: Int32,
-        p_layer_prefix: Ptr[c_char, ImmutUntrackedOrigin],
-        p_message: Ptr[c_char, ImmutUntrackedOrigin],
+        p_layer_prefix: CStringSlice[ImmutUntrackedOrigin],
+        p_message: CStringSlice[ImmutUntrackedOrigin],
     ) thin abi("C")
 
     def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
@@ -84,8 +84,8 @@ struct DebugReport(Copyable):
         object: UInt64,
         location: UInt,
         message_code: Int32,
-        p_layer_prefix: Ptr[c_char, p_layer_prefix_origin],
-        p_message: Ptr[c_char, p_message_origin],
+        p_layer_prefix: CStringSlice[p_layer_prefix_origin],
+        p_message: CStringSlice[p_message_origin],
     ):
         """See official vulkan docs for details.
         
@@ -98,8 +98,8 @@ struct DebugReport(Copyable):
             object,
             location,
             message_code,
-            Ptr(to=p_layer_prefix).bitcast[Ptr[c_char, ImmutUntrackedOrigin]]()[],
-            Ptr(to=p_message).bitcast[Ptr[c_char, ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_layer_prefix).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
+            Ptr(to=p_message).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
         )
 
 

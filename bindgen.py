@@ -2755,12 +2755,12 @@ def parse_declarator(declarator: str) -> ParsedDeclarator:
         origin: MojoOriginLiteral = "MutUntrackedOrigin" if not pointee_is_const[i] else "ImmutUntrackedOrigin"
         type = MojoPointerType(pointee_type=type, origin=origin)
         is_const_char_ptr = (
-            type.origin == "ImmutAnyOrigin"
+            type.origin == "ImmutUntrackedOrigin"
             and isinstance(type.pointee_type, MojoBaseType)
             and type.pointee_type.name == "c_char"
         )
         if is_const_char_ptr:
-            type = MojoBaseType("CStringSlice", ["ImmutAnyOrigin"])
+            type = MojoBaseType("CStringSlice", ["ImmutUntrackedOrigin"])
 
     for dim in array_dims:
         type = MojoArrayType(element_type=type, length=dim.removeprefix("VK_"))

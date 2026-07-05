@@ -45,7 +45,7 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
     ](
         self,
-        p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
         p_properties: Optional[Ptr[ExtensionProperties, p_properties_origin]],
     ) -> Result:
@@ -54,7 +54,7 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
             Ptr(to=p_properties).bitcast[Optional[Ptr[ExtensionProperties, MutUntrackedOrigin]]]()[],
         )
@@ -62,7 +62,7 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
     def enumerate_instance_extension_properties[
         p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
     ](
-        self, p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]]
+        self, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -73,14 +73,14 @@ struct GlobalFunctionsV1_0(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_extension_properties(
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 Ptr[ExtensionProperties, MutUntrackedOrigin].unsafe_dangling(),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._v1_0.enumerate_instance_extension_properties(
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
@@ -159,7 +159,7 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
     ](
         self,
-        p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
         p_properties: Optional[Ptr[ExtensionProperties, p_properties_origin]],
     ) -> Result:
@@ -168,7 +168,7 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
             Ptr(to=p_properties).bitcast[Optional[Ptr[ExtensionProperties, MutUntrackedOrigin]]]()[],
         )
@@ -176,7 +176,7 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
     def enumerate_instance_extension_properties[
         p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
     ](
-        self, p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]]
+        self, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -187,14 +187,14 @@ struct GlobalFunctionsV1_1(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_extension_properties(
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 Ptr[ExtensionProperties, MutUntrackedOrigin].unsafe_dangling(),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._v1_0.enumerate_instance_extension_properties(
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
@@ -282,7 +282,7 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
         p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
     ](
         self,
-        p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
         p_properties: Optional[Ptr[ExtensionProperties, p_properties_origin]],
     ) -> Result:
@@ -291,7 +291,7 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
             Ptr(to=p_properties).bitcast[Optional[Ptr[ExtensionProperties, MutUntrackedOrigin]]]()[],
         )
@@ -299,7 +299,7 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
     def enumerate_instance_extension_properties[
         p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
     ](
-        self, p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]]
+        self, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -310,14 +310,14 @@ struct GlobalFunctionsV1_2(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_extension_properties(
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 Ptr[ExtensionProperties, MutUntrackedOrigin].unsafe_dangling(),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._v1_0.enumerate_instance_extension_properties(
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
@@ -405,7 +405,7 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
         p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
     ](
         self,
-        p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
         p_properties: Optional[Ptr[ExtensionProperties, p_properties_origin]],
     ) -> Result:
@@ -414,7 +414,7 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
             Ptr(to=p_properties).bitcast[Optional[Ptr[ExtensionProperties, MutUntrackedOrigin]]]()[],
         )
@@ -422,7 +422,7 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
     def enumerate_instance_extension_properties[
         p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
     ](
-        self, p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]]
+        self, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -433,14 +433,14 @@ struct GlobalFunctionsV1_3(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_extension_properties(
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 Ptr[ExtensionProperties, MutUntrackedOrigin].unsafe_dangling(),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._v1_0.enumerate_instance_extension_properties(
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
@@ -528,7 +528,7 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
         p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
     ](
         self,
-        p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
         p_properties: Optional[Ptr[ExtensionProperties, p_properties_origin]],
     ) -> Result:
@@ -537,7 +537,7 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkEnumerateInstanceExtensionProperties.html
         """
         return self._v1_0.enumerate_instance_extension_properties(
-            Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
             Ptr(to=p_properties).bitcast[Optional[Ptr[ExtensionProperties, MutUntrackedOrigin]]]()[],
         )
@@ -545,7 +545,7 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
     def enumerate_instance_extension_properties[
         p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
     ](
-        self, p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]]
+        self, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -556,14 +556,14 @@ struct GlobalFunctionsV1_4(GlobalFunctions, Movable):
         var result = Result.INCOMPLETE
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_instance_extension_properties(
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 Ptr[ExtensionProperties, MutUntrackedOrigin].unsafe_dangling(),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._v1_0.enumerate_instance_extension_properties(
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
@@ -798,14 +798,14 @@ struct InstanceFunctionsV1_0(Copyable):
         )
 
     def get_instance_proc_addr[p_name_origin: ImmutOrigin](
-        self, instance: Instance, p_name: Ptr[c_char, p_name_origin]
+        self, instance: Instance, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
         return self._v1_0.get_instance_proc_addr(
-            instance, Ptr(to=p_name).bitcast[Ptr[c_char, ImmutUntrackedOrigin]]()[]
+            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
     def create_device[p_allocator_origin: ImmutOrigin](
@@ -831,7 +831,7 @@ struct InstanceFunctionsV1_0(Copyable):
     ](
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
         p_properties: Optional[Ptr[ExtensionProperties, p_properties_origin]],
     ) -> Result:
@@ -841,7 +841,7 @@ struct InstanceFunctionsV1_0(Copyable):
         """
         return self._v1_0.enumerate_device_extension_properties(
             physical_device,
-            Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
             Ptr(to=p_properties).bitcast[Optional[Ptr[ExtensionProperties, MutUntrackedOrigin]]]()[],
         )
@@ -849,9 +849,7 @@ struct InstanceFunctionsV1_0(Copyable):
     def enumerate_device_extension_properties[
         p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
     ](
-        self,
-        physical_device: PhysicalDevice,
-        p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]],
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -863,7 +861,7 @@ struct InstanceFunctionsV1_0(Copyable):
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_extension_properties(
                 physical_device,
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 Ptr[ExtensionProperties, MutUntrackedOrigin].unsafe_dangling(),
             )
@@ -871,7 +869,7 @@ struct InstanceFunctionsV1_0(Copyable):
                 list.reserve(Int(count))
                 result = self._v1_0.enumerate_device_extension_properties(
                 physical_device,
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
@@ -1168,14 +1166,14 @@ struct InstanceFunctionsV1_1(Copyable):
         )
 
     def get_instance_proc_addr[p_name_origin: ImmutOrigin](
-        self, instance: Instance, p_name: Ptr[c_char, p_name_origin]
+        self, instance: Instance, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
         return self._v1_0.get_instance_proc_addr(
-            instance, Ptr(to=p_name).bitcast[Ptr[c_char, ImmutUntrackedOrigin]]()[]
+            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
     def create_device[p_allocator_origin: ImmutOrigin](
@@ -1201,7 +1199,7 @@ struct InstanceFunctionsV1_1(Copyable):
     ](
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
         p_properties: Optional[Ptr[ExtensionProperties, p_properties_origin]],
     ) -> Result:
@@ -1211,7 +1209,7 @@ struct InstanceFunctionsV1_1(Copyable):
         """
         return self._v1_0.enumerate_device_extension_properties(
             physical_device,
-            Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
             Ptr(to=p_properties).bitcast[Optional[Ptr[ExtensionProperties, MutUntrackedOrigin]]]()[],
         )
@@ -1219,9 +1217,7 @@ struct InstanceFunctionsV1_1(Copyable):
     def enumerate_device_extension_properties[
         p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
     ](
-        self,
-        physical_device: PhysicalDevice,
-        p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]],
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -1233,7 +1229,7 @@ struct InstanceFunctionsV1_1(Copyable):
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_extension_properties(
                 physical_device,
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 Ptr[ExtensionProperties, MutUntrackedOrigin].unsafe_dangling(),
             )
@@ -1241,7 +1237,7 @@ struct InstanceFunctionsV1_1(Copyable):
                 list.reserve(Int(count))
                 result = self._v1_0.enumerate_device_extension_properties(
                 physical_device,
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
@@ -1780,14 +1776,14 @@ struct InstanceFunctionsV1_2(Copyable):
         )
 
     def get_instance_proc_addr[p_name_origin: ImmutOrigin](
-        self, instance: Instance, p_name: Ptr[c_char, p_name_origin]
+        self, instance: Instance, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
         return self._v1_0.get_instance_proc_addr(
-            instance, Ptr(to=p_name).bitcast[Ptr[c_char, ImmutUntrackedOrigin]]()[]
+            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
     def create_device[p_allocator_origin: ImmutOrigin](
@@ -1813,7 +1809,7 @@ struct InstanceFunctionsV1_2(Copyable):
     ](
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
         p_properties: Optional[Ptr[ExtensionProperties, p_properties_origin]],
     ) -> Result:
@@ -1823,7 +1819,7 @@ struct InstanceFunctionsV1_2(Copyable):
         """
         return self._v1_0.enumerate_device_extension_properties(
             physical_device,
-            Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
             Ptr(to=p_properties).bitcast[Optional[Ptr[ExtensionProperties, MutUntrackedOrigin]]]()[],
         )
@@ -1831,9 +1827,7 @@ struct InstanceFunctionsV1_2(Copyable):
     def enumerate_device_extension_properties[
         p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
     ](
-        self,
-        physical_device: PhysicalDevice,
-        p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]],
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -1845,7 +1839,7 @@ struct InstanceFunctionsV1_2(Copyable):
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_extension_properties(
                 physical_device,
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 Ptr[ExtensionProperties, MutUntrackedOrigin].unsafe_dangling(),
             )
@@ -1853,7 +1847,7 @@ struct InstanceFunctionsV1_2(Copyable):
                 list.reserve(Int(count))
                 result = self._v1_0.enumerate_device_extension_properties(
                 physical_device,
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
@@ -2394,14 +2388,14 @@ struct InstanceFunctionsV1_3(Copyable):
         )
 
     def get_instance_proc_addr[p_name_origin: ImmutOrigin](
-        self, instance: Instance, p_name: Ptr[c_char, p_name_origin]
+        self, instance: Instance, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
         return self._v1_0.get_instance_proc_addr(
-            instance, Ptr(to=p_name).bitcast[Ptr[c_char, ImmutUntrackedOrigin]]()[]
+            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
     def create_device[p_allocator_origin: ImmutOrigin](
@@ -2427,7 +2421,7 @@ struct InstanceFunctionsV1_3(Copyable):
     ](
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
         p_properties: Optional[Ptr[ExtensionProperties, p_properties_origin]],
     ) -> Result:
@@ -2437,7 +2431,7 @@ struct InstanceFunctionsV1_3(Copyable):
         """
         return self._v1_0.enumerate_device_extension_properties(
             physical_device,
-            Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
             Ptr(to=p_properties).bitcast[Optional[Ptr[ExtensionProperties, MutUntrackedOrigin]]]()[],
         )
@@ -2445,9 +2439,7 @@ struct InstanceFunctionsV1_3(Copyable):
     def enumerate_device_extension_properties[
         p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
     ](
-        self,
-        physical_device: PhysicalDevice,
-        p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]],
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -2459,7 +2451,7 @@ struct InstanceFunctionsV1_3(Copyable):
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_extension_properties(
                 physical_device,
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 Ptr[ExtensionProperties, MutUntrackedOrigin].unsafe_dangling(),
             )
@@ -2467,7 +2459,7 @@ struct InstanceFunctionsV1_3(Copyable):
                 list.reserve(Int(count))
                 result = self._v1_0.enumerate_device_extension_properties(
                 physical_device,
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
@@ -3050,14 +3042,14 @@ struct InstanceFunctionsV1_4(Copyable):
         )
 
     def get_instance_proc_addr[p_name_origin: ImmutOrigin](
-        self, instance: Instance, p_name: Ptr[c_char, p_name_origin]
+        self, instance: Instance, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetInstanceProcAddr.html
         """
         return self._v1_0.get_instance_proc_addr(
-            instance, Ptr(to=p_name).bitcast[Ptr[c_char, ImmutUntrackedOrigin]]()[]
+            instance, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
     def create_device[p_allocator_origin: ImmutOrigin](
@@ -3083,7 +3075,7 @@ struct InstanceFunctionsV1_4(Copyable):
     ](
         self,
         physical_device: PhysicalDevice,
-        p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]],
+        p_layer_name: CStringSlice[p_layer_name_origin],
         mut property_count: UInt32,
         p_properties: Optional[Ptr[ExtensionProperties, p_properties_origin]],
     ) -> Result:
@@ -3093,7 +3085,7 @@ struct InstanceFunctionsV1_4(Copyable):
         """
         return self._v1_0.enumerate_device_extension_properties(
             physical_device,
-            Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+            Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
             Ptr(to=property_count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
             Ptr(to=p_properties).bitcast[Optional[Ptr[ExtensionProperties, MutUntrackedOrigin]]]()[],
         )
@@ -3101,9 +3093,7 @@ struct InstanceFunctionsV1_4(Copyable):
     def enumerate_device_extension_properties[
         p_layer_name_origin: ImmutOrigin, p_properties_origin: MutOrigin
     ](
-        self,
-        physical_device: PhysicalDevice,
-        p_layer_name: Optional[Ptr[c_char, p_layer_name_origin]],
+        self, physical_device: PhysicalDevice, p_layer_name: CStringSlice[p_layer_name_origin]
     ) -> ListResult[ExtensionProperties]:
         """See official vulkan docs for details.
         
@@ -3115,7 +3105,7 @@ struct InstanceFunctionsV1_4(Copyable):
         while result == Result.INCOMPLETE:
             result = self._v1_0.enumerate_device_extension_properties(
                 physical_device,
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 Ptr[ExtensionProperties, MutUntrackedOrigin].unsafe_dangling(),
             )
@@ -3123,7 +3113,7 @@ struct InstanceFunctionsV1_4(Copyable):
                 list.reserve(Int(count))
                 result = self._v1_0.enumerate_device_extension_properties(
                 physical_device,
-                Ptr(to=p_layer_name).bitcast[Optional[Ptr[c_char, ImmutUntrackedOrigin]]]()[],
+                Ptr(to=p_layer_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[],
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
@@ -3531,14 +3521,14 @@ struct DeviceFunctionsV1_0(Copyable):
         self._v1_0 = DeviceFunctionsAdditionsV1_0(self._dlhandle, device)
 
     def get_device_proc_addr[p_name_origin: ImmutOrigin](
-        self, device: Device, p_name: Ptr[c_char, p_name_origin]
+        self, device: Device, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
         return self._v1_0.get_device_proc_addr(
-            device, Ptr(to=p_name).bitcast[Ptr[c_char, ImmutUntrackedOrigin]]()[]
+            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
     def destroy_device[p_allocator_origin: ImmutOrigin](
@@ -5500,14 +5490,14 @@ struct DeviceFunctionsV1_1(Copyable):
         self._v1_1 = DeviceFunctionsAdditionsV1_1(self._dlhandle, device)
 
     def get_device_proc_addr[p_name_origin: ImmutOrigin](
-        self, device: Device, p_name: Ptr[c_char, p_name_origin]
+        self, device: Device, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
         return self._v1_0.get_device_proc_addr(
-            device, Ptr(to=p_name).bitcast[Ptr[c_char, ImmutUntrackedOrigin]]()[]
+            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
     def destroy_device[p_allocator_origin: ImmutOrigin](
@@ -7751,14 +7741,14 @@ struct DeviceFunctionsV1_2(Copyable):
         self._v1_2 = DeviceFunctionsAdditionsV1_2(self._dlhandle, device)
 
     def get_device_proc_addr[p_name_origin: ImmutOrigin](
-        self, device: Device, p_name: Ptr[c_char, p_name_origin]
+        self, device: Device, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
         return self._v1_0.get_device_proc_addr(
-            device, Ptr(to=p_name).bitcast[Ptr[c_char, ImmutUntrackedOrigin]]()[]
+            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
     def destroy_device[p_allocator_origin: ImmutOrigin](
@@ -10181,14 +10171,14 @@ struct DeviceFunctionsV1_3(Copyable):
         self._v1_3 = DeviceFunctionsAdditionsV1_3(self._dlhandle, device)
 
     def get_device_proc_addr[p_name_origin: ImmutOrigin](
-        self, device: Device, p_name: Ptr[c_char, p_name_origin]
+        self, device: Device, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
         return self._v1_0.get_device_proc_addr(
-            device, Ptr(to=p_name).bitcast[Ptr[c_char, ImmutUntrackedOrigin]]()[]
+            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
     def destroy_device[p_allocator_origin: ImmutOrigin](
@@ -13087,14 +13077,14 @@ struct DeviceFunctionsV1_4(Copyable):
         self._v1_4 = DeviceFunctionsAdditionsV1_4(self._dlhandle, device)
 
     def get_device_proc_addr[p_name_origin: ImmutOrigin](
-        self, device: Device, p_name: Ptr[c_char, p_name_origin]
+        self, device: Device, p_name: CStringSlice[p_name_origin]
     ) -> PFN_vkVoidFunction:
         """See official vulkan docs for details.
         
         https://registry.khronos.org/vulkan/specs/latest/man/html/vkGetDeviceProcAddr.html
         """
         return self._v1_0.get_device_proc_addr(
-            device, Ptr(to=p_name).bitcast[Ptr[c_char, ImmutUntrackedOrigin]]()[]
+            device, Ptr(to=p_name).bitcast[CStringSlice[ImmutUntrackedOrigin]]()[]
         )
 
     def destroy_device[p_allocator_origin: ImmutOrigin](
@@ -16249,7 +16239,7 @@ struct GlobalFunctionsAdditionsV1_0(Copyable):
         p_instance: Ptr[Instance, MutUntrackedOrigin],
     ) thin abi("C") -> Result
     var enumerate_instance_extension_properties: def(
-        p_layer_name: Optional[Ptr[c_char, ImmutUntrackedOrigin]],
+        p_layer_name: CStringSlice[ImmutUntrackedOrigin],
         p_property_count: Ptr[UInt32, MutUntrackedOrigin],
         p_properties: Optional[Ptr[ExtensionProperties, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
@@ -16326,7 +16316,7 @@ struct InstanceFunctionsAdditionsV1_0(Copyable):
         p_memory_properties: Ptr[PhysicalDeviceMemoryProperties, MutUntrackedOrigin],
     ) thin abi("C")
     var get_instance_proc_addr: def(
-        instance: Instance, p_name: Ptr[c_char, ImmutUntrackedOrigin]
+        instance: Instance, p_name: CStringSlice[ImmutUntrackedOrigin]
     ) thin abi("C") -> PFN_vkVoidFunction
     var create_device: def(
         physical_device: PhysicalDevice,
@@ -16336,7 +16326,7 @@ struct InstanceFunctionsAdditionsV1_0(Copyable):
     ) thin abi("C") -> Result
     var enumerate_device_extension_properties: def(
         physical_device: PhysicalDevice,
-        p_layer_name: Optional[Ptr[c_char, ImmutUntrackedOrigin]],
+        p_layer_name: CStringSlice[ImmutUntrackedOrigin],
         p_property_count: Ptr[UInt32, MutUntrackedOrigin],
         p_properties: Optional[Ptr[ExtensionProperties, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
@@ -16512,7 +16502,7 @@ struct InstanceFunctionsAdditionsV1_3(Copyable):
 
 struct DeviceFunctionsAdditionsV1_0(Copyable):
     var get_device_proc_addr: def(
-        device: Device, p_name: Ptr[c_char, ImmutUntrackedOrigin]
+        device: Device, p_name: CStringSlice[ImmutUntrackedOrigin]
     ) thin abi("C") -> PFN_vkVoidFunction
     var destroy_device: def(
         device: Device, p_allocator: Optional[Ptr[AllocationCallbacks, ImmutUntrackedOrigin]]
