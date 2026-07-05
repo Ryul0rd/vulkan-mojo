@@ -1598,7 +1598,10 @@ def bind_enums(files: Dict[str, str], registry: Registry):
             seen_names.add(stripped_name)
             result_error_message: Optional[str] = None
             if enum_def.name == "VkResult":
-                result_error_message = f"{enumerator.name}: {enumerator.comment}"
+                if enumerator.comment is not None:
+                    result_error_message = f"{enumerator.name}: {enumerator.comment}"
+                else:
+                    result_error_message = enumerator.name
             mojo_values.append(MojoEnumValue(
                 name=stripped_name,
                 value=value,
