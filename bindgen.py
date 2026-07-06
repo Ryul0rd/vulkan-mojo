@@ -2657,7 +2657,10 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
         extension_loaders_by_tag[tag].append(MojoStruct(name, traits, fields, methods))
 
     # emission
-    extension_module_init_parts = [f"import .{tag}\n" for tag in extension_loaders_by_tag.keys()]
+    extension_module_init_parts = ["from . import (\n"]
+    for tag in extension_loaders_by_tag.keys():
+        extension_module_init_parts.append(f"    {tag},\n")
+    extension_module_init_parts.append(")\n")
     files["extensions/__init__.mojo"] = "".join(extension_module_init_parts)
     for tag, extension_loaders in extension_loaders_by_tag.items():
         extension_parts: List[str] = []
