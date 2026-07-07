@@ -804,16 +804,16 @@ struct DeviceDiagnosticCheckpoints(Copyable):
         var list = List[CheckpointDataNV]()
         var count: UInt32 = 0
         self._get_queue_checkpoint_data(
-    queue,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[CheckpointDataNV, MutUntrackedOrigin].unsafe_dangling(),
-)
+            queue,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[CheckpointDataNV, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._get_queue_checkpoint_data(
-    queue,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            queue,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -843,16 +843,16 @@ struct DeviceDiagnosticCheckpoints(Copyable):
         var list = List[CheckpointData2NV]()
         var count: UInt32 = 0
         self._get_queue_checkpoint_data_2(
-    queue,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[CheckpointData2NV, MutUntrackedOrigin].unsafe_dangling(),
-)
+            queue,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[CheckpointData2NV, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._get_queue_checkpoint_data_2(
-    queue,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            queue,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 

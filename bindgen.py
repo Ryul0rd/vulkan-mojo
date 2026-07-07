@@ -2389,7 +2389,7 @@ def registry_command_to_mojo_methods(
 
     # Pre-generate calls
     base_args = call_args[:-2]
-    indent = 3 if is_result else 0
+    indent = 3 if is_result else 2
     prefix = "result = " if is_result else ""
     call_1 = emit_fn_like(
         f"{prefix}{call_target}",

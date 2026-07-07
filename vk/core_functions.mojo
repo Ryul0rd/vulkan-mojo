@@ -786,16 +786,16 @@ struct InstanceFunctionsV1_0(Copyable):
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_queue_family_properties(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[QueueFamilyProperties, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[QueueFamilyProperties, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_queue_family_properties(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -980,26 +980,26 @@ struct InstanceFunctionsV1_0(Copyable):
         var list = List[SparseImageFormatProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_sparse_image_format_properties(
-    physical_device,
-    format,
-    type,
-    samples,
-    usage,
-    tiling,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageFormatProperties, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageFormatProperties, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_sparse_image_format_properties(
-    physical_device,
-    format,
-    type,
-    samples,
-    usage,
-    tiling,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -1164,16 +1164,16 @@ struct InstanceFunctionsV1_1(Copyable):
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_queue_family_properties(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[QueueFamilyProperties, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[QueueFamilyProperties, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_queue_family_properties(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -1358,26 +1358,26 @@ struct InstanceFunctionsV1_1(Copyable):
         var list = List[SparseImageFormatProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_sparse_image_format_properties(
-    physical_device,
-    format,
-    type,
-    samples,
-    usage,
-    tiling,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageFormatProperties, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageFormatProperties, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_sparse_image_format_properties(
-    physical_device,
-    format,
-    type,
-    samples,
-    usage,
-    tiling,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -1513,16 +1513,16 @@ struct InstanceFunctionsV1_1(Copyable):
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_queue_family_properties_2(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[QueueFamilyProperties2, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[QueueFamilyProperties2, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_1.get_physical_device_queue_family_properties_2(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -1572,18 +1572,18 @@ struct InstanceFunctionsV1_1(Copyable):
         var list = List[SparseImageFormatProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
-    physical_device,
-    Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageFormatProperties2, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageFormatProperties2, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
-    physical_device,
-    Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -1796,16 +1796,16 @@ struct InstanceFunctionsV1_2(Copyable):
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_queue_family_properties(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[QueueFamilyProperties, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[QueueFamilyProperties, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_queue_family_properties(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -1990,26 +1990,26 @@ struct InstanceFunctionsV1_2(Copyable):
         var list = List[SparseImageFormatProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_sparse_image_format_properties(
-    physical_device,
-    format,
-    type,
-    samples,
-    usage,
-    tiling,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageFormatProperties, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageFormatProperties, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_sparse_image_format_properties(
-    physical_device,
-    format,
-    type,
-    samples,
-    usage,
-    tiling,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -2145,16 +2145,16 @@ struct InstanceFunctionsV1_2(Copyable):
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_queue_family_properties_2(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[QueueFamilyProperties2, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[QueueFamilyProperties2, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_1.get_physical_device_queue_family_properties_2(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -2204,18 +2204,18 @@ struct InstanceFunctionsV1_2(Copyable):
         var list = List[SparseImageFormatProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
-    physical_device,
-    Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageFormatProperties2, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageFormatProperties2, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
-    physical_device,
-    Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -2430,16 +2430,16 @@ struct InstanceFunctionsV1_3(Copyable):
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_queue_family_properties(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[QueueFamilyProperties, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[QueueFamilyProperties, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_queue_family_properties(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -2624,26 +2624,26 @@ struct InstanceFunctionsV1_3(Copyable):
         var list = List[SparseImageFormatProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_sparse_image_format_properties(
-    physical_device,
-    format,
-    type,
-    samples,
-    usage,
-    tiling,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageFormatProperties, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageFormatProperties, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_sparse_image_format_properties(
-    physical_device,
-    format,
-    type,
-    samples,
-    usage,
-    tiling,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -2779,16 +2779,16 @@ struct InstanceFunctionsV1_3(Copyable):
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_queue_family_properties_2(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[QueueFamilyProperties2, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[QueueFamilyProperties2, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_1.get_physical_device_queue_family_properties_2(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -2838,18 +2838,18 @@ struct InstanceFunctionsV1_3(Copyable):
         var list = List[SparseImageFormatProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
-    physical_device,
-    Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageFormatProperties2, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageFormatProperties2, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
-    physical_device,
-    Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -3110,16 +3110,16 @@ struct InstanceFunctionsV1_4(Copyable):
         var list = List[QueueFamilyProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_queue_family_properties(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[QueueFamilyProperties, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[QueueFamilyProperties, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_queue_family_properties(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -3304,26 +3304,26 @@ struct InstanceFunctionsV1_4(Copyable):
         var list = List[SparseImageFormatProperties]()
         var count: UInt32 = 0
         self._v1_0.get_physical_device_sparse_image_format_properties(
-    physical_device,
-    format,
-    type,
-    samples,
-    usage,
-    tiling,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageFormatProperties, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageFormatProperties, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_0.get_physical_device_sparse_image_format_properties(
-    physical_device,
-    format,
-    type,
-    samples,
-    usage,
-    tiling,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            format,
+            type,
+            samples,
+            usage,
+            tiling,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -3459,16 +3459,16 @@ struct InstanceFunctionsV1_4(Copyable):
         var list = List[QueueFamilyProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_queue_family_properties_2(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[QueueFamilyProperties2, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[QueueFamilyProperties2, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_1.get_physical_device_queue_family_properties_2(
-    physical_device,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -3518,18 +3518,18 @@ struct InstanceFunctionsV1_4(Copyable):
         var list = List[SparseImageFormatProperties2]()
         var count: UInt32 = 0
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
-    physical_device,
-    Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageFormatProperties2, MutUntrackedOrigin].unsafe_dangling(),
-)
+            physical_device,
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageFormatProperties2, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_1.get_physical_device_sparse_image_format_properties_2(
-    physical_device,
-    Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            physical_device,
+            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -3886,18 +3886,18 @@ struct DeviceFunctionsV1_0(Copyable):
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self._v1_0.get_image_sparse_memory_requirements(
-    device,
-    image,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageMemoryRequirements, MutUntrackedOrigin].unsafe_dangling(),
-)
+            device,
+            image,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageMemoryRequirements, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_0.get_image_sparse_memory_requirements(
-    device,
-    image,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            device,
+            image,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -5867,18 +5867,18 @@ struct DeviceFunctionsV1_1(Copyable):
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self._v1_0.get_image_sparse_memory_requirements(
-    device,
-    image,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageMemoryRequirements, MutUntrackedOrigin].unsafe_dangling(),
-)
+            device,
+            image,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageMemoryRequirements, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_0.get_image_sparse_memory_requirements(
-    device,
-    image,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            device,
+            image,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -7710,18 +7710,18 @@ struct DeviceFunctionsV1_1(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_1.get_image_sparse_memory_requirements_2(
-    device,
-    Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin].unsafe_dangling(),
-)
+            device,
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_1.get_image_sparse_memory_requirements_2(
-    device,
-    Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            device,
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -8134,18 +8134,18 @@ struct DeviceFunctionsV1_2(Copyable):
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self._v1_0.get_image_sparse_memory_requirements(
-    device,
-    image,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageMemoryRequirements, MutUntrackedOrigin].unsafe_dangling(),
-)
+            device,
+            image,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageMemoryRequirements, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_0.get_image_sparse_memory_requirements(
-    device,
-    image,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            device,
+            image,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -9977,18 +9977,18 @@ struct DeviceFunctionsV1_2(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_1.get_image_sparse_memory_requirements_2(
-    device,
-    Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin].unsafe_dangling(),
-)
+            device,
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_1.get_image_sparse_memory_requirements_2(
-    device,
-    Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            device,
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -10580,18 +10580,18 @@ struct DeviceFunctionsV1_3(Copyable):
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self._v1_0.get_image_sparse_memory_requirements(
-    device,
-    image,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageMemoryRequirements, MutUntrackedOrigin].unsafe_dangling(),
-)
+            device,
+            image,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageMemoryRequirements, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_0.get_image_sparse_memory_requirements(
-    device,
-    image,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            device,
+            image,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -12423,18 +12423,18 @@ struct DeviceFunctionsV1_3(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_1.get_image_sparse_memory_requirements_2(
-    device,
-    Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin].unsafe_dangling(),
-)
+            device,
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_1.get_image_sparse_memory_requirements_2(
-    device,
-    Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            device,
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -12980,18 +12980,18 @@ struct DeviceFunctionsV1_3(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_3.get_device_image_sparse_memory_requirements(
-    device,
-    Ptr(to=info).bitcast[DeviceImageMemoryRequirements]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin].unsafe_dangling(),
-)
+            device,
+            Ptr(to=info).bitcast[DeviceImageMemoryRequirements]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_3.get_device_image_sparse_memory_requirements(
-    device,
-    Ptr(to=info).bitcast[DeviceImageMemoryRequirements]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            device,
+            Ptr(to=info).bitcast[DeviceImageMemoryRequirements]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -13509,18 +13509,18 @@ struct DeviceFunctionsV1_4(Copyable):
         var list = List[SparseImageMemoryRequirements]()
         var count: UInt32 = 0
         self._v1_0.get_image_sparse_memory_requirements(
-    device,
-    image,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageMemoryRequirements, MutUntrackedOrigin].unsafe_dangling(),
-)
+            device,
+            image,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageMemoryRequirements, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_0.get_image_sparse_memory_requirements(
-    device,
-    image,
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            device,
+            image,
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -15352,18 +15352,18 @@ struct DeviceFunctionsV1_4(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_1.get_image_sparse_memory_requirements_2(
-    device,
-    Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin].unsafe_dangling(),
-)
+            device,
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_1.get_image_sparse_memory_requirements_2(
-    device,
-    Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            device,
+            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
@@ -15909,18 +15909,18 @@ struct DeviceFunctionsV1_4(Copyable):
         var list = List[SparseImageMemoryRequirements2]()
         var count: UInt32 = 0
         self._v1_3.get_device_image_sparse_memory_requirements(
-    device,
-    Ptr(to=info).bitcast[DeviceImageMemoryRequirements]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin].unsafe_dangling(),
-)
+            device,
+            Ptr(to=info).bitcast[DeviceImageMemoryRequirements]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            Ptr[SparseImageMemoryRequirements2, MutUntrackedOrigin].unsafe_dangling(),
+        )
         list.reserve(Int(count))
         self._v1_3.get_device_image_sparse_memory_requirements(
-    device,
-    Ptr(to=info).bitcast[DeviceImageMemoryRequirements]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-)
+            device,
+            Ptr(to=info).bitcast[DeviceImageMemoryRequirements]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+        )
         list._len = Int(count)
         return list^
 
