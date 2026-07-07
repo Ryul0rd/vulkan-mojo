@@ -11,5 +11,5 @@ compile = "mojo precompile vk -o vk.mojoc"
 build = {depends-on = ["bindgen", "compile"]}
 
 [dependencies]
-mojo = "==1.0.0b2"
+mojo = "==1.0.0b3.dev2026070506"
 python = ">=3.10,<3.11"

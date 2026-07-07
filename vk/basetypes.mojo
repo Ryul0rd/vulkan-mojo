@@ -1,3 +1,6 @@
+comptime Ptr = UnsafePointer
+
+
 comptime SampleMask = UInt32
 comptime DeviceSize = UInt64
 comptime DeviceAddress = UInt64

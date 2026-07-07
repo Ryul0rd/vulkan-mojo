@@ -54,10 +54,10 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/traitlets-5.14.3-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/tzdata-2025b-h8577fbf_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhcf101f3_1.conda
-      - conda: https://conda.modular.com/max-nightly/linux-64/mojo-1.0.0b2-release.conda
-      - conda: https://conda.modular.com/max-nightly/linux-64/mojo-compiler-1.0.0b2-release.conda
-      - conda: https://conda.modular.com/max-nightly/noarch/mblack-26.4.0-release.conda
-      - conda: https://conda.modular.com/max-nightly/noarch/mojo-python-1.0.0b2-release.conda
+      - conda: https://conda.modular.com/max-nightly/linux-64/mojo-1.0.0b3.dev2026070506-release.conda
+      - conda: https://conda.modular.com/max-nightly/linux-64/mojo-compiler-1.0.0b3.dev2026070506-release.conda
+      - conda: https://conda.modular.com/max-nightly/noarch/mblack-26.5.0.dev2026070506-release.conda
+      - conda: https://conda.modular.com/max-nightly/noarch/mojo-python-1.0.0b3.dev2026070506-release.conda
 packages:
 - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
   sha256: fe51de6107f9edc7aa4f786a70f4a883943bc9d39b3bb7307c04c41410990726
@@ -564,31 +564,31 @@ packages:
   license_family: MIT
   size: 24194
   timestamp: 1764460141901
-- conda: https://conda.modular.com/max-nightly/linux-64/mojo-1.0.0b2-release.conda
-  sha256: 7553366c138bae2fcf8617582f1bb6d6b6742087bd6a83ea83aa41c023499382
-  md5: 8d4390edde2dcf29880c57b3088f15aa
+- conda: https://conda.modular.com/max-nightly/linux-64/mojo-1.0.0b3.dev2026070506-release.conda
+  sha256: eaa883cfdf0eb8972a4ae8f62e33f5454e94676eb382811b307b8f84d334e930
+  md5: fd641caba7fd3d7614731ced94d7dce8
   depends:
   - python >=3.10
-  - mojo-compiler ==1.0.0b2
-  - mblack ==26.4.0
+  - mojo-compiler ==1.0.0b3.dev2026070506
+  - mblack ==26.5.0.dev2026070506
   - jupyter_client >=8.6.2,<8.7
   license: LicenseRef-Modular-Proprietary
   run_exports: {}
-  size: 96475709
-  timestamp: 1781237127405
-- conda: https://conda.modular.com/max-nightly/linux-64/mojo-compiler-1.0.0b2-release.conda
-  sha256: 87f8e9ef573f37072423aeb56a7c468bdb5f5889476bce4aa7c3396665c651fe
-  md5: 6be85d17872f5c2370015ca4ec07dd0d
+  size: 114516457
+  timestamp: 1783233282639
+- conda: https://conda.modular.com/max-nightly/linux-64/mojo-compiler-1.0.0b3.dev2026070506-release.conda
+  sha256: 37c9c9e35b28833901c1a0c04fd8310e397a08f8c0aef30217b124b7a5d70b02
+  md5: 37c0a99df440824bf538ddd4558532e6
   depends:
-  - mojo-python ==1.0.0b2
+  - mojo-python ==1.0.0b3.dev2026070506
   license: LicenseRef-Modular-Proprietary
   run_exports: {}
-  size: 85342385
-  timestamp: 1781237127405
-- conda: https://conda.modular.com/max-nightly/noarch/mblack-26.4.0-release.conda
+  size: 81522099
+  timestamp: 1783233323866
+- conda: https://conda.modular.com/max-nightly/noarch/mblack-26.5.0.dev2026070506-release.conda
   noarch: python
-  sha256: e2497cbefbf5d962cd0db8c1b893e7e48d8f3603cab84a9d8bad0030b5bb26b1
-  md5: ec6bf2b9588f5ba4bd3472c0773c4892
+  sha256: 1c30d355109241b6963ed43e3910ee4ef3df5a54cfeabaa8d9ce26ddb7ed22bb
+  md5: daf12dda92f8771aed0465aa47dffeaf
   depends:
   - python >=3.10
   - click >=8.0.0
@@ -599,15 +599,15 @@ packages:
   - tomli >=1.1.0
   license: LicenseRef-Modular-Proprietary
   run_exports: {}
-  size: 135301
-  timestamp: 1781220755102
-- conda: https://conda.modular.com/max-nightly/noarch/mojo-python-1.0.0b2-release.conda
+  size: 135767
+  timestamp: 1783232899967
+- conda: https://conda.modular.com/max-nightly/noarch/mojo-python-1.0.0b3.dev2026070506-release.conda
   noarch: python
-  sha256: 37bf44a74edcd2ebaec7fe8299ef183e006ad051bfcf21caa06becc0e0eeffd5
-  md5: 8781bd673909835fa59ce818e3835839
+  sha256: ddbf8ba4ddbc3009bc029ebab65c0c7d457f2519047f4ebb0a61d917c4de418f
+  md5: 03695be8c454befe31b6648948ce55b2
   depends:
   - python >=3.10
   license: LicenseRef-Modular-Proprietary
   run_exports: {}
-  size: 24682
-  timestamp: 1781220753246
+  size: 24101
+  timestamp: 1783232900057

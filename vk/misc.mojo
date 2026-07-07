@@ -1,5 +1,6 @@
 from std.memory import memset_zero, memcpy
 from std.os import abort
+from .enums import Result
 
 
 def uninitialized[T: AnyType](out value: T):
@@ -79,7 +80,7 @@ struct Version(TrivialRegisterPassable, Hashable, Writable):
 
 
 @fieldwise_init
-struct ListResult[T: Copyable & ImplicitlyDestructible](Copyable):
+struct ListResult[T: Copyable & ImplicitlyDeletable](Copyable):
     var list: List[Self.T]
     var result: Result
 

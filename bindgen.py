@@ -1208,6 +1208,8 @@ def bind_basetypes(files: Dict[str, str], registry: Registry):
     
     # Emission
     parts: List[str] = []
+    parts.append("comptime Ptr = UnsafePointer\n")
+    parts.append("\n\n")
     for basetype in basetypes:
         parts.append(str(basetype))
     files["basetypes.mojo"] = "".join(parts)
@@ -1275,6 +1277,7 @@ def bind_funcpointers(files: Dict[str, str], registry: Registry):
 
     # emission
     parts: List[str] = []
+    parts.append("from .structs import *\n")
     for funcpointer in funcpointers:
         parts.append("\n\n")
         parts.append(str(funcpointer))
@@ -1621,6 +1624,7 @@ def bind_enums(files: Dict[str, str], registry: Registry):
     # Emission
     parts: List[str] = []
     parts.append("from std.os import abort\n")
+    parts.append("from .flags import *\n")
     parts.append("\n\n")
     for alias in aliases:
         parts.append(str(alias))
@@ -2668,6 +2672,7 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
             "from std.ffi import OwnedDLHandle, CStringSlice, c_char\n"
             "from std.memory import ArcPointer\n"
             "from vk.core_functions import GlobalFunctions\n"
+            "from vk.structs import *\n"
         )
         for loader in extension_loaders:
             extension_parts.append("\n\n")

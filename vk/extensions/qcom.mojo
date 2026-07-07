@@ -1,6 +1,7 @@
 from std.ffi import OwnedDLHandle, CStringSlice, c_char
 from std.memory import ArcPointer
 from vk.core_functions import GlobalFunctions
+from vk.structs import *
 
 
 struct TileShading(Copyable):

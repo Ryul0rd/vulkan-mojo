@@ -1,3 +1,4 @@
+from .structs import *
 
 
 comptime PFN_vkInternalAllocationNotification = def(
