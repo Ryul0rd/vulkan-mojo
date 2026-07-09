@@ -2125,7 +2125,7 @@ class MojoHandle:
 
     def __str__(self) -> str:
         return (
-            f"struct {self.name}(TrivialRegisterPassable, Equatable, Hashable, Writable):\n"
+            f"struct {self.name}(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):\n"
             f"    var _value: {self.underlying_type}\n"
             f"    comptime NULL = Self(value = 0)\n"
             f"\n"
@@ -2138,11 +2138,8 @@ class MojoHandle:
             f"    def __bool__(self) -> Bool:\n"
             f"        return self._value != 0\n"
             f"\n"
-            f"    def __str__(self) -> String:\n"
-            f"        return hex(self._value)\n"
-            f"\n"
             f"    def write_to(self, mut writer: Some[Writer]):\n"
-            f"        writer.write(String(self))\n"
+            f'        writer.write("{self.name}(", hex(self._value), ")")\n'
         )
 
 

@@ -3,7 +3,7 @@ comptime SamplerYcbcrConversionKHR = SamplerYcbcrConversion
 comptime PrivateDataSlotEXT = PrivateDataSlot
 
 
-struct Instance(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct Instance(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -16,14 +16,11 @@ struct Instance(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("Instance(", hex(self._value), ")")
 
 
-struct PhysicalDevice(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct PhysicalDevice(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -36,14 +33,11 @@ struct PhysicalDevice(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("PhysicalDevice(", hex(self._value), ")")
 
 
-struct Device(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct Device(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -56,14 +50,11 @@ struct Device(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("Device(", hex(self._value), ")")
 
 
-struct Queue(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct Queue(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -76,14 +67,11 @@ struct Queue(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("Queue(", hex(self._value), ")")
 
 
-struct CommandBuffer(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct CommandBuffer(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -96,14 +84,11 @@ struct CommandBuffer(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("CommandBuffer(", hex(self._value), ")")
 
 
-struct DeviceMemory(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct DeviceMemory(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -116,14 +101,11 @@ struct DeviceMemory(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("DeviceMemory(", hex(self._value), ")")
 
 
-struct CommandPool(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct CommandPool(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -136,14 +118,11 @@ struct CommandPool(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("CommandPool(", hex(self._value), ")")
 
 
-struct Buffer(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct Buffer(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -156,14 +135,11 @@ struct Buffer(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("Buffer(", hex(self._value), ")")
 
 
-struct BufferView(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct BufferView(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -176,14 +152,11 @@ struct BufferView(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("BufferView(", hex(self._value), ")")
 
 
-struct Image(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct Image(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -196,14 +169,11 @@ struct Image(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("Image(", hex(self._value), ")")
 
 
-struct ImageView(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct ImageView(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -216,14 +186,11 @@ struct ImageView(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("ImageView(", hex(self._value), ")")
 
 
-struct ShaderModule(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct ShaderModule(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -236,14 +203,11 @@ struct ShaderModule(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("ShaderModule(", hex(self._value), ")")
 
 
-struct Pipeline(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct Pipeline(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -256,14 +220,11 @@ struct Pipeline(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("Pipeline(", hex(self._value), ")")
 
 
-struct PipelineLayout(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct PipelineLayout(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -276,14 +237,11 @@ struct PipelineLayout(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("PipelineLayout(", hex(self._value), ")")
 
 
-struct Sampler(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct Sampler(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -296,14 +254,11 @@ struct Sampler(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("Sampler(", hex(self._value), ")")
 
 
-struct DescriptorSet(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct DescriptorSet(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -316,14 +271,11 @@ struct DescriptorSet(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("DescriptorSet(", hex(self._value), ")")
 
 
-struct DescriptorSetLayout(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct DescriptorSetLayout(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -336,14 +288,11 @@ struct DescriptorSetLayout(TrivialRegisterPassable, Equatable, Hashable, Writabl
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("DescriptorSetLayout(", hex(self._value), ")")
 
 
-struct DescriptorPool(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct DescriptorPool(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -356,14 +305,11 @@ struct DescriptorPool(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("DescriptorPool(", hex(self._value), ")")
 
 
-struct Fence(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct Fence(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -376,14 +322,11 @@ struct Fence(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("Fence(", hex(self._value), ")")
 
 
-struct Semaphore(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct Semaphore(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -396,14 +339,11 @@ struct Semaphore(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("Semaphore(", hex(self._value), ")")
 
 
-struct Event(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct Event(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -416,14 +356,11 @@ struct Event(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("Event(", hex(self._value), ")")
 
 
-struct QueryPool(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct QueryPool(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -436,14 +373,11 @@ struct QueryPool(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("QueryPool(", hex(self._value), ")")
 
 
-struct Framebuffer(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct Framebuffer(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -456,14 +390,11 @@ struct Framebuffer(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("Framebuffer(", hex(self._value), ")")
 
 
-struct RenderPass(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct RenderPass(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -476,14 +407,11 @@ struct RenderPass(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("RenderPass(", hex(self._value), ")")
 
 
-struct PipelineCache(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct PipelineCache(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -496,14 +424,11 @@ struct PipelineCache(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("PipelineCache(", hex(self._value), ")")
 
 
-struct PipelineBinaryKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct PipelineBinaryKHR(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -516,14 +441,11 @@ struct PipelineBinaryKHR(TrivialRegisterPassable, Equatable, Hashable, Writable)
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("PipelineBinaryKHR(", hex(self._value), ")")
 
 
-struct IndirectCommandsLayoutNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct IndirectCommandsLayoutNV(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -536,14 +458,11 @@ struct IndirectCommandsLayoutNV(TrivialRegisterPassable, Equatable, Hashable, Wr
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("IndirectCommandsLayoutNV(", hex(self._value), ")")
 
 
-struct IndirectCommandsLayoutEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct IndirectCommandsLayoutEXT(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -556,14 +475,11 @@ struct IndirectCommandsLayoutEXT(TrivialRegisterPassable, Equatable, Hashable, W
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("IndirectCommandsLayoutEXT(", hex(self._value), ")")
 
 
-struct IndirectExecutionSetEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct IndirectExecutionSetEXT(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -576,14 +492,11 @@ struct IndirectExecutionSetEXT(TrivialRegisterPassable, Equatable, Hashable, Wri
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("IndirectExecutionSetEXT(", hex(self._value), ")")
 
 
-struct DescriptorUpdateTemplate(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct DescriptorUpdateTemplate(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -596,14 +509,11 @@ struct DescriptorUpdateTemplate(TrivialRegisterPassable, Equatable, Hashable, Wr
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("DescriptorUpdateTemplate(", hex(self._value), ")")
 
 
-struct SamplerYcbcrConversion(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct SamplerYcbcrConversion(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -616,14 +526,11 @@ struct SamplerYcbcrConversion(TrivialRegisterPassable, Equatable, Hashable, Writ
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("SamplerYcbcrConversion(", hex(self._value), ")")
 
 
-struct ValidationCacheEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct ValidationCacheEXT(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -636,14 +543,11 @@ struct ValidationCacheEXT(TrivialRegisterPassable, Equatable, Hashable, Writable
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("ValidationCacheEXT(", hex(self._value), ")")
 
 
-struct AccelerationStructureKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct AccelerationStructureKHR(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -656,14 +560,11 @@ struct AccelerationStructureKHR(TrivialRegisterPassable, Equatable, Hashable, Wr
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("AccelerationStructureKHR(", hex(self._value), ")")
 
 
-struct AccelerationStructureNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct AccelerationStructureNV(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -676,14 +577,11 @@ struct AccelerationStructureNV(TrivialRegisterPassable, Equatable, Hashable, Wri
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("AccelerationStructureNV(", hex(self._value), ")")
 
 
-struct PerformanceConfigurationINTEL(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct PerformanceConfigurationINTEL(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -696,14 +594,11 @@ struct PerformanceConfigurationINTEL(TrivialRegisterPassable, Equatable, Hashabl
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("PerformanceConfigurationINTEL(", hex(self._value), ")")
 
 
-struct BufferCollectionFUCHSIA(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct BufferCollectionFUCHSIA(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -716,14 +611,11 @@ struct BufferCollectionFUCHSIA(TrivialRegisterPassable, Equatable, Hashable, Wri
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("BufferCollectionFUCHSIA(", hex(self._value), ")")
 
 
-struct DeferredOperationKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct DeferredOperationKHR(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -736,14 +628,11 @@ struct DeferredOperationKHR(TrivialRegisterPassable, Equatable, Hashable, Writab
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("DeferredOperationKHR(", hex(self._value), ")")
 
 
-struct PrivateDataSlot(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct PrivateDataSlot(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -756,14 +645,11 @@ struct PrivateDataSlot(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("PrivateDataSlot(", hex(self._value), ")")
 
 
-struct CuModuleNVX(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct CuModuleNVX(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -776,14 +662,11 @@ struct CuModuleNVX(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("CuModuleNVX(", hex(self._value), ")")
 
 
-struct CuFunctionNVX(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct CuFunctionNVX(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -796,14 +679,11 @@ struct CuFunctionNVX(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("CuFunctionNVX(", hex(self._value), ")")
 
 
-struct OpticalFlowSessionNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct OpticalFlowSessionNV(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -816,14 +696,11 @@ struct OpticalFlowSessionNV(TrivialRegisterPassable, Equatable, Hashable, Writab
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("OpticalFlowSessionNV(", hex(self._value), ")")
 
 
-struct MicromapEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct MicromapEXT(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -836,14 +713,11 @@ struct MicromapEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("MicromapEXT(", hex(self._value), ")")
 
 
-struct ShaderEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct ShaderEXT(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -856,14 +730,11 @@ struct ShaderEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("ShaderEXT(", hex(self._value), ")")
 
 
-struct TensorARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct TensorARM(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -876,14 +747,11 @@ struct TensorARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("TensorARM(", hex(self._value), ")")
 
 
-struct TensorViewARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct TensorViewARM(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -896,14 +764,11 @@ struct TensorViewARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("TensorViewARM(", hex(self._value), ")")
 
 
-struct DataGraphPipelineSessionARM(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct DataGraphPipelineSessionARM(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -916,14 +781,11 @@ struct DataGraphPipelineSessionARM(TrivialRegisterPassable, Equatable, Hashable,
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("DataGraphPipelineSessionARM(", hex(self._value), ")")
 
 
-struct DisplayKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct DisplayKHR(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -936,14 +798,11 @@ struct DisplayKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("DisplayKHR(", hex(self._value), ")")
 
 
-struct DisplayModeKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct DisplayModeKHR(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -956,14 +815,11 @@ struct DisplayModeKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("DisplayModeKHR(", hex(self._value), ")")
 
 
-struct SurfaceKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct SurfaceKHR(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -976,14 +832,11 @@ struct SurfaceKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("SurfaceKHR(", hex(self._value), ")")
 
 
-struct SwapchainKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct SwapchainKHR(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -996,14 +849,11 @@ struct SwapchainKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("SwapchainKHR(", hex(self._value), ")")
 
 
-struct DebugReportCallbackEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct DebugReportCallbackEXT(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1016,14 +866,11 @@ struct DebugReportCallbackEXT(TrivialRegisterPassable, Equatable, Hashable, Writ
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("DebugReportCallbackEXT(", hex(self._value), ")")
 
 
-struct DebugUtilsMessengerEXT(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct DebugUtilsMessengerEXT(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1036,14 +883,11 @@ struct DebugUtilsMessengerEXT(TrivialRegisterPassable, Equatable, Hashable, Writ
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("DebugUtilsMessengerEXT(", hex(self._value), ")")
 
 
-struct VideoSessionKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct VideoSessionKHR(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1056,14 +900,11 @@ struct VideoSessionKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("VideoSessionKHR(", hex(self._value), ")")
 
 
-struct VideoSessionParametersKHR(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct VideoSessionParametersKHR(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1076,14 +917,11 @@ struct VideoSessionParametersKHR(TrivialRegisterPassable, Equatable, Hashable, W
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("VideoSessionParametersKHR(", hex(self._value), ")")
 
 
-struct SemaphoreSciSyncPoolNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct SemaphoreSciSyncPoolNV(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1096,14 +934,11 @@ struct SemaphoreSciSyncPoolNV(TrivialRegisterPassable, Equatable, Hashable, Writ
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("SemaphoreSciSyncPoolNV(", hex(self._value), ")")
 
 
-struct CudaModuleNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct CudaModuleNV(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1116,14 +951,11 @@ struct CudaModuleNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("CudaModuleNV(", hex(self._value), ")")
 
 
-struct CudaFunctionNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct CudaFunctionNV(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt64
     comptime NULL = Self(value = 0)
 
@@ -1136,14 +968,11 @@ struct CudaFunctionNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("CudaFunctionNV(", hex(self._value), ")")
 
 
-struct ExternalComputeQueueNV(TrivialRegisterPassable, Equatable, Hashable, Writable):
+struct ExternalComputeQueueNV(TrivialRegisterPassable, Equatable, Hashable, Boolable, Writable):
     var _value: UInt
     comptime NULL = Self(value = 0)
 
@@ -1156,8 +985,5 @@ struct ExternalComputeQueueNV(TrivialRegisterPassable, Equatable, Hashable, Writ
     def __bool__(self) -> Bool:
         return self._value != 0
 
-    def __str__(self) -> String:
-        return hex(self._value)
-
     def write_to(self, mut writer: Some[Writer]):
-        writer.write(String(self))
+        writer.write("ExternalComputeQueueNV(", hex(self._value), ")")
