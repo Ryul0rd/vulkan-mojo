@@ -472,11 +472,11 @@ struct DataGraph(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_data_graph_pipeline_session_bind_point_requirements(
-                device,
-                Ptr(to=info).bitcast[DataGraphPipelineSessionBindPointRequirementsInfoARM]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    device,
+                    Ptr(to=info).bitcast[DataGraphPipelineSessionBindPointRequirementsInfoARM]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -588,11 +588,11 @@ struct DataGraph(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_data_graph_pipeline_available_properties(
-                device,
-                Ptr(to=pipeline_info).bitcast[DataGraphPipelineInfoARM]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    device,
+                    Ptr(to=pipeline_info).bitcast[DataGraphPipelineInfoARM]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -656,11 +656,11 @@ struct DataGraph(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_queue_family_data_graph_properties(
-                physical_device,
-                queue_family_index,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    queue_family_index,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 

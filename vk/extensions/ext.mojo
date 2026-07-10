@@ -1430,11 +1430,11 @@ struct ValidationCache(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_validation_cache_data(
-                device,
-                validation_cache,
-                Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().bitcast[NoneType]().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    device,
+                    validation_cache,
+                    Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().bitcast[NoneType]().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1544,10 +1544,10 @@ struct CalibratedTimestamps(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_calibrateable_time_domains(
-                physical_device,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1803,10 +1803,10 @@ struct ToolingInfo(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_tool_properties(
-                physical_device,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1891,11 +1891,11 @@ struct FullScreenExclusive(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_surface_present_modes_2(
-                physical_device,
-                Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -4860,11 +4860,11 @@ struct ShaderObject(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_shader_binary_data(
-                device,
-                shader,
-                Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().bitcast[NoneType]().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    device,
+                    shader,
+                    Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().bitcast[NoneType]().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 

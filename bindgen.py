@@ -2400,7 +2400,7 @@ def registry_command_to_mojo_methods(
     call_2 = emit_fn_like(
         f"{prefix}{call_target}",
         base_args + [f"Ptr(to=count).bitcast[{count_pointee_type.name}]().unsafe_origin_cast[MutUntrackedOrigin]()", ptr_list],
-        base_indent_level=indent,
+        base_indent_level=indent+1,
     ).strip()
     
     body_lines = [
@@ -2863,22 +2863,21 @@ def emit_fn_like(
     length and consistent indentation rules.
 
     The formatter attempts layouts in the following order:
-      1. A single-line form if it fits within the maximum line length and
-         `no_one_liner` is False.
-      2. A multi-line form with arguments split across lines.
-      3. A fully expanded multi-line form with generic parameters and
-         arguments each on their own lines.
+      - A single-line form if it fits within the maximum line length.
+      - A multi-line form with arguments split across lines.
+      - A fully expanded multi-line form with generic parameters and
+        arguments each on their own lines.
 
     Args:
         prefix:
             The leading text before the parameter list, such as
-            ``"def foo"``, ``"def"``, or ``"comptime Bar = def"``.
+            "def foo", "def", or "comptime Bar = def".
         arguments:
             Iterable of already-formatted argument strings to place inside
             the parentheses.
         suffix:
             Optional trailing text appended after the closing parenthesis,
-            such as a return type annotation or ``":\\n"`` for function bodies.
+            such as a return type annotation or ":\n" for function bodies.
         parameters:
             Optional iterable of generic or comptime parameter strings to be
             emitted in square brackets before the argument list.
@@ -2912,7 +2911,7 @@ def emit_fn_like(
     else:
         arg_lines = (args_line,)
     first_line = f"{base_indent}{prefix}{params_joined}("
-    if len(first_line) <= MAX_LINE_LENGTH:
+    if len(first_line) <= MAX_LINE_LENGTH or len(params_list) == 0:
         lines = [
             first_line,
             *arg_lines,

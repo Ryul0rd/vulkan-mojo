@@ -148,11 +148,11 @@ struct Surface(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_surface_formats(
-                physical_device,
-                surface,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    surface,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -198,11 +198,11 @@ struct Surface(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_surface_present_modes(
-                physical_device,
-                surface,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    surface,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -363,11 +363,11 @@ struct Swapchain(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_swapchain_images(
-                device,
-                swapchain,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    device,
+                    swapchain,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -467,11 +467,11 @@ struct Swapchain(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_present_rectangles(
-                physical_device,
-                surface,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    surface,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -595,10 +595,10 @@ struct Display(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_display_properties(
-                physical_device,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -641,10 +641,10 @@ struct Display(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_display_plane_properties(
-                physical_device,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -686,11 +686,11 @@ struct Display(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_display_plane_supported_displays(
-                physical_device,
-                plane_index,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    plane_index,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -732,11 +732,11 @@ struct Display(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_display_mode_properties(
-                physical_device,
-                display,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    display,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1280,11 +1280,11 @@ struct VideoQueue(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_video_format_properties(
-                physical_device,
-                Ptr(to=video_format_info).bitcast[PhysicalDeviceVideoFormatInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    Ptr(to=video_format_info).bitcast[PhysicalDeviceVideoFormatInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1364,11 +1364,11 @@ struct VideoQueue(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_video_session_memory_requirements(
-                device,
-                video_session,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    device,
+                    video_session,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -1696,10 +1696,10 @@ struct GetPhysicalDeviceProperties2(Copyable):
         )
         list.reserve(Int(count))
         self._get_physical_device_queue_family_properties_2(
-            physical_device,
-            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-        )
+                physical_device,
+                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+            )
         list._len = Int(count)
         return list^
 
@@ -1756,11 +1756,11 @@ struct GetPhysicalDeviceProperties2(Copyable):
         )
         list.reserve(Int(count))
         self._get_physical_device_sparse_image_format_properties_2(
-            physical_device,
-            Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-        )
+                physical_device,
+                Ptr(to=format_info).bitcast[PhysicalDeviceSparseImageFormatInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+            )
         list._len = Int(count)
         return list^
 
@@ -1948,11 +1948,11 @@ struct DeviceGroup(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_present_rectangles(
-                physical_device,
-                surface,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    surface,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2051,10 +2051,10 @@ struct DeviceGroupCreation(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._enumerate_physical_device_groups(
-                instance,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    instance,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -2974,11 +2974,11 @@ struct GetSurfaceCapabilities2(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_surface_formats_2(
-                physical_device,
-                Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -3064,10 +3064,10 @@ struct GetDisplayProperties2(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_display_properties_2(
-                physical_device,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -3110,10 +3110,10 @@ struct GetDisplayProperties2(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_display_plane_properties_2(
-                physical_device,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -3155,11 +3155,11 @@ struct GetDisplayProperties2(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_display_mode_properties_2(
-                physical_device,
-                display,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    display,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -3285,11 +3285,11 @@ struct GetMemoryRequirements2(Copyable):
         )
         list.reserve(Int(count))
         self._get_image_sparse_memory_requirements_2(
-            device,
-            Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-        )
+                device,
+                Ptr(to=info).bitcast[ImageSparseMemoryRequirementsInfo2]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+            )
         list._len = Int(count)
         return list^
 
@@ -4305,10 +4305,10 @@ struct FragmentShadingRate(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_fragment_shading_rates(
-                physical_device,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -4643,11 +4643,11 @@ struct PipelineExecutableProperties(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_pipeline_executable_properties(
-                device,
-                Ptr(to=pipeline_info).bitcast[PipelineInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    device,
+                    Ptr(to=pipeline_info).bitcast[PipelineInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -4689,11 +4689,11 @@ struct PipelineExecutableProperties(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_pipeline_executable_statistics(
-                device,
-                Ptr(to=executable_info).bitcast[PipelineExecutableInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    device,
+                    Ptr(to=executable_info).bitcast[PipelineExecutableInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -4739,11 +4739,11 @@ struct PipelineExecutableProperties(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_pipeline_executable_internal_representations(
-                device,
-                Ptr(to=executable_info).bitcast[PipelineExecutableInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    device,
+                    Ptr(to=executable_info).bitcast[PipelineExecutableInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -4897,12 +4897,12 @@ struct VideoEncodeQueue(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_encoded_video_session_parameters(
-                device,
-                Ptr(to=video_session_parameters_info).bitcast[VideoEncodeSessionParametersGetInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-                Ptr(to=p_feedback_info).bitcast[Optional[Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutUntrackedOrigin]]]()[],
-                Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().bitcast[NoneType]().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    device,
+                    Ptr(to=video_session_parameters_info).bitcast[VideoEncodeSessionParametersGetInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+                    Ptr(to=p_feedback_info).bitcast[Optional[Ptr[VideoEncodeSessionParametersFeedbackInfoKHR, MutUntrackedOrigin]]]()[],
+                    Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().bitcast[NoneType]().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -5302,11 +5302,11 @@ struct Maintenance4(Copyable):
         )
         list.reserve(Int(count))
         self._get_device_image_sparse_memory_requirements(
-            device,
-            Ptr(to=info).bitcast[DeviceImageMemoryRequirements]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-            Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-        )
+                device,
+                Ptr(to=info).bitcast[DeviceImageMemoryRequirements]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+            )
         list._len = Int(count)
         return list^
 
@@ -5591,12 +5591,12 @@ struct PipelineBinary(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_pipeline_binary_data(
-                device,
-                Ptr(to=info).bitcast[PipelineBinaryDataInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
-                Ptr(to=pipeline_binary_key).bitcast[PipelineBinaryKeyKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
-                Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().bitcast[NoneType]().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    device,
+                    Ptr(to=info).bitcast[PipelineBinaryDataInfoKHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
+                    Ptr(to=pipeline_binary_key).bitcast[PipelineBinaryKeyKHR]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().bitcast[NoneType]().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -5701,10 +5701,10 @@ struct CooperativeMatrix(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_cooperative_matrix_properties(
-                physical_device,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
@@ -5803,10 +5803,10 @@ struct CalibratedTimestamps(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_physical_device_calibrateable_time_domains(
-                physical_device,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    physical_device,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 

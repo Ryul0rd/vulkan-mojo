@@ -142,13 +142,13 @@ struct ShaderInfo(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_shader_info(
-                device,
-                pipeline,
-                shader_stage,
-                info_type,
-                Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().bitcast[NoneType]().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    device,
+                    pipeline,
+                    shader_stage,
+                    info_type,
+                    Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().bitcast[NoneType]().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 

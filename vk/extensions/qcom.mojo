@@ -135,11 +135,11 @@ struct TileProperties(Copyable):
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
                 result = self._get_framebuffer_tile_properties(
-                device,
-                framebuffer,
-                Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
-            )
+                    device,
+                    framebuffer,
+                    Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
+                    list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
+                )
                 list._len = Int(count)
         return ListResult(list^, result)
 
