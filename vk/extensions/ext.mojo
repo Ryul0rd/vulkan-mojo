@@ -807,34 +807,39 @@ struct DebugUtils(Copyable):
         p_callback_data: Ptr[DebugUtilsMessengerCallbackDataEXT, ImmutUntrackedOrigin],
     ) thin abi("C")
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
         var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetInstanceProcAddr")
-        self._set_debug_utils_object_name = Ptr(to=get_instance_proc_addr(
-            instance, "vkSetDebugUtilsObjectNameEXT".as_c_string_slice()
+        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetDeviceProcAddr")
+        self._set_debug_utils_object_name = Ptr(to=get_device_proc_addr(
+            device, "vkSetDebugUtilsObjectNameEXT".as_c_string_slice()
         )).bitcast[type_of(self._set_debug_utils_object_name)]()[]
-        self._set_debug_utils_object_tag = Ptr(to=get_instance_proc_addr(
-            instance, "vkSetDebugUtilsObjectTagEXT".as_c_string_slice()
+        self._set_debug_utils_object_tag = Ptr(to=get_device_proc_addr(
+            device, "vkSetDebugUtilsObjectTagEXT".as_c_string_slice()
         )).bitcast[type_of(self._set_debug_utils_object_tag)]()[]
-        self._queue_begin_debug_utils_label = Ptr(to=get_instance_proc_addr(
-            instance, "vkQueueBeginDebugUtilsLabelEXT".as_c_string_slice()
+        self._queue_begin_debug_utils_label = Ptr(to=get_device_proc_addr(
+            device, "vkQueueBeginDebugUtilsLabelEXT".as_c_string_slice()
         )).bitcast[type_of(self._queue_begin_debug_utils_label)]()[]
-        self._queue_end_debug_utils_label = Ptr(to=get_instance_proc_addr(
-            instance, "vkQueueEndDebugUtilsLabelEXT".as_c_string_slice()
+        self._queue_end_debug_utils_label = Ptr(to=get_device_proc_addr(
+            device, "vkQueueEndDebugUtilsLabelEXT".as_c_string_slice()
         )).bitcast[type_of(self._queue_end_debug_utils_label)]()[]
-        self._queue_insert_debug_utils_label = Ptr(to=get_instance_proc_addr(
-            instance, "vkQueueInsertDebugUtilsLabelEXT".as_c_string_slice()
+        self._queue_insert_debug_utils_label = Ptr(to=get_device_proc_addr(
+            device, "vkQueueInsertDebugUtilsLabelEXT".as_c_string_slice()
         )).bitcast[type_of(self._queue_insert_debug_utils_label)]()[]
-        self._cmd_begin_debug_utils_label = Ptr(to=get_instance_proc_addr(
-            instance, "vkCmdBeginDebugUtilsLabelEXT".as_c_string_slice()
+        self._cmd_begin_debug_utils_label = Ptr(to=get_device_proc_addr(
+            device, "vkCmdBeginDebugUtilsLabelEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_begin_debug_utils_label)]()[]
-        self._cmd_end_debug_utils_label = Ptr(to=get_instance_proc_addr(
-            instance, "vkCmdEndDebugUtilsLabelEXT".as_c_string_slice()
+        self._cmd_end_debug_utils_label = Ptr(to=get_device_proc_addr(
+            device, "vkCmdEndDebugUtilsLabelEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_end_debug_utils_label)]()[]
-        self._cmd_insert_debug_utils_label = Ptr(to=get_instance_proc_addr(
-            instance, "vkCmdInsertDebugUtilsLabelEXT".as_c_string_slice()
+        self._cmd_insert_debug_utils_label = Ptr(to=get_device_proc_addr(
+            device, "vkCmdInsertDebugUtilsLabelEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_insert_debug_utils_label)]()[]
         self._create_debug_utils_messenger = Ptr(to=get_instance_proc_addr(
             instance, "vkCreateDebugUtilsMessengerEXT".as_c_string_slice()
@@ -1027,8 +1032,13 @@ struct DescriptorHeap(Copyable):
         p_datas: Ptr[HostAddressRangeEXT, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
@@ -1050,8 +1060,8 @@ struct DescriptorHeap(Copyable):
         self._get_image_opaque_capture_data = Ptr(to=get_device_proc_addr(
             device, "vkGetImageOpaqueCaptureDataEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_image_opaque_capture_data)]()[]
-        self._get_physical_device_descriptor_size = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceDescriptorSizeEXT".as_c_string_slice()
+        self._get_physical_device_descriptor_size = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceDescriptorSizeEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_descriptor_size)]()[]
         self._register_custom_border_color = Ptr(to=get_device_proc_addr(
             device, "vkRegisterCustomBorderColorEXT".as_c_string_slice()
@@ -1224,16 +1234,21 @@ struct SampleLocations(Copyable):
         p_multisample_properties: Ptr[MultisamplePropertiesEXT, MutUntrackedOrigin],
     ) thin abi("C")
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
         self._cmd_set_sample_locations = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetSampleLocationsEXT".as_c_string_slice()
         )).bitcast[type_of(self._cmd_set_sample_locations)]()[]
-        self._get_physical_device_multisample_properties = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceMultisamplePropertiesEXT".as_c_string_slice()
+        self._get_physical_device_multisample_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceMultisamplePropertiesEXT".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_multisample_properties)]()[]
 
     def cmd_set_sample_locations(
@@ -1493,13 +1508,18 @@ struct CalibratedTimestamps(Copyable):
         p_max_deviation: Ptr[UInt64, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
-        self._get_physical_device_calibrateable_time_domains = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceCalibrateableTimeDomainsKHR".as_c_string_slice()
+        self._get_physical_device_calibrateable_time_domains = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceCalibrateableTimeDomainsKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_calibrateable_time_domains)]()[]
         self._get_calibrated_timestamps = Ptr(to=get_device_proc_addr(
             device, "vkGetCalibratedTimestampsKHR".as_c_string_slice()
@@ -1755,13 +1775,13 @@ struct ToolingInfo(Copyable):
         p_tool_properties: Optional[Ptr[PhysicalDeviceToolProperties, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
-        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
-        ]("vkGetDeviceProcAddr")
-        self._get_physical_device_tool_properties = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceToolProperties".as_c_string_slice()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
+        self._get_physical_device_tool_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceToolProperties".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_tool_properties)]()[]
 
     def get_physical_device_tool_properties[
@@ -1831,13 +1851,18 @@ struct FullScreenExclusive(Copyable):
         p_modes: Ptr[DeviceGroupPresentModeFlagsKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
-        self._get_physical_device_surface_present_modes_2 = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceSurfacePresentModes2EXT".as_c_string_slice()
+        self._get_physical_device_surface_present_modes_2 = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceSurfacePresentModes2EXT".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_surface_present_modes_2)]()[]
         self._acquire_full_screen_exclusive_mode = Ptr(to=get_device_proc_addr(
             device, "vkAcquireFullScreenExclusiveModeEXT".as_c_string_slice()

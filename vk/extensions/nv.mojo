@@ -866,13 +866,13 @@ struct CooperativeMatrix(Copyable):
         p_properties: Optional[Ptr[CooperativeMatrixPropertiesNV, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
-        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
-        ]("vkGetDeviceProcAddr")
-        self._get_physical_device_cooperative_matrix_properties = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceCooperativeMatrixPropertiesNV".as_c_string_slice()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
+        self._get_physical_device_cooperative_matrix_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceCooperativeMatrixPropertiesNV".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_cooperative_matrix_properties)]()[]
 
     def get_physical_device_cooperative_matrix_properties[
@@ -930,13 +930,13 @@ struct CoverageReductionMode(Copyable):
         p_combinations: Optional[Ptr[FramebufferMixedSamplesCombinationNV, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
-        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
-        ]("vkGetDeviceProcAddr")
-        self._get_physical_device_supported_framebuffer_mixed_samples_combinations = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV".as_c_string_slice()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
+        self._get_physical_device_supported_framebuffer_mixed_samples_combinations = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_supported_framebuffer_mixed_samples_combinations)]()[]
 
     def get_physical_device_supported_framebuffer_mixed_samples_combinations[
@@ -1362,16 +1362,16 @@ struct AcquireWinrtDisplay(Copyable):
         p_display: Ptr[DisplayKHR, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
-        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
-        ]("vkGetDeviceProcAddr")
-        self._acquire_winrt_display = Ptr(to=get_device_proc_addr(
-            device, "vkAcquireWinrtDisplayNV".as_c_string_slice()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
+        self._acquire_winrt_display = Ptr(to=get_instance_proc_addr(
+            instance, "vkAcquireWinrtDisplayNV".as_c_string_slice()
         )).bitcast[type_of(self._acquire_winrt_display)]()[]
-        self._get_winrt_display = Ptr(to=get_device_proc_addr(
-            device, "vkGetWinrtDisplayNV".as_c_string_slice()
+        self._get_winrt_display = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetWinrtDisplayNV".as_c_string_slice()
         )).bitcast[type_of(self._get_winrt_display)]()[]
 
     def acquire_winrt_display(
@@ -1663,13 +1663,18 @@ struct OpticalFlow(Copyable):
         p_execute_info: Ptr[OpticalFlowExecuteInfoNV, ImmutUntrackedOrigin],
     ) thin abi("C")
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
-        self._get_physical_device_optical_flow_image_formats = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceOpticalFlowImageFormatsNV".as_c_string_slice()
+        self._get_physical_device_optical_flow_image_formats = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceOpticalFlowImageFormatsNV".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_optical_flow_image_formats)]()[]
         self._create_optical_flow_session = Ptr(to=get_device_proc_addr(
             device, "vkCreateOpticalFlowSessionNV".as_c_string_slice()
@@ -1817,13 +1822,18 @@ struct CooperativeVector(Copyable):
         p_infos: Ptr[ConvertCooperativeVectorMatrixInfoNV, ImmutUntrackedOrigin],
     ) thin abi("C")
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
-        self._get_physical_device_cooperative_vector_properties = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceCooperativeVectorPropertiesNV".as_c_string_slice()
+        self._get_physical_device_cooperative_vector_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceCooperativeVectorPropertiesNV".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_cooperative_vector_properties)]()[]
         self._convert_cooperative_vector_matrix = Ptr(to=get_device_proc_addr(
             device, "vkConvertCooperativeVectorMatrixNV".as_c_string_slice()
@@ -2039,8 +2049,13 @@ struct ExternalComputeQueue(Copyable):
         p_data: Ptr[NoneType, MutUntrackedOrigin],
     ) thin abi("C")
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
@@ -2050,8 +2065,8 @@ struct ExternalComputeQueue(Copyable):
         self._destroy_external_compute_queue = Ptr(to=get_device_proc_addr(
             device, "vkDestroyExternalComputeQueueNV".as_c_string_slice()
         )).bitcast[type_of(self._destroy_external_compute_queue)]()[]
-        self._get_external_compute_queue_data = Ptr(to=get_device_proc_addr(
-            device, "vkGetExternalComputeQueueDataNV".as_c_string_slice()
+        self._get_external_compute_queue_data = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetExternalComputeQueueDataNV".as_c_string_slice()
         )).bitcast[type_of(self._get_external_compute_queue_data)]()[]
 
     def create_external_compute_queue[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
@@ -2221,13 +2236,13 @@ struct CooperativeMatrix2(Copyable):
         p_properties: Optional[Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
-        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
-        ]("vkGetDeviceProcAddr")
-        self._get_physical_device_cooperative_matrix_flexible_dimensions_properties = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceCooperativeMatrixFlexibleDimensionsPropertiesNV".as_c_string_slice()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
+        self._get_physical_device_cooperative_matrix_flexible_dimensions_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceCooperativeMatrixFlexibleDimensionsPropertiesNV".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_cooperative_matrix_flexible_dimensions_properties)]()[]
 
     def get_physical_device_cooperative_matrix_flexible_dimensions_properties[

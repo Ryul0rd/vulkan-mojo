@@ -2620,17 +2620,53 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
         name = snake_to_pascal(extension.name.removeprefix(native_name_prefix))
         traits = ["Copyable"]
 
+        has_instance_command = False
+        has_device_command = False
+        for required_command in required_commands:
+            if not required_command.params:
+                has_instance_command = True
+                continue
+            first_parameter_type = required_command.params[0].type
+            if first_parameter_type in ("VkInstance", "VkPhysicalDevice"):
+                has_instance_command = True
+            elif first_parameter_type in ("VkDevice", "VkQueue", "VkCommandBuffer"):
+                has_device_command = True
+            else:
+                has_instance_command = True
+        requires_instance = has_instance_command
+        requires_device = has_device_command
+
+        init_arguments = [MojoArgument("global_functions", MojoParametricOrigin("T"))]
+        if requires_instance:
+            init_arguments.append(MojoArgument("instance", MojoBaseType("Instance")))
+        if requires_device:
+            init_arguments.append(MojoArgument("device", MojoBaseType("Device")))
+
         init_body_lines = ["self._dlhandle = global_functions.get_dlhandle()"]
-        init_body_lines.extend((
-            f'var get_{extension.type}_proc_addr = global_functions.get_dlhandle()[].get_function[',
-            f'    def({extension.type}: {extension.type.capitalize()}, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction',
-            f']("vkGet{extension.type.capitalize()}ProcAddr")',
-        ))
+        if requires_instance:
+            init_body_lines.extend((
+                f'var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[',
+                f'    def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction',
+                f']("vkGetInstanceProcAddr")',
+            ))
+        if requires_device:
+            init_body_lines.extend((
+                f'var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[',
+                f'    def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction',
+                f']("vkGetDeviceProcAddr")',
+            ))
+
         for required_command in required_commands:
             mojo_name = command_to_mojo_name(required_command, registry.tags)
+            command_level = "instance"
+            if required_command.params:
+                first_parameter_type = required_command.params[0].type
+                if first_parameter_type in ("VkDevice", "VkQueue", "VkCommandBuffer"):
+                    command_level = "device"
+
             init_body_lines.extend((
-                f'self._{mojo_name} = Ptr(to=get_{extension.type}_proc_addr(',
-                f'    {extension.type}, "{required_command.name}".as_c_string_slice()',
+                f'self._{mojo_name} = Ptr(to=get_{command_level}_proc_addr(',
+                f'    {command_level}, "{required_command.name}".as_c_string_slice()',
                 f')).bitcast[type_of(self._{mojo_name})]()[]',
             ))
         init_method = MojoMethod(
@@ -2638,10 +2674,7 @@ def bind_extension_commands(files: Dict[str, str], registry: Registry):
             MojoBaseType("NoneType"),
             "out",
             parameters=[MojoParameter("T", "GlobalFunctions")],
-            arguments=[
-                MojoArgument("global_functions", MojoParametricOrigin("T")),
-                MojoArgument(extension.type, MojoBaseType(extension.type.capitalize())),
-            ],
+            arguments=init_arguments,
             body_lines=init_body_lines,
             docstring_lines=[],
         )

@@ -62,8 +62,13 @@ struct Tensors(Copyable):
         p_data: Ptr[NoneType, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
@@ -91,8 +96,8 @@ struct Tensors(Copyable):
         self._cmd_copy_tensor = Ptr(to=get_device_proc_addr(
             device, "vkCmdCopyTensorARM".as_c_string_slice()
         )).bitcast[type_of(self._cmd_copy_tensor)]()[]
-        self._get_physical_device_external_tensor_properties = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceExternalTensorPropertiesARM".as_c_string_slice()
+        self._get_physical_device_external_tensor_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceExternalTensorPropertiesARM".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_external_tensor_properties)]()[]
         self._get_tensor_opaque_capture_descriptor_data = Ptr(to=get_device_proc_addr(
             device, "vkGetTensorOpaqueCaptureDescriptorDataARM".as_c_string_slice()
@@ -345,8 +350,13 @@ struct DataGraph(Copyable):
         p_queue_family_data_graph_processing_engine_properties: Ptr[QueueFamilyDataGraphProcessingEnginePropertiesARM, MutUntrackedOrigin],
     ) thin abi("C")
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
@@ -377,11 +387,11 @@ struct DataGraph(Copyable):
         self._get_data_graph_pipeline_properties = Ptr(to=get_device_proc_addr(
             device, "vkGetDataGraphPipelinePropertiesARM".as_c_string_slice()
         )).bitcast[type_of(self._get_data_graph_pipeline_properties)]()[]
-        self._get_physical_device_queue_family_data_graph_properties = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceQueueFamilyDataGraphPropertiesARM".as_c_string_slice()
+        self._get_physical_device_queue_family_data_graph_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceQueueFamilyDataGraphPropertiesARM".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_queue_family_data_graph_properties)]()[]
-        self._get_physical_device_queue_family_data_graph_processing_engine_properties = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceQueueFamilyDataGraphProcessingEnginePropertiesARM".as_c_string_slice()
+        self._get_physical_device_queue_family_data_graph_processing_engine_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceQueueFamilyDataGraphProcessingEnginePropertiesARM".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_queue_family_data_graph_processing_engine_properties)]()[]
 
     def create_data_graph_pipelines[
@@ -691,13 +701,13 @@ struct PerformanceCountersByRegion(Copyable):
         p_counter_descriptions: Optional[Ptr[PerformanceCounterDescriptionARM, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
-        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
-        ]("vkGetDeviceProcAddr")
-        self._enumerate_physical_device_queue_family_performance_counters_by_region = Ptr(to=get_device_proc_addr(
-            device, "vkEnumeratePhysicalDeviceQueueFamilyPerformanceCountersByRegionARM".as_c_string_slice()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
+        self._enumerate_physical_device_queue_family_performance_counters_by_region = Ptr(to=get_instance_proc_addr(
+            instance, "vkEnumeratePhysicalDeviceQueueFamilyPerformanceCountersByRegionARM".as_c_string_slice()
         )).bitcast[type_of(self._enumerate_physical_device_queue_family_performance_counters_by_region)]()[]
 
     def enumerate_physical_device_queue_family_performance_counters_by_region[

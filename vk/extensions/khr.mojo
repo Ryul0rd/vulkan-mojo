@@ -258,8 +258,13 @@ struct Swapchain(Copyable):
         p_image_index: Ptr[UInt32, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
@@ -284,8 +289,8 @@ struct Swapchain(Copyable):
         self._get_device_group_surface_present_modes = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceGroupSurfacePresentModesKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_device_group_surface_present_modes)]()[]
-        self._get_physical_device_present_rectangles = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDevicePresentRectanglesKHR".as_c_string_slice()
+        self._get_physical_device_present_rectangles = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDevicePresentRectanglesKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_present_rectangles)]()[]
         self._acquire_next_image_2 = Ptr(to=get_device_proc_addr(
             device, "vkAcquireNextImage2KHR".as_c_string_slice()
@@ -1180,16 +1185,21 @@ struct VideoQueue(Copyable):
         p_coding_control_info: Ptr[VideoCodingControlInfoKHR, ImmutUntrackedOrigin],
     ) thin abi("C")
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
-        self._get_physical_device_video_capabilities = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceVideoCapabilitiesKHR".as_c_string_slice()
+        self._get_physical_device_video_capabilities = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceVideoCapabilitiesKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_video_capabilities)]()[]
-        self._get_physical_device_video_format_properties = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceVideoFormatPropertiesKHR".as_c_string_slice()
+        self._get_physical_device_video_format_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceVideoFormatPropertiesKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_video_format_properties)]()[]
         self._create_video_session = Ptr(to=get_device_proc_addr(
             device, "vkCreateVideoSessionKHR".as_c_string_slice()
@@ -1805,8 +1815,13 @@ struct DeviceGroup(Copyable):
         p_image_index: Ptr[UInt32, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
@@ -1825,8 +1840,8 @@ struct DeviceGroup(Copyable):
         self._get_device_group_surface_present_modes = Ptr(to=get_device_proc_addr(
             device, "vkGetDeviceGroupSurfacePresentModesKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_device_group_surface_present_modes)]()[]
-        self._get_physical_device_present_rectangles = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDevicePresentRectanglesKHR".as_c_string_slice()
+        self._get_physical_device_present_rectangles = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDevicePresentRectanglesKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_present_rectangles)]()[]
         self._acquire_next_image_2 = Ptr(to=get_device_proc_addr(
             device, "vkAcquireNextImage2KHR".as_c_string_slice()
@@ -2815,16 +2830,21 @@ struct PerformanceQuery(Copyable):
     ) thin abi("C") -> Result
     var _release_profiling_lock: def(device: Device) thin abi("C")
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
-        self._enumerate_physical_device_queue_family_performance_query_counters = Ptr(to=get_device_proc_addr(
-            device, "vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR".as_c_string_slice()
+        self._enumerate_physical_device_queue_family_performance_query_counters = Ptr(to=get_instance_proc_addr(
+            instance, "vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR".as_c_string_slice()
         )).bitcast[type_of(self._enumerate_physical_device_queue_family_performance_query_counters)]()[]
-        self._get_physical_device_queue_family_performance_query_passes = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR".as_c_string_slice()
+        self._get_physical_device_queue_family_performance_query_passes = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_queue_family_performance_query_passes)]()[]
         self._acquire_profiling_lock = Ptr(to=get_device_proc_addr(
             device, "vkAcquireProfilingLockKHR".as_c_string_slice()
@@ -4254,13 +4274,18 @@ struct FragmentShadingRate(Copyable):
         combiner_ops: InlineArray[FragmentShadingRateCombinerOpKHR, Int(2)],
     ) thin abi("C")
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
-        self._get_physical_device_fragment_shading_rates = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceFragmentShadingRatesKHR".as_c_string_slice()
+        self._get_physical_device_fragment_shading_rates = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceFragmentShadingRatesKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_fragment_shading_rates)]()[]
         self._cmd_set_fragment_shading_rate = Ptr(to=get_device_proc_addr(
             device, "vkCmdSetFragmentShadingRateKHR".as_c_string_slice()
@@ -4816,13 +4841,18 @@ struct VideoEncodeQueue(Copyable):
         command_buffer: CommandBuffer, p_encode_info: Ptr[VideoEncodeInfoKHR, ImmutUntrackedOrigin]
     ) thin abi("C")
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
-        self._get_physical_device_video_encode_quality_level_properties = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceVideoEncodeQualityLevelPropertiesKHR".as_c_string_slice()
+        self._get_physical_device_video_encode_quality_level_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceVideoEncodeQualityLevelPropertiesKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_video_encode_quality_level_properties)]()[]
         self._get_encoded_video_session_parameters = Ptr(to=get_device_proc_addr(
             device, "vkGetEncodedVideoSessionParametersKHR".as_c_string_slice()
@@ -5653,13 +5683,13 @@ struct CooperativeMatrix(Copyable):
         p_properties: Optional[Ptr[CooperativeMatrixPropertiesKHR, MutUntrackedOrigin]],
     ) thin abi("C") -> Result
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](out self, global_functions: T, instance: Instance):
         self._dlhandle = global_functions.get_dlhandle()
-        var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
-            def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
-        ]("vkGetDeviceProcAddr")
-        self._get_physical_device_cooperative_matrix_properties = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR".as_c_string_slice()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
+        self._get_physical_device_cooperative_matrix_properties = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceCooperativeMatrixPropertiesKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_cooperative_matrix_properties)]()[]
 
     def get_physical_device_cooperative_matrix_properties[
@@ -5752,13 +5782,18 @@ struct CalibratedTimestamps(Copyable):
         p_max_deviation: Ptr[UInt64, MutUntrackedOrigin],
     ) thin abi("C") -> Result
 
-    def __init__[T: GlobalFunctions](out self, global_functions: T, device: Device):
+    def __init__[T: GlobalFunctions](
+        out self, global_functions: T, instance: Instance, device: Device
+    ):
         self._dlhandle = global_functions.get_dlhandle()
+        var get_instance_proc_addr = global_functions.get_dlhandle()[].get_function[
+            def(instance: Instance, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
+        ]("vkGetInstanceProcAddr")
         var get_device_proc_addr = global_functions.get_dlhandle()[].get_function[
             def(device: Device, p_name: CStringSlice[StaticConstantOrigin]) thin abi("C") -> PFN_vkVoidFunction
         ]("vkGetDeviceProcAddr")
-        self._get_physical_device_calibrateable_time_domains = Ptr(to=get_device_proc_addr(
-            device, "vkGetPhysicalDeviceCalibrateableTimeDomainsKHR".as_c_string_slice()
+        self._get_physical_device_calibrateable_time_domains = Ptr(to=get_instance_proc_addr(
+            instance, "vkGetPhysicalDeviceCalibrateableTimeDomainsKHR".as_c_string_slice()
         )).bitcast[type_of(self._get_physical_device_calibrateable_time_domains)]()[]
         self._get_calibrated_timestamps = Ptr(to=get_device_proc_addr(
             device, "vkGetCalibratedTimestampsKHR".as_c_string_slice()
