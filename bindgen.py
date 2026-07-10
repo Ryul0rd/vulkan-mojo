@@ -2385,7 +2385,7 @@ def registry_command_to_mojo_methods(
     
     # Handle casts (e.g. if data is void* but element is UInt8)
     needs_cast = elem_type != data_type.pointee_type
-    ptr_dangling = f"Ptr[{data_type.pointee_type}, MutUntrackedOrigin].unsafe_dangling()"
+    ptr_dangling = f"Optional[Ptr[{data_type.pointee_type}, MutUntrackedOrigin]]()"
     ptr_list = f"list.unsafe_ptr(){'.bitcast['+str(data_type.pointee_type)+']()' if needs_cast else ''}.unsafe_origin_cast[MutUntrackedOrigin]()"
 
     # Pre-generate calls
@@ -2395,17 +2395,17 @@ def registry_command_to_mojo_methods(
     call_1 = emit_fn_like(
         f"{prefix}{call_target}",
         base_args + [f"Ptr(to=count).bitcast[{count_pointee_type.name}]().unsafe_origin_cast[MutUntrackedOrigin]()", ptr_dangling],
-        base_indent_level=indent
+        base_indent_level=indent,
     ).strip()
     call_2 = emit_fn_like(
         f"{prefix}{call_target}",
         base_args + [f"Ptr(to=count).bitcast[{count_pointee_type.name}]().unsafe_origin_cast[MutUntrackedOrigin]()", ptr_list],
-        base_indent_level=indent
+        base_indent_level=indent,
     ).strip()
     
     body_lines = [
         f"var list = {list_type}()",
-        f"var count: {count_pointee_type.name} = 0"
+        f"var count: {count_pointee_type.name} = 0",
     ]
     if is_result:
         body_lines.extend([
@@ -2415,7 +2415,7 @@ def registry_command_to_mojo_methods(
             "    if result == Result.SUCCESS:",
             "        list.reserve(Int(count))",
             f"        {call_2}",
-            "list._len = Int(count)",
+            "        list._len = Int(count)",
             "return ListResult(list^, result)",
         ])
     else:

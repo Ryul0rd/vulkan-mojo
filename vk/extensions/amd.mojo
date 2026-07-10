@@ -137,7 +137,7 @@ struct ShaderInfo(Copyable):
                 shader_stage,
                 info_type,
                 Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
-                Ptr[NoneType, MutUntrackedOrigin].unsafe_dangling(),
+                Optional[Ptr[NoneType, MutUntrackedOrigin]](),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -149,7 +149,7 @@ struct ShaderInfo(Copyable):
                 Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().bitcast[NoneType]().unsafe_origin_cast[MutUntrackedOrigin](),
             )
-        list._len = Int(count)
+                list._len = Int(count)
         return ListResult(list^, result)
 
 

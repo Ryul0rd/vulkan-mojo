@@ -79,7 +79,7 @@ struct DisplayTiming(Copyable):
                 device,
                 swapchain,
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                Ptr[PastPresentationTimingGOOGLE, MutUntrackedOrigin].unsafe_dangling(),
+                Optional[Ptr[PastPresentationTimingGOOGLE, MutUntrackedOrigin]](),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -89,5 +89,5 @@ struct DisplayTiming(Copyable):
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
-        list._len = Int(count)
+                list._len = Int(count)
         return ListResult(list^, result)

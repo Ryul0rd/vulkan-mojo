@@ -130,7 +130,7 @@ struct TileProperties(Copyable):
                 device,
                 framebuffer,
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                Ptr[TilePropertiesQCOM, MutUntrackedOrigin].unsafe_dangling(),
+                Optional[Ptr[TilePropertiesQCOM, MutUntrackedOrigin]](),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -140,7 +140,7 @@ struct TileProperties(Copyable):
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
-        list._len = Int(count)
+                list._len = Int(count)
         return ListResult(list^, result)
 
     def get_dynamic_rendering_tile_properties(

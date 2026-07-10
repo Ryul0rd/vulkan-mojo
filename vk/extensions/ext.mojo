@@ -1425,7 +1425,7 @@ struct ValidationCache(Copyable):
                 device,
                 validation_cache,
                 Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
-                Ptr[NoneType, MutUntrackedOrigin].unsafe_dangling(),
+                Optional[Ptr[NoneType, MutUntrackedOrigin]](),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1435,7 +1435,7 @@ struct ValidationCache(Copyable):
                 Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().bitcast[NoneType]().unsafe_origin_cast[MutUntrackedOrigin](),
             )
-        list._len = Int(count)
+                list._len = Int(count)
         return ListResult(list^, result)
 
 
@@ -1539,7 +1539,7 @@ struct CalibratedTimestamps(Copyable):
             result = self._get_physical_device_calibrateable_time_domains(
                 physical_device,
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                Ptr[TimeDomainKHR, MutUntrackedOrigin].unsafe_dangling(),
+                Optional[Ptr[TimeDomainKHR, MutUntrackedOrigin]](),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1548,7 +1548,7 @@ struct CalibratedTimestamps(Copyable):
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
-        list._len = Int(count)
+                list._len = Int(count)
         return ListResult(list^, result)
 
     def get_calibrated_timestamps[
@@ -1798,7 +1798,7 @@ struct ToolingInfo(Copyable):
             result = self._get_physical_device_tool_properties(
                 physical_device,
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                Ptr[PhysicalDeviceToolProperties, MutUntrackedOrigin].unsafe_dangling(),
+                Optional[Ptr[PhysicalDeviceToolProperties, MutUntrackedOrigin]](),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1807,7 +1807,7 @@ struct ToolingInfo(Copyable):
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
-        list._len = Int(count)
+                list._len = Int(count)
         return ListResult(list^, result)
 
 
@@ -1886,7 +1886,7 @@ struct FullScreenExclusive(Copyable):
                 physical_device,
                 Ptr(to=surface_info).bitcast[PhysicalDeviceSurfaceInfo2KHR]().unsafe_origin_cast[ImmutUntrackedOrigin](),
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                Ptr[PresentModeKHR, MutUntrackedOrigin].unsafe_dangling(),
+                Optional[Ptr[PresentModeKHR, MutUntrackedOrigin]](),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1896,7 +1896,7 @@ struct FullScreenExclusive(Copyable):
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
-        list._len = Int(count)
+                list._len = Int(count)
         return ListResult(list^, result)
 
     def acquire_full_screen_exclusive_mode(
@@ -4855,7 +4855,7 @@ struct ShaderObject(Copyable):
                 device,
                 shader,
                 Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
-                Ptr[NoneType, MutUntrackedOrigin].unsafe_dangling(),
+                Optional[Ptr[NoneType, MutUntrackedOrigin]](),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -4865,7 +4865,7 @@ struct ShaderObject(Copyable):
                 Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().bitcast[NoneType]().unsafe_origin_cast[MutUntrackedOrigin](),
             )
-        list._len = Int(count)
+                list._len = Int(count)
         return ListResult(list^, result)
 
     def cmd_bind_shaders[

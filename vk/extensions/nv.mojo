@@ -807,7 +807,7 @@ struct DeviceDiagnosticCheckpoints(Copyable):
         self._get_queue_checkpoint_data(
             queue,
             Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr[CheckpointDataNV, MutUntrackedOrigin].unsafe_dangling(),
+            Optional[Ptr[CheckpointDataNV, MutUntrackedOrigin]](),
         )
         list.reserve(Int(count))
         self._get_queue_checkpoint_data(
@@ -846,7 +846,7 @@ struct DeviceDiagnosticCheckpoints(Copyable):
         self._get_queue_checkpoint_data_2(
             queue,
             Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-            Ptr[CheckpointData2NV, MutUntrackedOrigin].unsafe_dangling(),
+            Optional[Ptr[CheckpointData2NV, MutUntrackedOrigin]](),
         )
         list.reserve(Int(count))
         self._get_queue_checkpoint_data_2(
@@ -909,7 +909,7 @@ struct CooperativeMatrix(Copyable):
             result = self._get_physical_device_cooperative_matrix_properties(
                 physical_device,
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                Ptr[CooperativeMatrixPropertiesNV, MutUntrackedOrigin].unsafe_dangling(),
+                Optional[Ptr[CooperativeMatrixPropertiesNV, MutUntrackedOrigin]](),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -918,7 +918,7 @@ struct CooperativeMatrix(Copyable):
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
-        list._len = Int(count)
+                list._len = Int(count)
         return ListResult(list^, result)
 
 
@@ -973,7 +973,7 @@ struct CoverageReductionMode(Copyable):
             result = self._get_physical_device_supported_framebuffer_mixed_samples_combinations(
                 physical_device,
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                Ptr[FramebufferMixedSamplesCombinationNV, MutUntrackedOrigin].unsafe_dangling(),
+                Optional[Ptr[FramebufferMixedSamplesCombinationNV, MutUntrackedOrigin]](),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -982,7 +982,7 @@ struct CoverageReductionMode(Copyable):
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
-        list._len = Int(count)
+                list._len = Int(count)
         return ListResult(list^, result)
 
 
@@ -1247,7 +1247,7 @@ struct CudaKernelLaunch(Copyable):
                 device,
                 module,
                 Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
-                Ptr[NoneType, MutUntrackedOrigin].unsafe_dangling(),
+                Optional[Ptr[NoneType, MutUntrackedOrigin]](),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1257,7 +1257,7 @@ struct CudaKernelLaunch(Copyable):
                 Ptr(to=count).bitcast[UInt]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().bitcast[NoneType]().unsafe_origin_cast[MutUntrackedOrigin](),
             )
-        list._len = Int(count)
+                list._len = Int(count)
         return ListResult(list^, result)
 
     def create_cuda_function[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
@@ -1723,7 +1723,7 @@ struct OpticalFlow(Copyable):
                 physical_device,
                 Ptr(to=optical_flow_image_format_info).bitcast[OpticalFlowImageFormatInfoNV]().unsafe_origin_cast[ImmutUntrackedOrigin](),
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                Ptr[OpticalFlowImageFormatPropertiesNV, MutUntrackedOrigin].unsafe_dangling(),
+                Optional[Ptr[OpticalFlowImageFormatPropertiesNV, MutUntrackedOrigin]](),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1733,7 +1733,7 @@ struct OpticalFlow(Copyable):
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
-        list._len = Int(count)
+                list._len = Int(count)
         return ListResult(list^, result)
 
     def create_optical_flow_session[p_allocator_origin: ImmutOrigin = ImmutUntrackedOrigin](
@@ -1866,7 +1866,7 @@ struct CooperativeVector(Copyable):
             result = self._get_physical_device_cooperative_vector_properties(
                 physical_device,
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                Ptr[CooperativeVectorPropertiesNV, MutUntrackedOrigin].unsafe_dangling(),
+                Optional[Ptr[CooperativeVectorPropertiesNV, MutUntrackedOrigin]](),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -1875,7 +1875,7 @@ struct CooperativeVector(Copyable):
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
-        list._len = Int(count)
+                list._len = Int(count)
         return ListResult(list^, result)
 
     def convert_cooperative_vector_matrix(
@@ -2264,7 +2264,7 @@ struct CooperativeMatrix2(Copyable):
             result = self._get_physical_device_cooperative_matrix_flexible_dimensions_properties(
                 physical_device,
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
-                Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutUntrackedOrigin].unsafe_dangling(),
+                Optional[Ptr[CooperativeMatrixFlexibleDimensionsPropertiesNV, MutUntrackedOrigin]](),
             )
             if result == Result.SUCCESS:
                 list.reserve(Int(count))
@@ -2273,7 +2273,7 @@ struct CooperativeMatrix2(Copyable):
                 Ptr(to=count).bitcast[UInt32]().unsafe_origin_cast[MutUntrackedOrigin](),
                 list.unsafe_ptr().unsafe_origin_cast[MutUntrackedOrigin](),
             )
-        list._len = Int(count)
+                list._len = Int(count)
         return ListResult(list^, result)
 
 
